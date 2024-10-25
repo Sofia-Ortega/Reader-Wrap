@@ -11,12 +11,12 @@ const bookmarkShadow = css`
   top: 12px;
 `;
 
-const bookmarkWrapper = css`
+const Content = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  margin-left: 24px;
+  padding-left: 24px;
   line-height: 32px;
 `;
 
@@ -53,16 +53,13 @@ export default function BookmarkButton({
       <div className={bookmarkShadow}>
         <BookmarkBackground color="var(--brown-shadow)"></BookmarkBackground>
       </div>
-      <BookmarkBackground color={`var(--${backgroundColor})`}>
-        <div
-          className={bookmarkWrapper}
-          style={{ color: `var(--${textColor})` }}
-        >
+      <BookmarkBackground color={`var(--${backgroundColor})`} isBtn>
+        <Content style={{ color: `var(--${textColor})` }}>
           <div>
             <PrimaryText>{primaryText}</PrimaryText>
             <SecondaryText>{secondaryText}</SecondaryText>
           </div>
-        </div>
+        </Content>
       </BookmarkBackground>
     </Wrapper>
   );
