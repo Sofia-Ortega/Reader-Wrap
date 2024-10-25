@@ -39,12 +39,14 @@ interface Props {
   primaryText: string;
   secondaryText: string;
   variation?: "primary" | "secondary";
+  onClick?: () => void;
 }
 
 export default function BookmarkButton({
   primaryText,
   secondaryText,
   variation = "primary",
+  onClick,
 }: Props) {
   const { backgroundColor, textColor } = colorMap[variation];
 
@@ -53,7 +55,11 @@ export default function BookmarkButton({
       <div className={bookmarkShadow}>
         <BookmarkBackground color="var(--brown-shadow)"></BookmarkBackground>
       </div>
-      <BookmarkBackground color={`var(--${backgroundColor})`} isBtn>
+      <BookmarkBackground
+        color={`var(--${backgroundColor})`}
+        isBtn
+        onClick={onClick}
+      >
         <Content style={{ color: `var(--${textColor})` }}>
           <div>
             <PrimaryText>{primaryText}</PrimaryText>

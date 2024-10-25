@@ -1,10 +1,12 @@
 import { styled } from "@linaria/react";
 import { modularScale } from "polished";
+import { useContext } from "react";
+import { PageContext } from "../App";
 
 const Wrapper = styled.div`
   background-color: var(--dark-brown);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   text-align: center;
   padding: ${modularScale(1)} 0;
@@ -23,13 +25,27 @@ const SubTitle = styled.p`
   margin: 0;
 `;
 
-export default function Header() {
+const Logo = styled.div`
+  margin: 10px;
+  color: var(--yellow);
+  cursor: pointer;
+`;
+
+interface Props {
+  showSubtitle?: boolean;
+}
+
+export default function Header({ showSubtitle }: Props) {
+  const setShowContext = useContext(PageContext);
+
   return (
     <Wrapper>
+      <Logo onClick={() => setShowContext("Home")}>logo</Logo>
       <div>
         <Title>Reader Wrap</Title>
-        <SubTitle>see your your year in books</SubTitle>
+        {showSubtitle && <SubTitle>see your your year in books</SubTitle>}
       </div>
+      <div></div>
     </Wrapper>
   );
 }
