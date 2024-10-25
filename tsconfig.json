@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "strict": true, // Optional: Enables strict type-checking options
+    "esModuleInterop": true,
+    "skipLibCheck": true // Optional: Can help skip type checks on declaration files
+  }
+}

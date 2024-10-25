@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "Pacifico";
+  src: url("./assets/fonts/Pacifico-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BalooBhaijaan";
+  src: url("./assets/fonts/BalooBhaijaan2-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+:root {
+  --black: #241d1c;
+  --dark-brown: #452e2b;
+  --light-brown: #8d4a0f;
+  --brown-shadow: #b97a5a;
+  --sand: #f2c78a;
+  --dark-rose: #8a3144;
+  --blue: #188d8c;
+  --yellow: #ffdb66;
+
+  font-family: BalooBhaijaan, Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: var(--sand);
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+button {
+  border: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: "Pacifico", cursive;
+}
