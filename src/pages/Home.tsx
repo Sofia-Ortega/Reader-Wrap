@@ -17,7 +17,6 @@ export default function Home() {
 
   return (
     <div>
-      <Header showSubtitle />
       <ButtonWrapper>
         <BookmarkButton
           primaryText="Start"

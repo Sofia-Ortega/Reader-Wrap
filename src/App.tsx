@@ -2,6 +2,7 @@ import { createContext, Dispatch, SetStateAction, useState } from "react";
 import { PageType } from "./utils/types";
 import Home from "./pages/Home";
 import Guide from "./pages/Guide";
+import Header from "./components/Header";
 
 export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
   () => {}
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <PageContext.Provider value={setShowPage}>
+      <Header showSubtitle={showPage == "Home"} />
       {getPageComponent()}
     </PageContext.Provider>
   );

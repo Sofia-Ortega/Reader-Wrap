@@ -1,7 +1,11 @@
 import { styled } from "@linaria/react";
 import { modularScale } from "polished";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { PageContext } from "../App";
+
+interface WrapperProps {
+  isSubtitleVisible: boolean;
+}
 
 const Wrapper = styled.div`
   background-color: var(--dark-brown);
@@ -17,6 +21,15 @@ const Title = styled.h1`
   color: var(--yellow);
   padding: 0;
   margin: 0;
+  cursor: pointer;
+`;
+
+const ContentContainer = styled.div<{ isSubtitleVisible: boolean }>`
+  transition: max-height 0.6s ease, opacity 0.2s ease;
+  max-height: ${({ isSubtitleVisible }) =>
+    isSubtitleVisible ? "100px" : "0"}; /* Adjust based on subtitle height */
+  opacity: ${({ isSubtitleVisible }) => (isSubtitleVisible ? "1" : "0")};
+  overflow: hidden; /* Prevent overflow when collapsed */
 `;
 
 const SubTitle = styled.p`
@@ -32,7 +45,7 @@ const Logo = styled.div`
 `;
 
 interface Props {
-  showSubtitle?: boolean;
+  showSubtitle: boolean;
 }
 
 export default function Header({ showSubtitle }: Props) {
@@ -43,7 +56,9 @@ export default function Header({ showSubtitle }: Props) {
       <Logo onClick={() => setShowContext("Home")}>logo</Logo>
       <div>
         <Title>Reader Wrap</Title>
-        {showSubtitle && <SubTitle>see your your year in books</SubTitle>}
+        <ContentContainer isSubtitleVisible={showSubtitle}>
+          <SubTitle>see your year in books</SubTitle>
+        </ContentContainer>
       </div>
       <div></div>
     </Wrapper>
