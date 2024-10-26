@@ -1,9 +1,15 @@
 import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import SquareButton from "../global/SquareButton";
 import RightArrow from "../../assets/icons/RightArrow.svg";
 import LeftArrow from "../../assets/icons/LeftArrow.svg";
+import slide1 from "../../assets/images/slide1.png";
+import slide2 from "../../assets/images/slide2.png";
+import slide3 from "../../assets/images/slide3.png";
+
+const slideImgagesSrc = [slide1, slide2, slide3];
+
 const slidesWrapper = css`
   display: flex;
   justify-content: center;
@@ -12,8 +18,6 @@ const slidesWrapper = css`
 `;
 
 const Slide = styled.div`
-  width: 400px;
-  height: 256px;
   border: 4px solid var(--dark-brown);
   border-radius: 15px;
   display: flex;
@@ -21,9 +25,30 @@ const Slide = styled.div`
   align-items: center;
 `;
 
-export default function SlideShow() {
-  const [slide, setSlide] = useState<number>(1);
+const ArrowContainer = styled.div`
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
+const slideImage = css`
+  width: 400px;
+  height: auto;
+`;
+
+const arrowImg = css`
+  width: 20px;
+  height: 20px;
+`;
+
+interface Props {
+  slide: number;
+  setSlide: Dispatch<SetStateAction<number>>;
+}
+
+export default function SlideShow({ slide, setSlide }: Props) {
   const handleLeftArrow = () => {
     if (slide > 1) setSlide(slide - 1);
   };
@@ -36,13 +61,23 @@ export default function SlideShow() {
     <div>
       <div style={{ textAlign: "center" }}>Slide: {slide}</div>
       <div className={slidesWrapper}>
-        <SquareButton onClick={handleLeftArrow}>
-          <img src={LeftArrow} width={20} height={20} />
-        </SquareButton>
-        <Slide>Pic</Slide>
-        <SquareButton onClick={handleRightArrow}>
-          <img src={RightArrow} width={20} height={20} />
-        </SquareButton>
+        <ArrowContainer>
+          {slide > 1 && (
+            <SquareButton onClick={handleLeftArrow}>
+              <img src={LeftArrow} className={arrowImg} />
+            </SquareButton>
+          )}
+        </ArrowContainer>
+        <Slide>
+          <img src={slideImgagesSrc[slide - 1]} className={slideImage} />
+        </Slide>
+        <ArrowContainer>
+          {slide < 3 && (
+            <SquareButton onClick={handleRightArrow}>
+              <img src={RightArrow} className={arrowImg} />
+            </SquareButton>
+          )}
+        </ArrowContainer>
       </div>
     </div>
   );

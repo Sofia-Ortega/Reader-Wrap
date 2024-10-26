@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   align-items: center;
   text-align: center;
   padding: ${modularScale(1)} 0;
+  margin-bottom: 24px;
 `;
 
 const Title = styled.h1`
@@ -21,7 +22,6 @@ const Title = styled.h1`
   color: var(--yellow);
   padding: 0;
   margin: 0;
-  cursor: pointer;
 `;
 
 const ContentContainer = styled.div<{ isSubtitleVisible: boolean }>`

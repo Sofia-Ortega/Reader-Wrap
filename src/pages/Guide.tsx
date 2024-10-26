@@ -1,6 +1,7 @@
 import { css } from "@linaria/core";
 import Button from "../components/global/Button";
 import SlideShow from "../components/guide/SlideShow";
+import { useState } from "react";
 
 const wrapper = css`
   display: flex;
@@ -11,11 +12,12 @@ const wrapper = css`
 `;
 
 export default function Guide() {
+  const [slide, setSlide] = useState(1);
+
   return (
     <div>
-      <div>Guide</div>
       <div className={wrapper}>
-        <SlideShow />
+        <SlideShow slide={slide} setSlide={setSlide} />
         <Button name="GO TO EXPORT LINK" />
       </div>
     </div>
