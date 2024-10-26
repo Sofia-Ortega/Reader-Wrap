@@ -2,14 +2,14 @@ import { createContext, Dispatch, SetStateAction, useState } from "react";
 import { PageType } from "./utils/types";
 import Home from "./pages/Home";
 import Guide from "./pages/Guide";
-import Header from "./components/Header";
+import Header from "./components/global/Header";
 
 export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
   () => {}
 );
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Home");
+  const [showPage, setShowPage] = useState<PageType>("Guide");
 
   function getPageComponent() {
     if (!showPage || showPage == "Home") {

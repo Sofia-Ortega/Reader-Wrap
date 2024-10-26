@@ -1,5 +1,5 @@
 import { css } from "@linaria/core";
-import Button from "../components/Button";
+import Button from "../components/global/Button";
 
 const wrapper = css`
   display: flex;
