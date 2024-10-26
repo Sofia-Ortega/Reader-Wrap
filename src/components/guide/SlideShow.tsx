@@ -59,7 +59,6 @@ export default function SlideShow({ slide, setSlide }: Props) {
 
   return (
     <div>
-      <div style={{ textAlign: "center" }}>Slide: {slide}</div>
       <div className={slidesWrapper}>
         <ArrowContainer>
           {slide > 1 && (
