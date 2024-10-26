@@ -6,6 +6,18 @@ interface Props {
   slide: number;
 }
 
+const Link = styled.a`
+  color: var(--blue);
+  display: inline-block;
+  text-decoration: underline;
+  font-weight: bold;
+
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: translate(2px, -2px);
+  }
+`;
+
 const Wrapper = styled(Center)`
   flex-direction: column;
   max-width: 400px;
@@ -22,10 +34,15 @@ export default function GuideDetails({ slide }: Props) {
     return (
       <Wrapper>
         <Details>
-          Go to Goodreads <a>Export Link</a> and Click <b>"Export Library"</b>
+          Go to Goodreads <Link>Export Link</Link> and Click{" "}
+          <b>"Export Library"</b>
         </Details>
         <Center>
-          <Button name="GO TO EXPORT LINK" />
+          <Button>
+            <a href="www.google.com" target="__blank">
+              <div>GO TO EXPORT LINK</div>
+            </a>
+          </Button>
         </Center>
       </Wrapper>
     );
@@ -44,7 +61,7 @@ export default function GuideDetails({ slide }: Props) {
           Upload downloaded <b>library_export.cvv</b>
         </Details>
         <Center>
-          <Button name="Upload" />
+          <Button secondary>Upload</Button>
         </Center>
       </Wrapper>
     );

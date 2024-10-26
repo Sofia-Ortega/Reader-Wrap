@@ -34,8 +34,7 @@ const ButtonBg = styled.button<ButtonBgProps>`
   transition: transform 0.2s ease;
 
   &:hover {
-    transform: ${({ shadow }) =>
-      !shadow ? `translateY(-2px) translateX(2px)` : "none"};
+    transform: ${({ shadow }) => (!shadow ? `translate(2px, -2px)` : "none")};
   }
 `;
 
