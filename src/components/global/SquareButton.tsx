@@ -1,14 +1,21 @@
 import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
+import { ReactNode } from "react";
 
 const wrapper = css`
   position: relative;
 `;
 
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
+`;
+
 const buttonShadow = css`
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 4px;
+  right: 4px;
   z-index: -1;
 `;
 
@@ -18,12 +25,12 @@ interface ButtonBgProps {
 
 const ButtonBg = styled.button<ButtonBgProps>`
   background-color: ${({ shadow }) =>
-    shadow ? `var(--brown-shadow)` : `var(--light-brown)`};
-  color: var(--yellow);
+    shadow ? `var(--dark-brown)` : `var(--brown-shadow)`};
+  color: var(--dark-brown);
   text-decoration: none;
   border: none;
-  width: 220px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   font-weight: bold;
   font-size: 16px;
   font-family: BalooBhaijaan;
@@ -38,17 +45,19 @@ const ButtonBg = styled.button<ButtonBgProps>`
 `;
 
 interface Props {
-  name: string;
-  onClick?: () => {};
+  children: ReactNode;
+  onClick?: () => void;
 }
-export default function Button({ name, onClick }: Props) {
+export default function SquareButton({ children, onClick }: Props) {
   return (
     <div className={wrapper}>
       <div className={buttonShadow}>
         <ButtonBg shadow>yo</ButtonBg>
       </div>
       <div>
-        <ButtonBg onClick={onClick}>{name}</ButtonBg>
+        <ButtonBg onClick={onClick}>
+          <Center>{children}</Center>
+        </ButtonBg>
       </div>
     </div>
   );
