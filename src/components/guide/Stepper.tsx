@@ -12,7 +12,7 @@ const Divider = styled.div`
   width: 40px;
   height: 4px;
   background-color: #452e2b;
-  opacity: ${inactiveOpacity};
+  opacity: var(--inactive-opacity);
 `;
 
 interface Props {

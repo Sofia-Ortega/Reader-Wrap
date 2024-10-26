@@ -1,7 +1,5 @@
 import { styled } from "@linaria/react";
 
-const inactiveOpacity = 0.35;
-
 const StepContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -25,7 +23,7 @@ const StepContent = styled.div<StepContentProps>`
   color: var(--yellow);
   font-size: 24px;
   font-weight: bold;
-  opacity: ${({ active }) => (active ? 1 : inactiveOpacity)};
+  opacity: ${({ active }) => (active ? 1 : `var(--inactive-opacity)`)};
   transition: opacity 0.2s ease;
 `;
 

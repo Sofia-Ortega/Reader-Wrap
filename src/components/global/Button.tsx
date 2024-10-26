@@ -3,6 +3,8 @@ import { styled } from "@linaria/react";
 
 const wrapper = css`
   position: relative;
+  width: 220px;
+  height: 44px;
 `;
 
 const buttonShadow = css`

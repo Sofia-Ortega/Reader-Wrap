@@ -3,6 +3,7 @@ import Button from "../components/global/Button";
 import SlideShow from "../components/guide/SlideShow";
 import { useState } from "react";
 import Stepper from "../components/guide/Stepper";
+import GuideDetails from "../components/guide/GuideDetails";
 
 const wrapper = css`
   display: flex;
@@ -20,7 +21,7 @@ export default function Guide() {
       <div className={wrapper}>
         <Stepper step={slide} />
         <SlideShow slide={slide} setSlide={setSlide} />
-        <Button name="GO TO EXPORT LINK" />
+        <GuideDetails slide={slide} />
       </div>
     </div>
   );

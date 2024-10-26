@@ -1,15 +1,10 @@
 import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
 import { ReactNode } from "react";
+import { Center } from "./Center";
 
 const wrapper = css`
   position: relative;
-`;
-
-const Center = styled.div`
-  display: flex;
-  justify-content: center;
-  align-content: center;
 `;
 
 const buttonShadow = css`

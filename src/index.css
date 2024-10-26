@@ -23,6 +23,8 @@
   --blue: #188d8c;
   --yellow: #ffdb66;
 
+  --inactive-opacity: 0.35;
+
   font-family: BalooBhaijaan, Inter, system-ui, Avenir, Helvetica, Arial,
     sans-serif;
   line-height: 1.5;
@@ -37,12 +39,12 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--blue);
+  font-weight: bold;
+  text-decoration: underline;
 }
 a:hover {
-  color: #535bf2;
+  cursor: pointer;
 }
 
 button {
@@ -56,4 +58,8 @@ body {
 
 h1 {
   font-family: "Pacifico", cursive;
+}
+
+b {
+  color: var(--dark-brown);
 }
