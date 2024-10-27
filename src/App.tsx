@@ -1,4 +1,10 @@
-import { createContext, Dispatch, SetStateAction, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from "react";
 import { PageType } from "./utils/types";
 import Home from "./pages/Home";
 import Guide from "./pages/Guide";
@@ -10,22 +16,18 @@ export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
 );
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Guide");
+  const [showPage, setShowPage] = useState<PageType>("Wrap");
 
-  function getPageComponent() {
-    if (!showPage || showPage == "Home") {
-      return <Home />;
-    } else if (showPage == "Guide") {
-      return <Guide />;
-    } else if (showPage == "Wrap") {
-      return <Wrap />;
-    }
-  }
+  const pageComponents: Record<PageType, ReactNode> = {
+    Home: <Home />,
+    Guide: <Guide />,
+    Wrap: <Wrap />,
+  };
 
   return (
     <PageContext.Provider value={setShowPage}>
-      <Header showSubtitle={showPage == "Home"} />
-      {getPageComponent()}
+      {showPage != "Wrap" && <Header showSubtitle={showPage === "Home"} />}
+      {pageComponents[showPage] || <Home />}
     </PageContext.Provider>
   );
 }

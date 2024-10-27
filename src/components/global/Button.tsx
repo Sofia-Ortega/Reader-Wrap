@@ -12,7 +12,11 @@ const buttonShadow = css`
   position: absolute;
   top: 8px;
   right: 8px;
-  z-index: -1;
+`;
+
+const buttonMain = css`
+  z-index: 1;
+  position: absolute;
 `;
 
 interface ButtonBgProps {
@@ -42,6 +46,10 @@ const ButtonBg = styled.button<ButtonBgProps>`
   &:hover {
     transform: ${({ shadow }) => (!shadow ? `translate(2px, -2px)` : "none")};
   }
+
+  &:active {
+    transform: ${({ shadow }) => (!shadow ? `translate(1px, -1px)` : "none")};
+  }
 `;
 
 interface Props {
@@ -49,13 +57,14 @@ interface Props {
   secondary?: boolean;
   onClick?: () => void;
 }
+
 export default function Button({ children, secondary, onClick }: Props) {
   return (
     <div className={wrapper}>
       <div className={buttonShadow}>
         <ButtonBg shadow>yo</ButtonBg>
       </div>
-      <div>
+      <div className={buttonMain}>
         <ButtonBg onClick={onClick} secondary={secondary}>
           {children}
         </ButtonBg>

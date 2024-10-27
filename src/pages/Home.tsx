@@ -1,7 +1,5 @@
 import { styled } from "@linaria/react";
 import BookmarkButton from "../components/global/BookmarkButton";
-import Header from "../components/global/Header";
-import { PageType } from "../utils/types";
 import { useContext } from "react";
 import { PageContext } from "../App";
 

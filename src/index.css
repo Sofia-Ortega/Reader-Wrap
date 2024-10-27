@@ -60,7 +60,9 @@ body {
   padding: 0;
 }
 
-h1 {
+h1,
+h4,
+h3 {
   font-family: "Pacifico", cursive;
 }
 
