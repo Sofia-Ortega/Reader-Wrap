@@ -1,6 +1,9 @@
 import { styled } from "@linaria/react";
 import { Center } from "../components/global/Center";
 import WrapButton from "../components/wrap/WrapButton";
+import { useContext } from "react";
+import { PageContext } from "../App";
+import { CenterFullHeight } from "../components/global/CenterFullHeight";
 
 const Wrapper = styled.div`
   background-color: var(--black);
@@ -8,17 +11,19 @@ const Wrapper = styled.div`
   color: var(--yellow);
 `;
 
-const CustomCenter = styled(Center)`
-  height: 100%;
-  flex-wrap: wrap;
-`;
-
 export default function Wrap() {
+  const setShowPage = useContext(PageContext);
+
   return (
     <Wrapper>
-      <CustomCenter>
-        <WrapButton />
-      </CustomCenter>
+      <CenterFullHeight>
+        <WrapButton
+          onClick={() => {
+            console.log("here");
+            setShowPage("Stats");
+          }}
+        />
+      </CenterFullHeight>
     </Wrapper>
   );
 }

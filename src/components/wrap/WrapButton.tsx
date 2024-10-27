@@ -80,7 +80,7 @@ interface Props {
 export default function WrapButton({ onClick }: Props) {
   return (
     <div>
-      <Box>
+      <Box onClick={onClick}>
         <Text>Wrap</Text>
       </Box>
     </div>

@@ -10,23 +10,27 @@ import Home from "./pages/Home";
 import Guide from "./pages/Guide";
 import Header from "./components/global/Header";
 import Wrap from "./pages/Wrap";
+import Stats from "./pages/Stats";
 
 export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
   () => {}
 );
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Wrap");
+  const [showPage, setShowPage] = useState<PageType>("Stats");
 
   const pageComponents: Record<PageType, ReactNode> = {
     Home: <Home />,
     Guide: <Guide />,
     Wrap: <Wrap />,
+    Stats: <Stats />,
   };
 
   return (
     <PageContext.Provider value={setShowPage}>
-      {showPage != "Wrap" && <Header showSubtitle={showPage === "Home"} />}
+      {showPage != "Wrap" && showPage != "Stats" && (
+        <Header showSubtitle={showPage === "Home"} />
+      )}
       {pageComponents[showPage] || <Home />}
     </PageContext.Provider>
   );
