@@ -4,10 +4,11 @@ import { styled } from "@linaria/react";
 import { motion, AnimatePresence } from "framer-motion";
 import PageBookCount from "../components/Stats/PageBookCount";
 
-const AppWrapper = styled.div`
+const StatsWrapper = styled.div`
   overflow: hidden;
   height: 100vh;
   position: relative;
+  background-color: var(--blue);
 `;
 
 const Section = styled(motion.div)`
@@ -34,7 +35,32 @@ const Section2 = styled(Section)`
 `;
 
 const Section3 = styled(Section)`
-  background-color: #1e90ff;
+  background-color: var(--blue);
+`;
+
+const Scroll = styled.div`
+  position: fixed;
+  color: white;
+  bottom: 50vh;
+  right: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+`;
+
+interface DotProps {
+  active: boolean;
+}
+const Dot = styled.div<DotProps>`
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  background-color: white;
+
+  transform: ${({ active }) => (active ? `scale(2)` : `scale(1)`)};
+
+  transition: transform 0.2s ease;
 `;
 
 const sections = [
@@ -55,22 +81,29 @@ export default function Stats() {
   };
 
   return (
-    <AppWrapper onWheel={(e) => handleScroll(e.deltaY > 0 ? 1 : -1)}>
-      <AnimatePresence initial={false}>
-        {sections.map(({ id, Component, content }, index) =>
-          index === currentSection ? (
-            <Component
-              key={id}
-              initial={{ y: "100%" }}
-              animate={{ y: "0%" }}
-              exit={{ y: "-100%" }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-            >
-              {content}
-            </Component>
-          ) : null
-        )}
-      </AnimatePresence>
-    </AppWrapper>
+    <div>
+      <StatsWrapper onWheel={(e) => handleScroll(e.deltaY > 0 ? 1 : -1)}>
+        <AnimatePresence initial={false}>
+          {sections.map(({ id, Component, content }, index) =>
+            index === currentSection ? (
+              <Component
+                key={id}
+                initial={{ y: "100%" }}
+                animate={{ y: "0%" }}
+                exit={{ y: "-100%" }}
+                transition={{ duration: 1, ease: "easeInOut" }}
+              >
+                {content}
+              </Component>
+            ) : null
+          )}
+        </AnimatePresence>
+      </StatsWrapper>
+      <Scroll>
+        <Dot active={currentSection == 0} />
+        <Dot active={currentSection == 1} />
+        <Dot active={currentSection == 2} />
+      </Scroll>
+    </div>
   );
 }
