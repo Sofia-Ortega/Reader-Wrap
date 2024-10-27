@@ -22,6 +22,7 @@ const Title = styled.h1`
   color: var(--yellow);
   padding: 0;
   margin: 0;
+  cursor: pointer;
 `;
 
 const ContentContainer = styled.div<{ isSubtitleVisible: boolean }>`
@@ -49,13 +50,13 @@ interface Props {
 }
 
 export default function Header({ showSubtitle }: Props) {
-  const setShowContext = useContext(PageContext);
+  const setShowPage = useContext(PageContext);
 
   return (
     <Wrapper>
-      <Logo onClick={() => setShowContext("Home")}>logo</Logo>
+      <Logo onClick={() => setShowPage("Home")}>logo</Logo>
       <div>
-        <Title>Reader Wrap</Title>
+        <Title onClick={() => setShowPage("Home")}>Reader Wrap</Title>
         <ContentContainer isSubtitleVisible={showSubtitle}>
           <SubTitle>see your year in books</SubTitle>
         </ContentContainer>

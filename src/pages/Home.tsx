@@ -27,6 +27,7 @@ export default function Home() {
           primaryText="Preview"
           secondaryText="Preview sample results"
           variation="secondary"
+          onClick={() => setShowPage("Wrap")}
         />
       </ButtonWrapper>
     </div>

@@ -3,6 +3,7 @@ import { PageType } from "./utils/types";
 import Home from "./pages/Home";
 import Guide from "./pages/Guide";
 import Header from "./components/global/Header";
+import Wrap from "./pages/Wrap";
 
 export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
   () => {}
@@ -16,6 +17,8 @@ function App() {
       return <Home />;
     } else if (showPage == "Guide") {
       return <Guide />;
+    } else if (showPage == "Wrap") {
+      return <Wrap />;
     }
   }
 

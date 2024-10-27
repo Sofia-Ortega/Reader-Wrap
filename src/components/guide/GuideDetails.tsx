@@ -1,6 +1,8 @@
 import { styled } from "@linaria/react";
 import Button from "../global/Button";
 import { Center } from "../global/Center";
+import { useContext } from "react";
+import { PageContext } from "../../App";
 
 interface Props {
   slide: number;
@@ -30,6 +32,8 @@ const Details = styled.div`
 `;
 
 export default function GuideDetails({ slide }: Props) {
+  const setShowPage = useContext(PageContext);
+
   if (slide == 1) {
     return (
       <Wrapper>
@@ -61,7 +65,9 @@ export default function GuideDetails({ slide }: Props) {
           Upload downloaded <b>library_export.cvv</b>
         </Details>
         <Center>
-          <Button secondary>Upload</Button>
+          <Button secondary onClick={() => setShowPage("Wrap")}>
+            Upload
+          </Button>
         </Center>
       </Wrapper>
     );

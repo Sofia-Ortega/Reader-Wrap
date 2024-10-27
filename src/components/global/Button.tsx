@@ -47,7 +47,7 @@ const ButtonBg = styled.button<ButtonBgProps>`
 interface Props {
   children: ReactNode;
   secondary?: boolean;
-  onClick?: () => {};
+  onClick?: () => void;
 }
 export default function Button({ children, secondary, onClick }: Props) {
   return (
