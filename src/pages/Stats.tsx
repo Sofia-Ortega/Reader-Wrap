@@ -3,6 +3,7 @@ import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
 import { motion, AnimatePresence } from "framer-motion";
 import PageBookCount from "../components/Stats/PageBookCount";
+import ShelvedBooks from "../components/Stats/ShelvedBooks";
 
 const StatsWrapper = styled.div`
   overflow: hidden;
@@ -27,11 +28,11 @@ const Section = styled(motion.div)`
 
 const Section1 = styled(Section)`
   background-color: var(--yellow);
-  color: var(--dark-rose);
+  color: var(--dark-brown);
 `;
 
 const Section2 = styled(Section)`
-  background-color: var(--dark-rose);
+  background-color: var(--dark-brown);
 `;
 
 const Section3 = styled(Section)`
@@ -57,15 +58,16 @@ const Dot = styled.div<DotProps>`
   width: 5px;
   height: 5px;
   background-color: white;
+  cursor: pointer;
 
   transform: ${({ active }) => (active ? `scale(2)` : `scale(1)`)};
 
-  transition: transform 0.2s ease;
+  transition: transform 0.4s ease;
 `;
 
 const sections = [
-  { id: 1, Component: Section1, content: "Section 1" },
-  { id: 2, Component: Section2, content: "Section 2" },
+  { id: 1, Component: Section1, content: <PageBookCount /> },
+  { id: 2, Component: Section2, content: <ShelvedBooks /> },
   { id: 3, Component: Section3, content: "Section 3" },
 ];
 
@@ -100,9 +102,18 @@ export default function Stats() {
         </AnimatePresence>
       </StatsWrapper>
       <Scroll>
-        <Dot active={currentSection == 0} />
-        <Dot active={currentSection == 1} />
-        <Dot active={currentSection == 2} />
+        <Dot
+          onClick={() => setCurrentSection(0)}
+          active={currentSection == 0}
+        />
+        <Dot
+          onClick={() => setCurrentSection(1)}
+          active={currentSection == 1}
+        />
+        <Dot
+          onClick={() => setCurrentSection(2)}
+          active={currentSection == 2}
+        />
       </Scroll>
     </div>
   );
