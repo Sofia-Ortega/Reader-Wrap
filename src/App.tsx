@@ -11,6 +11,7 @@ import Guide from "./pages/Guide";
 import Header from "./components/global/Header";
 import Wrap from "./pages/Wrap";
 import Stats from "./pages/Stats";
+import AnimationTest from "./pages/AnimationTest";
 
 export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
   () => {}
@@ -20,6 +21,7 @@ function App() {
   const [showPage, setShowPage] = useState<PageType>("Stats");
 
   const pageComponents: Record<PageType, ReactNode> = {
+    Test: <AnimationTest />,
     Home: <Home />,
     Guide: <Guide />,
     Wrap: <Wrap />,
@@ -28,7 +30,7 @@ function App() {
 
   return (
     <PageContext.Provider value={setShowPage}>
-      {showPage != "Wrap" && showPage != "Stats" && (
+      {showPage != "Wrap" && showPage != "Stats" && showPage != "Test" && (
         <Header showSubtitle={showPage === "Home"} />
       )}
       {pageComponents[showPage] || <Home />}
