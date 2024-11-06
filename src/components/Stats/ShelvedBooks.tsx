@@ -43,11 +43,14 @@ export default function ShelvedBooks() {
   ]);
 
   // Generate an array of random heights between 40 and 120 pixels
+  /*
   const heights: number[] = Array.from({ length: 12 }, () =>
     Math.floor(Math.random() * 6)
   );
+  */
 
-  //const heights = [1, 2, 3, 2, 1, 0, 1, 4, 1, 3, 4, 4];
+  // const heights = [1, 2, 3, 2, 1, 0, 1, 4, 1, 3, 4, 4, 4];
+  const heights = [1, 2, 3, 4, 1, 0, 1, 3, 1, 3, 3, 3, 3];
 
   return (
     <Wrapper>
