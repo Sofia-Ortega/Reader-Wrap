@@ -15,6 +15,7 @@ const Bar = styled.div<BarProps>`
   height: ${({ height }) => height}px;
   background-color: var(--yellow);
   border-radius: 4px;
+  font-size: 12px;
 `;
 
 interface BarChartProps {
@@ -22,9 +23,17 @@ interface BarChartProps {
 }
 
 export default function BarChart({ heights }: BarChartProps) {
+  const MAX_HEIGHT_PX = 200;
+  const MIN_HEIGHTS_PX = 10;
+  const maxHeight = Math.max(...heights);
+
+  const heightsPx = heights.map(
+    (h) => (h * (MAX_HEIGHT_PX - MIN_HEIGHTS_PX)) / maxHeight + MIN_HEIGHTS_PX
+  );
+
   return (
     <Chart>
-      {heights.map((height, index) => (
+      {heightsPx.map((height, index) => (
         <Bar key={index} height={height} />
       ))}
     </Chart>
