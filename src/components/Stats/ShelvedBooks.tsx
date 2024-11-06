@@ -1,9 +1,9 @@
 import { styled } from "@linaria/react";
-import { Center } from "../global/Center";
-import { CenterFullHeight } from "../global/CenterFullHeight";
+import DropDown from "../global/DropDown";
+import { useState } from "react";
+import BarChart from "./BarChart";
 
 const Wrapper = styled.div`
-  /* background-color: #8e8ece; */
   height: 100vh;
   max-height: 600px;
   box-sizing: border-box;
@@ -21,59 +21,47 @@ const Title = styled.div`
   font-size: 2em;
   text-align: center;
   flex: 1;
-  /* background-color: black; */
-`;
-
-const ChartWrapper = styled.div`
-  /* background-color: #140844; */
-  flex: 2;
-`;
-
-const Chart = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: end;
-`;
-
-interface BarProps {
-  height: number;
-}
-
-const Bar = styled.div<BarProps>`
-  width: 40px;
-  height: ${({ height }) => height}px;
-  background-color: var(--yellow);
-  border-radius: 4px;
 `;
 
 const BookshelfWrapper = styled.div`
-  /* background-color: black; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
   color: var(--brown-shadow);
   font-size: 0.5em;
-  font-weight: normal;
+  font-weight: bold;
   flex: 1;
 `;
 
 export default function ShelvedBooks() {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [bookshelves, setBookshelves] = useState([
+    "read",
+    "want to readzzzzzzzzzzzzzz",
+    "classic",
+  ]);
+
   // Generate an array of random heights between 40 and 120 pixels
   const heights: number[] = Array.from(
     { length: 12 },
-    () => Math.floor(Math.random() * 142) + 20
+    () => Math.floor(Math.random() * 180) + 20
   );
+
+  //const heights = [1, 2, 3, 2, 1, 0, 1, 4, 1, 3, 4, 4];
 
   return (
     <Wrapper>
       <Title>Shelved Books</Title>
-      <ChartWrapper>
-        <CenterFullHeight>
-          <Chart>
-            {heights.map((height, index) => (
-              <Bar key={index} height={height} />
-            ))}
-          </Chart>
-        </CenterFullHeight>
-      </ChartWrapper>
-      <BookshelfWrapper>Bookshelf</BookshelfWrapper>
+      <BarChart heights={heights} />
+      <BookshelfWrapper>
+        <div>Bookshelf</div>
+        <DropDown
+          items={[...bookshelves]}
+          selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
+        />
+      </BookshelfWrapper>
     </Wrapper>
   );
 }
