@@ -87,7 +87,7 @@ export default function AverageRating() {
                     <img
                         src="https://i.pinimg.com/736x/59/9e/53/599e53032084b72fa762270a8f2649c7.jpg"
                         style={{ width: "5px", height: "auto", opacity: "1%", mixBlendMode: "multiply" }}
-                        alt="Clickable image"
+                        alt="Shah Shank"
                     />
                 </button>
 
