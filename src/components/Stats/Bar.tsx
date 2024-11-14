@@ -1,24 +1,26 @@
 import { styled } from "@linaria/react";
+import { CSSProperties } from "react";
 
 const MyBar = styled.div`
   background-color: var(--yellow);
   color: var(--dark-rose);
-  height: 100%;
   width: 40px;
-  border: 1px solid black;
   border-radius: 4px;
+  margin: 0px 4px;
 `;
 
 interface Props {
   barHeight: number;
   maxHeight: number;
+  col: number;
 }
 
-export default function Bar({ barHeight, maxHeight }: Props) {
-  const barStyle = {
+export default function Bar({ barHeight, maxHeight, col }: Props) {
+  const barStyle: CSSProperties = {
     gridRow: maxHeight + "",
-    height: "10px",
     alignSelf: "end",
+    height: "10%",
+    gridColumn: col,
   };
 
   if (barHeight != 0) {
@@ -26,5 +28,5 @@ export default function Bar({ barHeight, maxHeight }: Props) {
     barStyle.height = "100%";
   }
 
-  return <MyBar style={barStyle}>{barHeight}</MyBar>;
+  return <MyBar style={barStyle}></MyBar>;
 }

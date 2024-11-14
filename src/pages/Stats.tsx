@@ -66,8 +66,9 @@ const Dot = styled.div<DotProps>`
 `;
 
 const sections = [
-  { id: 1, Component: Section1, content: <PageBookCount /> },
-  { id: 2, Component: Section2, content: <ShelvedBooks /> },
+  { id: 1, Component: Section2, content: <ShelvedBooks /> },
+  { id: 2, Component: Section1, content: <PageBookCount /> },
+  // { id: 2, Component: Section2, content: <ShelvedBooks /> },
   { id: 3, Component: Section3, content: "Section 3" },
 ];
 

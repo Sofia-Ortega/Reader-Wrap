@@ -1,7 +1,7 @@
 import { styled } from "@linaria/react";
 import DropDown from "../global/DropDown";
 import { useState } from "react";
-import BarChart2 from "./BarChart2";
+import BarChart from "./BarChart";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -38,7 +38,7 @@ export default function ShelvedBooks() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [bookshelves, setBookshelves] = useState([
     "read",
-    "want to readzzzzzzzzzzzzzz",
+    "want to read",
     "classic",
   ]);
 
@@ -49,13 +49,13 @@ export default function ShelvedBooks() {
   );
   */
 
-  const heights = [0, 1, 2, 3, 2, 1, 6, 2, 1, 5, 2, 2];
+  const heights = [0, 1, 2, 3, 2, 1, 2, 2, 1, 2, 2, 2];
   // const heights = [1, 2, 3, 4, 1, 0, 1, 3, 1, 3, 3, 3];
 
   return (
     <Wrapper>
       <Title>Shelved Books</Title>
-      <BarChart2 heights={heights} />
+      <BarChart heights={heights} />
       <BookshelfWrapper>
         <div>Bookshelf</div>
         <DropDown
