@@ -80,11 +80,12 @@ export default function AverageRating() {
                         </span>
                     </div>
                 ))}
+                <img
+                    src="https://i.pinimg.com/736x/59/9e/53/599e53032084b72fa762270a8f2649c7.jpg"
+                    style={{ width: "5px", height: "auto", opacity: "50%", mixBlendMode: "multiply" }}
+                />
             </BarChartWrapper>
-            <img
-            src="https://i.pinimg.com/736x/59/9e/53/599e53032084b72fa762270a8f2649c7.jpg"
-            style={{ width: "5px", height: "auto", opacity: "50%", mixBlendMode: "multiply" }}
-            />
+            
 
         </Wrapper>
     );
