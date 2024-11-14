@@ -4,6 +4,7 @@ import { styled } from "@linaria/react";
 import { motion, AnimatePresence } from "framer-motion";
 import PageBookCount from "../components/Stats/PageBookCount";
 import ShelvedBooks from "../components/Stats/ShelvedBooks";
+import TimesShanked from "../components/Stats/TimesShanked";
 
 const StatsWrapper = styled.div`
   overflow: hidden;
@@ -36,7 +37,7 @@ const Section2 = styled(Section)`
 `;
 
 const Section3 = styled(Section)`
-  background-color: var(--blue);
+  background-color: var(--dark-rose);
 `;
 
 const Scroll = styled.div`
@@ -68,7 +69,7 @@ const Dot = styled.div<DotProps>`
 const sections = [
   { id: 1, Component: Section1, content: <PageBookCount /> },
   { id: 2, Component: Section2, content: <ShelvedBooks /> },
-  { id: 3, Component: Section3, content: "Section 3" },
+  { id: 3, Component: Section3, content: <TimesShanked /> },
 ];
 
 export default function Stats() {
