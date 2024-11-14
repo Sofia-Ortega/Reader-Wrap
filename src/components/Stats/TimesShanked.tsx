@@ -80,10 +80,17 @@ export default function AverageRating() {
                         </span>
                     </div>
                 ))}
-                <img
-                    src="https://i.pinimg.com/736x/59/9e/53/599e53032084b72fa762270a8f2649c7.jpg"
-                    style={{ width: "5px", height: "auto", opacity: "50%", mixBlendMode: "multiply" }}
-                />
+                <button
+                    onClick={() => window.open("https://i.pinimg.com/736x/59/9e/53/599e53032084b72fa762270a8f2649c7.jpg", "_blank")}
+                    style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                >
+                    <img
+                        src="https://i.pinimg.com/736x/59/9e/53/599e53032084b72fa762270a8f2649c7.jpg"
+                        style={{ width: "5px", height: "auto", opacity: "50%", mixBlendMode: "multiply" }}
+                        alt="Clickable image"
+                    />
+                </button>
+
             </BarChartWrapper>
             
 
