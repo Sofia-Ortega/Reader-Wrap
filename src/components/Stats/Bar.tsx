@@ -19,7 +19,7 @@ export default function Bar({ barHeight, maxHeight, col }: Props) {
   const barStyle: CSSProperties = {
     gridRow: maxHeight + "",
     alignSelf: "end",
-    height: "10%",
+    height: "10px",
     gridColumn: col,
   };
 
