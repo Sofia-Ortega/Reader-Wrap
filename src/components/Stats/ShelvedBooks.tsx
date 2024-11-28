@@ -38,19 +38,18 @@ export default function ShelvedBooks() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [bookshelves, setBookshelves] = useState([
     "read",
-    "want to readzzzzzzzzzzzzzz",
+    "want to read",
     "classic",
   ]);
 
   // Generate an array of random heights between 40 and 120 pixels
-  /*
-  const heights: number[] = Array.from({ length: 12 }, () =>
-    Math.floor(Math.random() * 6)
-  );
-  */
+  const generateHeights = (maxHeight: number): number[] => {
+    return Array.from({ length: 12 }, () =>
+      Math.floor(Math.random() * maxHeight)
+    );
+  };
 
-  // const heights = [1, 2, 3, 2, 1, 0, 1, 4, 1, 3, 4, 4, 4];
-  const heights = [1, 2, 3, 4, 1, 0, 1, 3, 1, 3, 3, 3, 3];
+  const heights = generateHeights(Math.floor(Math.random() * 6) + 3);
 
   return (
     <Wrapper>
