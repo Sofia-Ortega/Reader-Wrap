@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import PageBookCount from "../components/Stats/PageBookCount";
 import ShelvedBooks from "../components/Stats/ShelvedBooks";
 import AverageRating from "../components/Stats/AverageRating";
+import Personas from "../components/Stats/Personas";
 
 const StatsWrapper = styled.div`
   overflow: hidden;
@@ -39,6 +40,10 @@ const Section3 = styled(Section)`
   background-color: var(--dark-rose);
 `;
 
+const Section4 = styled(Section)`
+  background-color: var(--black);
+`;
+
 const Scroll = styled.div`
   position: fixed;
   color: white;
@@ -69,6 +74,7 @@ const sections = [
   { id: 1, Component: Section1, content: <PageBookCount /> },
   { id: 2, Component: Section2, content: <ShelvedBooks /> },
   { id: 3, Component: Section3, content: <AverageRating /> },
+  { id: 4, Component: Section4, content: <Personas /> },
 ];
 
 export default function Stats() {
@@ -102,18 +108,13 @@ export default function Stats() {
         </AnimatePresence>
       </StatsWrapper>
       <Scroll>
-        <Dot
-          onClick={() => setCurrentSection(0)}
-          active={currentSection == 0}
-        />
-        <Dot
-          onClick={() => setCurrentSection(1)}
-          active={currentSection == 1}
-        />
-        <Dot
-          onClick={() => setCurrentSection(2)}
-          active={currentSection == 2}
-        />
+        {sections.map((_, index) => (
+          <Dot
+            key={index}
+            onClick={() => setCurrentSection(index)}
+            active={currentSection === index}
+          />
+        ))}
       </Scroll>
     </div>
   );

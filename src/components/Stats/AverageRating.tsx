@@ -2,7 +2,7 @@ import { styled } from "@linaria/react";
 
 const Wrapper = styled.div`
   height: 100vh;
-  max-height: 800px;
+  max-height: 600px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
