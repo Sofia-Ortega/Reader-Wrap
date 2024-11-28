@@ -21,16 +21,18 @@ const buttonMain = css`
 
 interface ButtonBgProps {
   secondary?: boolean;
+  tertiary?: boolean;
   shadow?: boolean;
 }
 
 const ButtonBg = styled.button<ButtonBgProps>`
-  background-color: ${({ shadow, secondary }) => {
-    if (shadow) return `var(--brown-shadow)`;
+  background-color: ${({ shadow, secondary, tertiary }) => {
+    if (shadow) return tertiary ? `var(--dark-brown)` : `var(--brown-shadow)`;
     else if (secondary) return `var(--yellow)`;
+    else if (tertiary) return `var(--dark-rose)`;
     return `var(--light-brown)`;
   }};
-  color: ${({ secondary }) =>
+  color: ${({ secondary, tertiary }) =>
     secondary ? `var(--dark-brown)` : `var(--yellow)`};
   text-decoration: none;
   border: none;
@@ -55,17 +57,25 @@ const ButtonBg = styled.button<ButtonBgProps>`
 interface Props {
   children: ReactNode;
   secondary?: boolean;
+  tertiary?: boolean;
   onClick?: () => void;
 }
 
-export default function Button({ children, secondary, onClick }: Props) {
+export default function Button({
+  children,
+  secondary,
+  tertiary,
+  onClick,
+}: Props) {
   return (
     <div className={wrapper}>
       <div className={buttonShadow}>
-        <ButtonBg shadow>yo</ButtonBg>
+        <ButtonBg shadow tertiary={tertiary}>
+          yo
+        </ButtonBg>
       </div>
       <div className={buttonMain}>
-        <ButtonBg onClick={onClick} secondary={secondary}>
+        <ButtonBg onClick={onClick} secondary={secondary} tertiary={tertiary}>
           {children}
         </ButtonBg>
       </div>
