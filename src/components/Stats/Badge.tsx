@@ -49,9 +49,20 @@ const Box = styled(motion.div)`
   align-items: center;
 `;
 
+const arrowImgBackground = css`
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 12px;
+  left: -12px;
+  filter: brightness(0) invert(39%) sepia(83%) saturate(386%) hue-rotate(131deg)
+    brightness(97%) contrast(97%);
+`;
+
 const arrowImg = css`
   width: 100px;
   height: 100px;
+  position: relative;
 `;
 
 interface Props {
@@ -83,14 +94,17 @@ export default function Badge({ icon, title, subtitle, delayMultiple }: Props) {
       <div style={{ position: "relative" }}>
         <BackgroundBox />
         <Box
-          initial={{ x: -12, y: 12 }} // Start at the position of BackgroundBox
-          animate={{ x: 0, y: 0 }} // Move to its final position
+          initial={{ x: -12, y: 12 }}
+          animate={{ x: 0, y: 0 }}
           transition={{
             duration: 0.5,
             delay: 0.5 + 0.1 * (delayMultiple ? delayMultiple : 1),
-          }} // Customize duration as needed
+          }}
         >
-          <img src={icon} className={arrowImg} />
+          <div style={{ position: "relative" }}>
+            <img src={icon} className={arrowImgBackground} />
+            <img src={icon} className={arrowImg} />
+          </div>
         </Box>
       </div>
       <div>
