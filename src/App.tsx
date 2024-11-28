@@ -12,13 +12,14 @@ import Header from "./components/global/Header";
 import Wrap from "./pages/Wrap";
 import Stats from "./pages/Stats";
 import AnimationTest from "./pages/AnimationTest";
+import BookshelfPage from "./pages/BookshelfPage";
 
 export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
   () => {}
 );
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Stats");
+  const [showPage, setShowPage] = useState<PageType>("Bookshelf");
 
   const pageComponents: Record<PageType, ReactNode> = {
     Test: <AnimationTest />,
@@ -26,6 +27,7 @@ function App() {
     Guide: <Guide />,
     Wrap: <Wrap />,
     Stats: <Stats />,
+    Bookshelf: <BookshelfPage />,
   };
 
   return (

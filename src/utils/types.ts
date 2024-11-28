@@ -1,1 +1,7 @@
-export type PageType = "Home" | "Guide" | "Wrap" | "Stats" | "Test";
+export type PageType =
+  | "Home"
+  | "Guide"
+  | "Wrap"
+  | "Stats"
+  | "Test"
+  | "Bookshelf";
