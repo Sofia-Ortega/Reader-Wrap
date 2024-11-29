@@ -1,28 +1,22 @@
 import { styled } from "@linaria/react";
-import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 
-const BOX_WIDTH = "800px";
-const BOX_HEIGHT = "200px";
-
-const BackgroundBox = styled.div`
-  background-color: var(--brown-shadow);
-  width: ${BOX_WIDTH};
-  height: ${BOX_HEIGHT};
-  position: absolute;
-  top: 16px;
-  left: -16px;
+const Box = styled.div`
+  max-width: 800px;
+  height: 200px;
+  width: 80vw;
+  background-color: var(--dark-brown);
+  box-shadow: -16px 16px 0 var(--brown-shadow);
 `;
 
-const Box = styled.div`
-  background-color: var(--dark-brown);
-  width: ${BOX_WIDTH};
-  height: ${BOX_HEIGHT};
+const BooksWrapper = styled.div`
+  overflow: scroll;
+  margin: 0 1px 0 1px;
+  height: 100%;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: end;
-  overflow: auto;
 `;
 
 interface BookProps {
@@ -154,34 +148,34 @@ export default function Bookshelf({ setTitle, setAuthor }: Props) {
   return (
     <div>
       <div style={{ position: "relative" }}>
-        <BackgroundBox />
         <Box>
-          {generatedBooks.map((book) => (
-            // FIXME: Can change Bacgkround Book to fade out when taken out of treee
-            <BookWrapper
-              key={book.id}
-              onMouseEnter={() => handleBookEnter(book)}
-              onMouseLeave={() => handleBookLeave(book)}
-              selected={book.id == selectedId}
-            >
-              <Book
-                color={book.color}
-                width={book.width}
-                height={book.height}
-                darkenColor
-                style={{
-                  position: "absolute",
-                  zIndex: -1,
-                }}
-              />
-              <Book
-                color={book.color}
-                width={book.width}
-                height={book.height}
-                selected={selectedId === book.id}
-              />
-            </BookWrapper>
-          ))}
+          <BooksWrapper>
+            {generatedBooks.map((book) => (
+              <BookWrapper
+                key={book.id}
+                onMouseEnter={() => handleBookEnter(book)}
+                onMouseLeave={() => handleBookLeave(book)}
+                selected={book.id == selectedId}
+              >
+                <Book
+                  color={book.color}
+                  width={book.width}
+                  height={book.height}
+                  darkenColor
+                  style={{
+                    position: "absolute",
+                    zIndex: -1,
+                  }}
+                />
+                <Book
+                  color={book.color}
+                  width={book.width}
+                  height={book.height}
+                  selected={selectedId === book.id}
+                />
+              </BookWrapper>
+            ))}
+          </BooksWrapper>
         </Box>
       </div>
     </div>

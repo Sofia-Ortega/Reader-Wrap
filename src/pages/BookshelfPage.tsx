@@ -26,6 +26,10 @@ const Title = styled.h1`
   padding: 0;
   margin: 0;
   cursor: pointer;
+
+  @media (max-width: 500px) {
+    font-size: ${modularScale(4)};
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -41,11 +45,12 @@ const ContentWrapper = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const BookInfoWrapper = styled.div`
   height: 100px;
-  font-size: 2em;
   text-align: center;
   font-weight: bold;
   color: var(--dark-brown);
