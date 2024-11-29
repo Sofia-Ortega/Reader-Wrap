@@ -1,12 +1,14 @@
 import { styled } from "@linaria/react";
 import { CSSProperties } from "react";
+import { motion, Variants } from "framer-motion";
 
-const MyBar = styled.div`
+const MyBar = styled(motion.div)`
   background-color: var(--yellow);
   color: var(--dark-rose);
   width: 40px;
   border-radius: 4px;
   margin: 0px 4px;
+  transform-origin: bottom;
 `;
 
 interface Props {
@@ -14,6 +16,18 @@ interface Props {
   maxHeight: number;
   col: number;
 }
+
+const barVariants: Variants = {
+  offscreen: { scaleY: 0 },
+  onscreen: (custom) => ({
+    scaleY: 1,
+    transition: {
+      type: "spring",
+      bounce: 0.4,
+      duration: 0.2 + custom, // Base duration plus a factor based on relative height
+    },
+  }),
+};
 
 export default function Bar({ barHeight, maxHeight, col }: Props) {
   const barStyle: CSSProperties = {
@@ -28,5 +42,12 @@ export default function Bar({ barHeight, maxHeight, col }: Props) {
     barStyle.height = "100%";
   }
 
-  return <MyBar style={barStyle}></MyBar>;
+  console.log(barHeight / maxHeight);
+  return (
+    <MyBar
+      style={barStyle}
+      variants={barVariants}
+      custom={barHeight / maxHeight}
+    />
+  );
 }
