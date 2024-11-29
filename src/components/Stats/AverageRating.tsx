@@ -1,4 +1,5 @@
 import { styled } from "@linaria/react";
+import { motion, Variants } from "framer-motion";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -32,18 +33,18 @@ const BarChartWrapper = styled.div`
   position: relative;
 `;
 
-const Bar = styled.div<{ height: number }>`
+const Bar = styled(motion.div)`
   width: 80px;
   background-color: var(--sand);
-  height: ${(props) => props.height}px;
   border-radius: 3px;
+  transform-origin: bottom;
 `;
 
 export default function AverageRating() {
   const ratings = { 1: 3, 2: 5, 3: 10, 4: 7, 5: 2 };
   const frequencies = [1, 2, 3, 4, 5].map(
     (rating) => ratings[rating as keyof typeof ratings] || 0
-  ); // dumb fix for index error
+  );
 
   let totalRatings = 0;
   let totalVotes = 0;
@@ -62,6 +63,18 @@ export default function AverageRating() {
 
   const currentYear = new Date().getFullYear();
 
+  const barVariants: Variants = {
+    offscreen: { scaleY: 0 },
+    onscreen: (custom) => ({
+      scaleY: 1,
+      transition: {
+        type: "spring",
+        bounce: 0.4,
+        duration: 0.8 + custom * 0.5, // Base duration plus a factor based on relative height
+      },
+    }),
+  };
+
   return (
     <Wrapper>
       <Title>Average {currentYear} Rating</Title>
@@ -69,7 +82,17 @@ export default function AverageRating() {
       <BarChartWrapper>
         {frequencies.map((freq, index) => (
           <div key={index} style={{ textAlign: "center" }}>
-            <Bar height={(freq / maxFrequency) * maxBarHeight} />
+            <motion.div
+              initial="offscreen"
+              whileInView="onscreen"
+              viewport={{ once: true, amount: 0.8 }}
+            >
+              <Bar
+                variants={barVariants}
+                custom={freq / maxFrequency}
+                style={{ height: `${(freq / maxFrequency) * maxBarHeight}px` }}
+              />
+            </motion.div>
             <span style={{ color: "var(--sand)" }}>{index + 1}</span>
           </div>
         ))}
