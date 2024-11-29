@@ -10,8 +10,8 @@ import BookIcon from "../../assets/icons/Book.svg";
 import ArrowReloadIcon from "../../assets/icons/ArrowReload.svg";
 
 const Wrapper = styled.div`
-  height: 100vh;
-  max-height: 700px;
+  min-height: 100vh;
+  /* max-height: 700px; */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -31,10 +31,17 @@ const Title = styled.div`
 const BadgeWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  /* align-items: flex-start; */
+  flex-wrap: wrap;
   width: 60vw;
   max-width: 800px;
   gap: 12px;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+  }
 `;
 
 const CarpenterIcon = SawIcon;
