@@ -157,24 +157,23 @@ export default function Bookshelf({ setTitle, setAuthor }: Props) {
         <BackgroundBox />
         <Box>
           {generatedBooks.map((book) => (
+            // FIXME: Can change Bacgkround Book to fade out when taken out of treee
             <BookWrapper
               key={book.id}
               onMouseEnter={() => handleBookEnter(book)}
               onMouseLeave={() => handleBookLeave(book)}
               selected={book.id == selectedId}
             >
-              {selectedId == book.id && (
-                <Book
-                  color={book.color}
-                  width={book.width}
-                  height={book.height}
-                  darkenColor
-                  style={{
-                    position: "absolute",
-                    zIndex: -1,
-                  }}
-                />
-              )}
+              <Book
+                color={book.color}
+                width={book.width}
+                height={book.height}
+                darkenColor
+                style={{
+                  position: "absolute",
+                  zIndex: -1,
+                }}
+              />
               <Book
                 color={book.color}
                 width={book.width}

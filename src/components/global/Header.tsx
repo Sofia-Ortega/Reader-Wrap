@@ -3,10 +3,6 @@ import { modularScale } from "polished";
 import { useContext, useState } from "react";
 import { PageContext } from "../../App";
 
-interface WrapperProps {
-  isSubtitleVisible: boolean;
-}
-
 const Wrapper = styled.div`
   background-color: var(--dark-brown);
   display: flex;
@@ -27,10 +23,9 @@ const Title = styled.h1`
 
 const ContentContainer = styled.div<{ isSubtitleVisible: boolean }>`
   transition: max-height 0.6s ease, opacity 0.2s ease;
-  max-height: ${({ isSubtitleVisible }) =>
-    isSubtitleVisible ? "100px" : "0"}; /* Adjust based on subtitle height */
+  max-height: ${({ isSubtitleVisible }) => (isSubtitleVisible ? "100px" : "0")};
   opacity: ${({ isSubtitleVisible }) => (isSubtitleVisible ? "1" : "0")};
-  overflow: hidden; /* Prevent overflow when collapsed */
+  overflow: hidden;
 `;
 
 const SubTitle = styled.p`

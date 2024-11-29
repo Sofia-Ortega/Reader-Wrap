@@ -2,7 +2,8 @@ import { styled } from "@linaria/react";
 import { modularScale } from "polished";
 import Button from "../components/global/Button";
 import Bookshelf from "../components/bookshelf/Bookshelf";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { PageContext } from "../App";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -33,8 +34,8 @@ const ContentWrapper = styled.div`
   justify-content: space-around;
   align-items: center;
   height: 100%;
-  flex-grow: 1; /* Makes this element take up the remaining space */
-  overflow: auto; /* Adds scrolling if necessary */
+  flex-grow: 1;
+  overflow: auto;
 `;
 
 const ButtonWrapper = styled.div`
@@ -42,28 +43,33 @@ const ButtonWrapper = styled.div`
   gap: 20px;
 `;
 
+const BookInfoWrapper = styled.div`
+  height: 100px;
+  font-size: 2em;
+  text-align: center;
+  font-weight: bold;
+  color: var(--dark-brown);
+`;
+
 export default function BookshelfPage() {
   const [title, setTitle] = useState<null | string>(null);
   const [author, setAuthor] = useState<null | string>(null);
 
+  const setShowPage = useContext(PageContext);
+
   return (
     <Wrapper>
-      <HeaderWrapper>
+      <HeaderWrapper onClick={() => setShowPage("Home")}>
         <Title>{new Date().getFullYear()} Bookshelf</Title>
       </HeaderWrapper>
       <ContentWrapper>
-        <div
-          style={{
-            height: "100px",
-            fontSize: "2em",
-            textAlign: "center",
-            backgroundColor: "orange",
-          }}
-        >
-          {title && <div>{title}</div>}
-          {author && <div>{author}</div>}
+        <div>
+          <BookInfoWrapper>
+            {title && <div>{title}</div>}
+            {author && <div>By: {author}</div>}
+          </BookInfoWrapper>
+          <Bookshelf setTitle={setTitle} setAuthor={setAuthor} />
         </div>
-        <Bookshelf setTitle={setTitle} setAuthor={setAuthor} />
         <ButtonWrapper>
           <Button secondary>Share</Button>
           <Button tertiary>Buy me a coffee</Button>
