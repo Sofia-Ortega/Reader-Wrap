@@ -3,17 +3,14 @@ import { styled } from "@linaria/react";
 import { motion, Variants } from "framer-motion";
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 48px;
+  width: 200px;
 `;
 
 const Title = styled.div`
   color: var(--sand);
   font-size: 1em;
   text-align: center;
+  margin-top: 48px;
 `;
 
 const Subtitle = styled.div`
@@ -130,10 +127,8 @@ export default function Badge({ icon, title, subtitle, delayMultiple }: Props) {
           </Box>
         </motion.div>
       </div>
-      <div>
-        <Title>{title}</Title>
-        <Subtitle>{parsedSubtitle}</Subtitle>
-      </div>
+      <Title>{title}</Title>
+      <Subtitle>{parsedSubtitle}</Subtitle>
     </Wrapper>
   );
 }
