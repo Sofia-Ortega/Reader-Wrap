@@ -1,4 +1,5 @@
 import { styled } from "@linaria/react";
+import { motion, Variants } from "framer-motion";
 import Bar from "./Bar";
 
 interface BarChartProps {
@@ -55,33 +56,45 @@ const MonthRow = styled.div`
 export default function BarChart({ heights }: BarChartProps) {
   const maxHeight = Math.max(...heights, 1);
   return (
-    <Grid rowNum={maxHeight}>
-      {[...Array(maxHeight)].map((_, index) => (
-        <NumberY key={index}>{maxHeight - index} - </NumberY>
-      ))}
-      <YAxis rowNum={maxHeight} />
-      {heights.map((h, index) => (
-        <Bar barHeight={h} maxHeight={maxHeight} key={index} col={index + 3} />
-      ))}
-      <XAxis rowNum={maxHeight} />
-      <MonthRow>
-        {[
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-        ].map((month, index) => (
-          <div key={index}>{month}</div>
+    <motion.div
+      initial="offscreen"
+      whileInView="onscreen"
+      viewport={{ once: true, amount: 0.8 }}
+      style={{ height: "100%" }}
+    >
+      <Grid rowNum={maxHeight}>
+        {[...Array(maxHeight)].map((_, index) => (
+          <NumberY key={index}>{maxHeight - index} - </NumberY>
         ))}
-      </MonthRow>
-    </Grid>
+        <YAxis rowNum={maxHeight} />
+        {heights.map((h, index) => (
+          <Bar
+            barHeight={h}
+            maxHeight={maxHeight}
+            key={index}
+            col={index + 3}
+          />
+        ))}
+        <XAxis rowNum={maxHeight} />
+        <MonthRow>
+          {[
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ].map((month, index) => (
+            <div key={index}>{month}</div>
+          ))}
+        </MonthRow>
+      </Grid>
+    </motion.div>
   );
 }
