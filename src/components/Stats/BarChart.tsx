@@ -17,6 +17,10 @@ const Grid = styled.div<GridProps>`
   grid-template-columns: auto 2px repeat(12, 1fr);
   grid-template-rows: repeat(${({ rowNum }) => rowNum}, 1fr) 2px 20px; /* Added extra row */
   justify-items: end;
+
+  @media (max-width: 600px) {
+    max-height: 200px;
+  }
 `;
 
 const YAxis = styled.div<GridProps>`

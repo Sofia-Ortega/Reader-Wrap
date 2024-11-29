@@ -9,6 +9,10 @@ const MyBar = styled(motion.div)`
   border-radius: 4px;
   margin: 0px 4px;
   transform-origin: bottom;
+
+  @media (max-width: 600px) {
+    width: 30px;
+  }
 `;
 
 interface Props {
