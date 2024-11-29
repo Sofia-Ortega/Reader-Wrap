@@ -94,7 +94,7 @@ export default function Personas() {
     <Wrapper>
       <Title>Personas</Title>
       <BadgeWrapper>
-        <Badge {...personas[3]} delayMultiple={1} />
+        <Badge {...personas[3]} delayMultiple={2} />
         <Badge {...personas[0]} delayMultiple={2} />
         <Badge {...personas[1]} delayMultiple={3} />
       </BadgeWrapper>
