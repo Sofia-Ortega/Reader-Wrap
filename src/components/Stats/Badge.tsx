@@ -1,11 +1,11 @@
 import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 48px;
 `;
@@ -89,23 +89,46 @@ export default function Badge({ icon, title, subtitle, delayMultiple }: Props) {
     );
   });
 
+  const boxVariant = {
+    offscreen: {
+      x: -12,
+      y: 12,
+    },
+    onscreen: {
+      x: 0,
+      y: 0,
+      transition: {
+        type: "spring",
+        bounce: 0.4,
+        duration: 0.8,
+        delay: 0,
+      },
+    },
+  };
+
+  const getBoxVariant = (delayMultiple: number | undefined): Variants => {
+    if (!delayMultiple) return boxVariant;
+    let myBoxVariant = { ...boxVariant };
+    myBoxVariant.onscreen.transition.delay = delayMultiple * 0.1;
+    return myBoxVariant;
+  };
+
   return (
     <Wrapper>
       <div style={{ position: "relative" }}>
         <BackgroundBox />
-        <Box
-          initial={{ x: -12, y: 12 }}
-          animate={{ x: 0, y: 0 }}
-          transition={{
-            duration: 0.5,
-            delay: 0.5 + 0.1 * (delayMultiple ? delayMultiple : 1),
-          }}
+        <motion.div
+          initial="offscreen"
+          whileInView="onscreen"
+          viewport={{ once: true, amount: 0.8 }}
         >
-          <div style={{ position: "relative" }}>
-            <img src={icon} className={arrowImgBackground} />
-            <img src={icon} className={arrowImg} />
-          </div>
-        </Box>
+          <Box variants={getBoxVariant(delayMultiple)}>
+            <div style={{ position: "relative" }}>
+              <img src={icon} className={arrowImgBackground} />
+              <img src={icon} className={arrowImg} />
+            </div>
+          </Box>
+        </motion.div>
       </div>
       <div>
         <Title>{title}</Title>
