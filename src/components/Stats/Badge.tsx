@@ -11,6 +11,10 @@ const Title = styled.div`
   font-size: 1em;
   text-align: center;
   margin-top: 48px;
+
+  @media (max-width: 1100px) {
+    margin-top: 24px;
+  }
 `;
 
 const Subtitle = styled.div`
@@ -19,6 +23,10 @@ const Subtitle = styled.div`
   font-weight: normal;
   text-align: center;
   max-width: 225px;
+
+  @media (max-width: 1100px) {
+    margin-top: -12px;
+  }
 `;
 
 const BoldSubtitle = styled.div`
