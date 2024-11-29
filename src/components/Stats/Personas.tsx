@@ -31,7 +31,7 @@ const Title = styled.div`
 const BadgeWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: flex-start; */
   width: 60vw;
   max-width: 800px;
   gap: 12px;
