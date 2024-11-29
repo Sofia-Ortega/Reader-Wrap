@@ -32,9 +32,12 @@ function App() {
 
   return (
     <PageContext.Provider value={setShowPage}>
-      {showPage != "Wrap" && showPage != "Stats" && showPage != "Test" && (
-        <Header showSubtitle={showPage === "Home"} />
-      )}
+      {showPage != "Wrap" &&
+        showPage != "Stats" &&
+        showPage != "Test" &&
+        showPage != "Bookshelf" && (
+          <Header showSubtitle={showPage === "Home"} />
+        )}
       {pageComponents[showPage] || <Home />}
     </PageContext.Provider>
   );
