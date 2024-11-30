@@ -38,12 +38,15 @@ export default function GuideDetails({ slide }: Props) {
     return (
       <Wrapper>
         <Details>
-          Go to Goodreads <Link>Export Link</Link> and Click{" "}
-          <b>"Export Library"</b>
+          Go to Goodreads{" "}
+          <Link href="https://www.goodreads.com/review/import" target="__blank">
+            Export Link
+          </Link>{" "}
+          and Click <b>"Export Library"</b>
         </Details>
         <Center>
           <Button>
-            <a href="www.google.com" target="__blank">
+            <a href="https://www.goodreads.com/review/import" target="__blank">
               <div>GO TO EXPORT LINK</div>
             </a>
           </Button>
