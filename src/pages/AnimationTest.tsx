@@ -1,88 +1,75 @@
 import { styled } from "@linaria/react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Center } from "../components/global/Center";
-import { CenterFullHeight } from "../components/global/CenterFullHeight";
-import { useEffect, useState } from "react";
-
-const Box = styled.div`
-  width: 100px;
-  height: 100px;
-  /* border-radius: 50%; */
-  background-color: var(--blue);
-  box-sizing: border-box;
-`;
-
-const Section = styled.div`
-  height: 100vh;
-  width: 100vw;
-  max-width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 32px;
-  position: absolute;
-`;
-
-const Section1 = styled(Section)`
-  background-color: var(--yellow);
-  color: var(--dark-rose);
-`;
-
-const Section2 = styled(Section)`
-  background-color: var(--dark-brown);
-  color: var(--sand);
-  /* top: 100vh; */
-`;
-
-const Section3 = styled(Section)`
-  background-color: var(--dark-rose);
-  color: var(--yellow);
-  top: 100vh;
-`;
+import Button from "../components/global/Button";
+import { useRef, useState } from "react";
+import { parse } from "papaparse";
+import { IBook } from "../utils/types";
 
 export default function AnimationTest() {
-  const [seconds, setSeconds] = useState(0);
+  const [parsedData, setParsedData] = useState<IBook[]>([]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSeconds((seconds) => seconds + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const [error, setError] = useState<string | null>(null);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("filing");
+    const file = e.target.files?.[0];
+    if (!file) {
+      setError("No file selected");
+      return;
+    }
+
+    setError(null);
+
+    const reader = new FileReader();
+    console.log("filing2");
+    reader.onload = () => {
+      const csvData = reader.result as string;
+      parse(csvData, {
+        header: true,
+        delimiter: ",",
+        skipEmptyLines: true,
+        complete: (result) => {
+          console.log("COMPLETE");
+          setParsedData(result.data as IBook[]);
+          console.log("Parsed Data:", result.data);
+        },
+        error: (err: Error) => {
+          setError(err.message);
+        },
+      });
+    };
+
+    reader.onerror = () => {
+      setError("Failed to read file");
+    };
+
+    console.log("about to read");
+    reader.readAsText(file);
+  };
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, transition: { duration: 0.5 } }}
-        exit={{ opacity: 0 }}
-        className="App"
-        style={{ fontSize: 100 }}
-        key={seconds}
-      >
-        {seconds}
-      </motion.div>
-    </AnimatePresence>
-  );
-
-  return (
-    <div>
-      <motion.div
-        initial={{ y: "0" }}
-        whileInView={{ y: -100 }}
-        viewport={{ once: true }}
-      >
-        <Section1>Section 1</Section1>
-      </motion.div>
-      <motion.div
-        initial={{ y: "100vw" }}
-        whileInView={{ y: 0 }}
-        viewport={{ once: true }}
-      >
-        <Section2>Section 2</Section2>
-      </motion.div>
-      {/* <Section3>Section 3</Section3> */}
-    </div>
+    <>
+      <Button secondary onClick={handleClick}>
+        Upload
+      </Button>
+      <input
+        type="file"
+        accept=".csv"
+        ref={fileInputRef}
+        onChange={handleFileUpload}
+        style={{ display: "none" }}
+      />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {parsedData.length > 0 && (
+        <div>
+          <h2>Parsed Data</h2>
+          <pre>{JSON.stringify(parsedData, null, 2)}</pre>
+        </div>
+      )}
+    </>
   );
 }

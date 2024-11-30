@@ -10,7 +10,7 @@ const Box = styled.div`
 `;
 
 const BooksWrapper = styled.div`
-  overflow: scroll;
+  overflow-x: auto;
   margin: 0 1px 0 1px;
   height: 100%;
   position: relative;
