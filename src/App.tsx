@@ -19,7 +19,7 @@ export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
 );
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Bookshelf");
+  const [showPage, setShowPage] = useState<PageType>("Test");
 
   const pageComponents: Record<PageType, ReactNode> = {
     Test: <AnimationTest />,
