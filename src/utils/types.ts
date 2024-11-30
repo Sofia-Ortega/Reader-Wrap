@@ -21,8 +21,8 @@ export interface IBook {
   numberOfPages: number;
   yearPublished: number;
   originalPublicationYear: number;
-  dateRead: string; // Use Date if you'll parse this into a date object
-  dateAdded: string; // Same as above
+  dateRead: Date | null;
+  dateAdded: Date | null;
   bookshelves: string;
   bookshelvesWithPositions: string;
   exclusiveShelf: string;
