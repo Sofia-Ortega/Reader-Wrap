@@ -6,6 +6,7 @@ const wrapper = css`
   position: relative;
   width: 220px;
   height: 44px;
+  cursor: pointer;
 `;
 
 const buttonShadow = css`
