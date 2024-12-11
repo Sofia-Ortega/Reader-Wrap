@@ -1,8 +1,16 @@
 import { styled } from "@linaria/react";
 import Button from "../components/global/Button";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { parse } from "papaparse";
-import { IBook } from "../utils/types";
+import { IBook, IBookLocalStorage } from "../utils/types";
+import { LOCAL_STORAGE_KEY } from "../utils/constants";
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 12px;
+`;
 
 export default function AnimationTest() {
   const [parsedData, setParsedData] = useState<IBook[]>([]);
@@ -15,7 +23,7 @@ export default function AnimationTest() {
     fileInputRef.current?.click();
   };
 
-  function parseBooks(data: any[]): IBook[] {
+  const parseBooksFromCSV = (data: any[]): IBook[] => {
     return data.map((item) => ({
       bookId: item["Book Id"],
       title: item["Title"],
@@ -42,7 +50,22 @@ export default function AnimationTest() {
       readCount: Number(item["Read Count"]),
       ownedCopies: Number(item["Owned Copies"]),
     }));
-  }
+  };
+
+  const parseBooksFromLocalStorage = (data: IBookLocalStorage[]): IBook[] => {
+    return data.map((item) => ({
+      ...item,
+      myRating: Number(item.myRating),
+      averageRating: Number(item.averageRating),
+      numberOfPages: Number(item.numberOfPages),
+      yearPublished: Number(item.yearPublished),
+      originalPublicationYear: Number(item.originalPublicationYear),
+      dateRead: item.dateRead ? new Date(item.dateRead) : null,
+      dateAdded: item.dateAdded ? new Date(item.dateAdded) : null,
+      readCount: Number(item.readCount),
+      ownedCopies: Number(item.ownedCopies),
+    }));
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("filing");
@@ -65,9 +88,15 @@ export default function AnimationTest() {
         complete: (result) => {
           console.log("COMPLETE");
 
-          let myParsedBooks = parseBooks(result.data);
-          setParsedData(myParsedBooks);
-          console.log(myParsedBooks);
+          const currentYear = new Date().getFullYear();
+          let currentYearParsedBooks = parseBooksFromCSV(result.data).filter(
+            (b) =>
+              b.dateRead?.getFullYear() == currentYear ||
+              b.dateAdded?.getFullYear() == currentYear
+          );
+
+          setParsedData(currentYearParsedBooks);
+          console.log(currentYearParsedBooks);
         },
         error: (err: Error) => {
           setError(err.message);
@@ -86,32 +115,72 @@ export default function AnimationTest() {
   const currentYearBookStats = () => {
     let totalPagesRead = 0;
 
-    const currentYear = new Date().getFullYear() - 1;
-    const currentYearBooks = parsedData.filter(
-      (book) => book.dateRead && book.dateRead.getFullYear() == currentYear
-    );
-    currentYearBooks.forEach((book) => {
+    const booksRead = parsedData.filter((book) => book.dateRead);
+    parsedData.forEach((book) => {
       totalPagesRead += book.numberOfPages;
     });
 
+    console.log(
+      "books read:",
+      booksRead.map((b) => {
+        return {
+          title: b.title,
+          author: b.author,
+          numOfPages: b.numberOfPages,
+        };
+      })
+    );
     return {
       totalPagesRead,
-      numOfBooks: currentYearBooks.length,
-      numOfWords: currentYearBooks.length * 275,
+      numOfBooks: booksRead.length,
+      numOfWords: booksRead.length * 275,
     };
   };
+
+  const saveBooksToLocalStorage = () => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsedData));
+    console.log("saved");
+  };
+
+  const readBooksFromLocalStorage = () => {
+    let item = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!item) return;
+
+    let data = JSON.parse(item);
+
+    console.log("read from localstorage:", data);
+    console.log("parsed:", parseBooksFromLocalStorage(data));
+    setParsedData(parseBooksFromLocalStorage(data));
+  };
+
   return (
     <>
-      <Button secondary onClick={handleClick}>
-        Upload
-      </Button>
-      <input
-        type="file"
-        accept=".csv"
-        ref={fileInputRef}
-        onChange={handleFileUpload}
-        style={{ display: "none" }}
-      />
+      <ButtonWrapper>
+        <Button secondary onClick={handleClick}>
+          Upload
+        </Button>
+        <input
+          type="file"
+          accept=".csv"
+          ref={fileInputRef}
+          onChange={handleFileUpload}
+          style={{ display: "none" }}
+        />
+        <Button
+          onClick={() => {
+            saveBooksToLocalStorage();
+          }}
+        >
+          Save to Local Storage
+        </Button>
+        <Button
+          onClick={() => {
+            readBooksFromLocalStorage();
+          }}
+        >
+          Read from Local Storage
+        </Button>
+      </ButtonWrapper>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {parsedData.length > 0 && (
         <div>
