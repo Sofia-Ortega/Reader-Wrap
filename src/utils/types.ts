@@ -16,7 +16,7 @@ interface IBookBase {
   isbn13: string;
   publisher: string;
   binding: string;
-  bookshelves: string;
+  bookshelves: string[];
   bookshelvesWithPositions: string;
   exclusiveShelf: string;
   myReview: string;
@@ -45,4 +45,20 @@ export interface IBookLocalStorage extends IBookBase {
   dateAdded: string | null;
   readCount: string;
   ownedCopies: string;
-} 
+}
+
+interface IRatingFrequency {
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+}
+
+export interface IBookStats {
+  numOfPages: number;
+  numberOfBooks: number;
+  numberOfWordsEstimate: number;
+  shelvedBooksPerMonth: Record<string, number[]>; // bookshelfName: [books per month, ...]
+  ratings: IRatingFrequency;
+}

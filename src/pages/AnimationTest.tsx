@@ -2,7 +2,7 @@ import { styled } from "@linaria/react";
 import Button from "../components/global/Button";
 import { useEffect, useRef, useState } from "react";
 import { parse } from "papaparse";
-import { IBook, IBookLocalStorage } from "../utils/types";
+import { IBook, IBookLocalStorage, IBookStats } from "../utils/types";
 import { LOCAL_STORAGE_KEY } from "../utils/constants";
 
 const ButtonWrapper = styled.div`
@@ -24,32 +24,37 @@ export default function AnimationTest() {
   };
 
   const parseBooksFromCSV = (data: any[]): IBook[] => {
-    return data.map((item) => ({
-      bookId: item["Book Id"],
-      title: item["Title"],
-      author: item["Author"],
-      authorLF: item["Author l-f"],
-      additionalAuthors: item["Additional Authors"],
-      isbn: item["ISBN"].replace(/^="|"$|"/g, ""), // Clean up ="" wrapping if needed
-      isbn13: item["ISBN13"].replace(/^="|"$|"/g, ""), // Clean up ="" wrapping if needed
-      myRating: Number(item["My Rating"]),
-      averageRating: Number(item["Average Rating"]),
-      publisher: item["Publisher"],
-      binding: item["Binding"],
-      numberOfPages: Number(item["Number of Pages"]),
-      yearPublished: Number(item["Year Published"]),
-      originalPublicationYear: Number(item["Original Publication Year"]),
-      dateRead: item["Date Read"] ? new Date(item["Date Read"]) : null,
-      dateAdded: item["Date Added"] ? new Date(item["Date Added"]) : null,
-      bookshelves: item["Bookshelves"],
-      bookshelvesWithPositions: item["Bookshelves with positions"],
-      exclusiveShelf: item["Exclusive Shelf"],
-      myReview: item["My Review"],
-      spoiler: item["Spoiler"],
-      privateNotes: item["Private Notes"],
-      readCount: Number(item["Read Count"]),
-      ownedCopies: Number(item["Owned Copies"]),
-    }));
+    return data.map((item) => {
+      return {
+        bookId: item["Book Id"],
+        title: item["Title"],
+        author: item["Author"],
+        authorLF: item["Author l-f"],
+        additionalAuthors: item["Additional Authors"],
+        isbn: item["ISBN"].replace(/^="|"$|"/g, ""), // Clean up ="" wrapping if needed
+        isbn13: item["ISBN13"].replace(/^="|"$|"/g, ""), // Clean up ="" wrapping if needed
+        myRating: Number(item["My Rating"]),
+        averageRating: Number(item["Average Rating"]),
+        publisher: item["Publisher"],
+        binding: item["Binding"],
+        numberOfPages: Number(item["Number of Pages"]),
+        yearPublished: Number(item["Year Published"]),
+        originalPublicationYear: Number(item["Original Publication Year"]),
+        dateRead: item["Date Read"] ? new Date(item["Date Read"]) : null,
+        dateAdded: item["Date Added"] ? new Date(item["Date Added"]) : null,
+        bookshelves:
+          item["Bookshelves"].length === 0
+            ? []
+            : new String(item["Bookshelves"]).split(", "),
+        bookshelvesWithPositions: item["Bookshelves with positions"],
+        exclusiveShelf: item["Exclusive Shelf"],
+        myReview: item["My Review"],
+        spoiler: item["Spoiler"],
+        privateNotes: item["Private Notes"],
+        readCount: Number(item["Read Count"]),
+        ownedCopies: Number(item["Owned Copies"]),
+      };
+    });
   };
 
   const parseBooksFromLocalStorage = (data: IBookLocalStorage[]): IBook[] => {
@@ -89,14 +94,15 @@ export default function AnimationTest() {
           console.log("COMPLETE");
 
           const currentYear = new Date().getFullYear();
-          let currentYearParsedBooks = parseBooksFromCSV(result.data).filter(
+          const parsedBooks = parseBooksFromCSV(result.data);
+          let currentYearParsedBooks = parsedBooks.filter(
             (b) =>
               b.dateRead?.getFullYear() == currentYear ||
               b.dateAdded?.getFullYear() == currentYear
           );
 
-          setParsedData(currentYearParsedBooks);
-          console.log(currentYearParsedBooks);
+          setParsedData(parsedBooks); // FIXME: shold bw currentYearParsedBooks
+          console.log(parsedBooks);
         },
         error: (err: Error) => {
           setError(err.message);
@@ -112,7 +118,7 @@ export default function AnimationTest() {
     reader.readAsText(file);
   };
 
-  const currentYearBookStats = () => {
+  const currentYearBookStats = (): IBookStats => {
     let totalPagesRead = 0;
 
     const booksRead = parsedData.filter((book) => book.dateRead);
@@ -130,11 +136,34 @@ export default function AnimationTest() {
         };
       })
     );
-    return {
-      totalPagesRead,
-      numOfBooks: booksRead.length,
-      numOfWords: booksRead.length * 275,
+
+    const shelvedBooks: Record<string, number[]> = {};
+    const currentYear = new Date().getFullYear();
+    for (const book of booksRead) {
+      // if read this year
+      if (book.dateRead?.getFullYear() == currentYear) {
+        let monthNum = book.dateRead.getMonth();
+
+        if (!shelvedBooks["read"]) {
+          shelvedBooks["read"] = new Array(12).fill(0);
+        }
+
+        shelvedBooks["read"][monthNum]++;
+      }
+
+      // shelved
+      // FIXME: fill in
+    }
+
+    let stats: IBookStats = {
+      numOfPages: totalPagesRead,
+      numberOfBooks: booksRead.length,
+      numberOfWordsEstimate: booksRead.length * 275,
+      shelvedBooksPerMonth: { hey: [2] },
+      ratings: { 1: 3, 2: 5, 3: 10, 4: 7, 5: 2 },
     };
+
+    return stats;
   };
 
   const saveBooksToLocalStorage = () => {
