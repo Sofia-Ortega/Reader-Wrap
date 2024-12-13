@@ -30,24 +30,24 @@ export interface IBook extends IBookBase {
   yearPublished: number;
   originalPublicationYear: number;
   dateRead: Date | null;
-  dateAdded: Date | null;
+  dateAdded: Date;
   readCount: number;
   ownedCopies: number;
 }
 
 export interface IBookLocalStorage extends IBookBase {
-  myRating: string;
+  myRating: number;
   averageRating: string;
   numberOfPages: string;
   yearPublished: string;
   originalPublicationYear: string;
   dateRead: string | null;
-  dateAdded: string | null;
+  dateAdded: string;
   readCount: string;
   ownedCopies: string;
 }
 
-interface IRatingFrequency {
+export interface IRatingFrequency {
   1: number;
   2: number;
   3: number;
