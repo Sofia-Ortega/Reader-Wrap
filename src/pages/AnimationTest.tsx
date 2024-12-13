@@ -2,7 +2,12 @@ import { styled } from "@linaria/react";
 import Button from "../components/global/Button";
 import { useEffect, useRef, useState } from "react";
 import { parse } from "papaparse";
-import { IBook, IBookLocalStorage, IBookStats } from "../utils/types";
+import {
+  IBook,
+  IBookLocalStorage,
+  IBookStats,
+  IRatingFrequency,
+} from "../utils/types";
 import { LOCAL_STORAGE_KEY } from "../utils/constants";
 
 const ButtonWrapper = styled.div`
@@ -13,7 +18,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function AnimationTest() {
-  const [parsedData, setParsedData] = useState<IBook[]>([]);
+  const [books, setBooks] = useState<IBook[]>([]);
 
   const [error, setError] = useState<string | null>(null);
 
@@ -31,8 +36,8 @@ export default function AnimationTest() {
         author: item["Author"],
         authorLF: item["Author l-f"],
         additionalAuthors: item["Additional Authors"],
-        isbn: item["ISBN"].replace(/^="|"$|"/g, ""), // Clean up ="" wrapping if needed
-        isbn13: item["ISBN13"].replace(/^="|"$|"/g, ""), // Clean up ="" wrapping if needed
+        isbn: item["ISBN"].replace(/^="|"$|"/g, ""),
+        isbn13: item["ISBN13"].replace(/^="|"$|"/g, ""),
         myRating: Number(item["My Rating"]),
         averageRating: Number(item["Average Rating"]),
         publisher: item["Publisher"],
@@ -41,7 +46,7 @@ export default function AnimationTest() {
         yearPublished: Number(item["Year Published"]),
         originalPublicationYear: Number(item["Original Publication Year"]),
         dateRead: item["Date Read"] ? new Date(item["Date Read"]) : null,
-        dateAdded: item["Date Added"] ? new Date(item["Date Added"]) : null,
+        dateAdded: new Date(item["Date Added"]),
         bookshelves:
           item["Bookshelves"].length === 0
             ? []
@@ -66,7 +71,7 @@ export default function AnimationTest() {
       yearPublished: Number(item.yearPublished),
       originalPublicationYear: Number(item.originalPublicationYear),
       dateRead: item.dateRead ? new Date(item.dateRead) : null,
-      dateAdded: item.dateAdded ? new Date(item.dateAdded) : null,
+      dateAdded: new Date(item.dateAdded),
       readCount: Number(item.readCount),
       ownedCopies: Number(item.ownedCopies),
     }));
@@ -83,7 +88,6 @@ export default function AnimationTest() {
     setError(null);
 
     const reader = new FileReader();
-    console.log("filing2");
     reader.onload = () => {
       const csvData = reader.result as string;
       parse(csvData, {
@@ -91,18 +95,15 @@ export default function AnimationTest() {
         delimiter: ",",
         skipEmptyLines: true,
         complete: (result) => {
-          console.log("COMPLETE");
-
           const currentYear = new Date().getFullYear();
-          const parsedBooks = parseBooksFromCSV(result.data);
-          let currentYearParsedBooks = parsedBooks.filter(
+          const myParsedBooks = parseBooksFromCSV(result.data);
+          let currentYearParsedBooks = myParsedBooks.filter(
             (b) =>
               b.dateRead?.getFullYear() == currentYear ||
               b.dateAdded?.getFullYear() == currentYear
           );
 
-          setParsedData(parsedBooks); // FIXME: shold bw currentYearParsedBooks
-          console.log(parsedBooks);
+          setBooks(currentYearParsedBooks);
         },
         error: (err: Error) => {
           setError(err.message);
@@ -114,31 +115,28 @@ export default function AnimationTest() {
       setError("Failed to read file");
     };
 
-    console.log("about to read");
     reader.readAsText(file);
   };
 
-  const currentYearBookStats = (): IBookStats => {
+  const getBookStats = (myBooks: IBook[]): IBookStats => {
     let totalPagesRead = 0;
 
-    const booksRead = parsedData.filter((book) => book.dateRead);
-    parsedData.forEach((book) => {
+    const booksRead = myBooks.filter((book) => book.dateRead);
+    myBooks.forEach((book) => {
       totalPagesRead += book.numberOfPages;
     });
 
-    console.log(
-      "books read:",
-      booksRead.map((b) => {
-        return {
-          title: b.title,
-          author: b.author,
-          numOfPages: b.numberOfPages,
-        };
-      })
-    );
-
     const shelvedBooks: Record<string, number[]> = {};
     const currentYear = new Date().getFullYear();
+
+    let ratings: IRatingFrequency = {
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+    };
+
     for (const book of booksRead) {
       // if read this year
       if (book.dateRead?.getFullYear() == currentYear) {
@@ -152,23 +150,34 @@ export default function AnimationTest() {
       }
 
       // shelved
-      // FIXME: fill in
+      let monthNum = book.dateAdded.getMonth();
+
+      book.bookshelves.forEach((bookshelf) => {
+        if (!shelvedBooks[bookshelf]) {
+          shelvedBooks[bookshelf] = new Array(12).fill(0);
+        }
+        shelvedBooks[bookshelf][monthNum]++;
+      });
+
+      // rating
+      if (book.myRating > 0 && book.myRating <= 5) {
+        ratings[book.myRating as keyof IRatingFrequency]++;
+      }
     }
 
     let stats: IBookStats = {
       numOfPages: totalPagesRead,
       numberOfBooks: booksRead.length,
       numberOfWordsEstimate: booksRead.length * 275,
-      shelvedBooksPerMonth: { hey: [2] },
-      ratings: { 1: 3, 2: 5, 3: 10, 4: 7, 5: 2 },
+      shelvedBooksPerMonth: shelvedBooks,
+      ratings,
     };
 
     return stats;
   };
 
   const saveBooksToLocalStorage = () => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsedData));
-    console.log("saved");
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(books));
   };
 
   const readBooksFromLocalStorage = () => {
@@ -177,9 +186,7 @@ export default function AnimationTest() {
 
     let data = JSON.parse(item);
 
-    console.log("read from localstorage:", data);
-    console.log("parsed:", parseBooksFromLocalStorage(data));
-    setParsedData(parseBooksFromLocalStorage(data));
+    setBooks(parseBooksFromLocalStorage(data));
   };
 
   return (
@@ -211,15 +218,15 @@ export default function AnimationTest() {
         </Button>
       </ButtonWrapper>
       {error && <p style={{ color: "red" }}>{error}</p>}
-      {parsedData.length > 0 && (
+      {books.length > 0 && (
         <div>
           <div>
             <h2>Stats</h2>
-            <pre>{JSON.stringify(currentYearBookStats(), null, 2)}</pre>
+            <pre>{JSON.stringify(getBookStats(books), null, 2)}</pre>
           </div>
           <div>
             <h2>Parsed Data</h2>
-            <pre>{JSON.stringify(parsedData, null, 2)}</pre>
+            <pre>{JSON.stringify(books, null, 2)}</pre>
           </div>
         </div>
       )}
