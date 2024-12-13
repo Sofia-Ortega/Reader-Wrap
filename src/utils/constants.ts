@@ -24,10 +24,19 @@ export const personas: IPersona[] = [
   {
     title: "Carpenter",
     icon: CarpenterIcon,
-    subtitleTemplate: "You've shelved {x} books across {y} bookshelves.",
     getScore: (books) => {
-      let score = 1;
-      let subtitle = "";
+      const WEIGHT = 1;
+
+      const uniqueBookshelves = books.reduce((acc, book) => {
+        book.bookshelves.forEach((bookshelf) => acc.add(bookshelf));
+        return acc;
+      }, new Set());
+
+      let numOfBooks = books.length;
+      let numOfBookshelves = uniqueBookshelves.size;
+
+      const subtitle = `You've shelved ${numOfBooks} books across ${numOfBookshelves} bookshelves.`;
+      const score = numOfBookshelves * WEIGHT;
 
       return { score, subtitle };
     },
@@ -35,65 +44,109 @@ export const personas: IPersona[] = [
   {
     title: "Binge Reader",
     icon: BingeReaderIcon,
-    subtitleTemplate: "You read your {x} books in less than a week.",
     getScore: (books) => {
-      let score = 10;
-      let subtitle = "";
+      const WEIGHT = 2;
 
+      const oneWeekInMs = 7 * 24 * 60 * 60 * 1000;
+      let numOfBooks = books.filter(
+        (book) =>
+          book.dateRead &&
+          book.dateRead.getTime() - book.dateAdded.getTime() < oneWeekInMs
+      ).length;
+      const subtitle = `You read your ${numOfBooks} books in less than a week since adding them to goodreads`;
+
+      const score = numOfBooks * WEIGHT;
       return { score, subtitle };
     },
   },
   {
     title: "Old Timey",
     icon: OldTimeyIcon,
-    subtitleTemplate: "Read {x} books from before the 20th century.",
     getScore: (books) => {
-      let score = 7;
-      let subtitle = "";
+      const WEIGHT = 1;
 
+      let numOfBooks = books.filter(
+        (book) => book.dateRead && book.yearPublished <= 1900
+      ).length;
+
+      const subtitle = `Read ${numOfBooks} books from before the 20th century.`;
+
+      const score = numOfBooks * WEIGHT;
       return { score, subtitle };
     },
   },
   {
     title: "Rereader",
     icon: RereaderIcon,
-    subtitleTemplate: "You’ve reread {x} books.",
     getScore: (books) => {
-      let score = 2;
-      let subtitle = "";
+      const WEIGHT = 1;
 
+      let numOfBooks = books.filter(
+        (book) => book.dateRead && book.readCount > 1
+      ).length;
+
+      const subtitle = `You’ve reread ${numOfBooks} books.`;
+
+      const score = 2 * WEIGHT;
       return { score, subtitle };
     },
   },
   {
     title: "Marathon Reader",
     icon: MarathonReaderIcon,
-    subtitleTemplate: "You’ve finished {x} books over 500 pages.",
     getScore: (books) => {
-      let score = -1;
-      let subtitle = "";
+      const WEIGHT = 3;
 
+      let numOfBooks = books.filter(
+        (book) => book.dateRead && book.numberOfPages > 500
+      ).length;
+
+      const subtitle = `You’ve finished ${numOfBooks} books over 500 pages.`;
+
+      let score = numOfBooks * WEIGHT;
       return { score, subtitle };
     },
   },
   {
     title: "Novella Enthusiast",
     icon: NovellaEnthusiastIcon,
-    subtitleTemplate: "You’ve read {x} books under 150 pages.",
     getScore: (books) => {
-      let score = 12;
-      let subtitle = "";
+      const WEIGHT = 3;
 
+      let numOfBooks = books.filter(
+        (book) => book.dateRead && book.numberOfPages < 150
+      ).length;
+
+      const subtitle = `You’ve read ${numOfBooks} books under 150 pages.`;
+      let score = numOfBooks * WEIGHT;
       return { score, subtitle };
     },
   },
   {
     title: "Nonconformist",
     icon: NonconformistIcon,
-    subtitleTemplate: "How far your rating was from the rating by {x} amount.",
     getScore: (books) => {
-      let score = 130;
-      let subtitle = "";
+      let WEIGHT = 2;
+
+      let totalDifference = 0;
+      let count = 0;
+
+      books.forEach((book) => {
+        if (book.dateRead && book.myRating && book.averageRating) {
+          totalDifference += Math.abs(book.myRating - book.averageRating);
+          count++;
+        }
+      });
+
+      const averageDifference = count > 0 ? totalDifference / count : 0;
+
+      const subtitle = `Your rating differed from the average rating by ${averageDifference.toFixed(
+        2
+      )} points.`;
+
+      if (averageDifference > 3) WEIGHT = 100;
+
+      const score = averageDifference * WEIGHT;
 
       return { score, subtitle };
     },
@@ -103,8 +156,26 @@ export const personas: IPersona[] = [
     icon: HarmonizerIcon,
     subtitleTemplate: "Your rating was generally very close to the rating.",
     getScore: (books) => {
-      let score = 14;
-      let subtitle = "";
+      let WEIGHT = 2;
+
+      let totalDifference = 0;
+      let count = 0;
+
+      books.forEach((book) => {
+        if (book.dateRead && book.myRating && book.averageRating) {
+          totalDifference += Math.abs(book.myRating - book.averageRating);
+          count++;
+        }
+      });
+
+      const averageDifference = count > 0 ? totalDifference / count : 0;
+
+      if (averageDifference < 1) WEIGHT = 100;
+
+      const score = (5 - averageDifference) * WEIGHT;
+      const subtitle = `Your rating was generally very close to the average rating, with an average difference of ${averageDifference.toFixed(
+        2
+      )} points.`;
 
       return { score, subtitle };
     },

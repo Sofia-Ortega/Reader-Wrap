@@ -236,12 +236,14 @@ export default function AnimationTest() {
       {books.length > 0 && (
         <div>
           <div>
+            <div>
+              <h2>Personas</h2>
+              <pre>
+                {JSON.stringify(calculatePersonasScore(books), null, 2)}
+              </pre>
+            </div>
             <h2>Stats</h2>
             <pre>{JSON.stringify(getBookStats(books), null, 2)}</pre>
-          </div>
-          <div>
-            <h2>Personas</h2>
-            <pre>{JSON.stringify(calculatePersonasScore(books), null, 2)}</pre>
           </div>
           <div>
             <h2>Parsed Data</h2>
