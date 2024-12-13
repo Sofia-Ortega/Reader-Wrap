@@ -71,7 +71,7 @@ export interface IScoreResult {
 export interface IPersona {
   title: string;
   icon: any;
-  subtitleTemplate: string;
+  subtitleTemplate?: string;
   getScore: (books: IBook[]) => IScoreResult;
 }
 
