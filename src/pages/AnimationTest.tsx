@@ -7,8 +7,9 @@ import {
   IBookLocalStorage,
   IBookStats,
   IRatingFrequency,
+  IScoredPersona,
 } from "../utils/types";
-import { LOCAL_STORAGE_KEY } from "../utils/constants";
+import { LOCAL_STORAGE_KEY, personas } from "../utils/constants";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -176,6 +177,20 @@ export default function AnimationTest() {
     return stats;
   };
 
+  const calculatePersonasScore = (myBooks: IBook[]): IScoredPersona[] => {
+    let scoredPersonas: IScoredPersona[] = personas.map((persona) => {
+      return {
+        title: persona.title,
+        icon: persona.icon,
+        ...persona.getScore(myBooks),
+      };
+    });
+
+    scoredPersonas.sort((a, b) => b.score - a.score);
+
+    return scoredPersonas;
+  };
+
   const saveBooksToLocalStorage = () => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(books));
   };
@@ -223,6 +238,10 @@ export default function AnimationTest() {
           <div>
             <h2>Stats</h2>
             <pre>{JSON.stringify(getBookStats(books), null, 2)}</pre>
+          </div>
+          <div>
+            <h2>Personas</h2>
+            <pre>{JSON.stringify(calculatePersonasScore(books), null, 2)}</pre>
           </div>
           <div>
             <h2>Parsed Data</h2>

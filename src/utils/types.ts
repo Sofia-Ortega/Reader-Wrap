@@ -62,3 +62,22 @@ export interface IBookStats {
   shelvedBooksPerMonth: Record<string, number[]>; // bookshelfName: [books per month, ...]
   ratings: IRatingFrequency;
 }
+
+export interface IScoreResult {
+  score: number;
+  subtitle: string;
+}
+
+export interface IPersona {
+  title: string;
+  icon: any;
+  subtitleTemplate: string;
+  getScore: (books: IBook[]) => IScoreResult;
+}
+
+export interface IScoredPersona {
+  title: string;
+  icon: any;
+  subtitle: string;
+  score: number;
+}
