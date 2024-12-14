@@ -7,158 +7,161 @@ import {
   IScoredPersona,
 } from "./types";
 
-class BookStatsUtil {
-  parseBooksFromCSV = (data: any[]): IBook[] => {
-    return data.map((item) => {
-      return {
-        bookId: item["Book Id"],
-        title: item["Title"],
-        author: item["Author"],
-        authorLF: item["Author l-f"],
-        additionalAuthors: item["Additional Authors"],
-        isbn: item["ISBN"].replace(/^="|"$|"/g, ""),
-        isbn13: item["ISBN13"].replace(/^="|"$|"/g, ""),
-        myRating: Number(item["My Rating"]),
-        averageRating: Number(item["Average Rating"]),
-        publisher: item["Publisher"],
-        binding: item["Binding"],
-        numberOfPages: Number(item["Number of Pages"]),
-        yearPublished: Number(item["Year Published"]),
-        originalPublicationYear: Number(item["Original Publication Year"]),
-        dateRead: item["Date Read"] ? new Date(item["Date Read"]) : null,
-        dateAdded: new Date(item["Date Added"]),
-        bookshelves:
-          item["Bookshelves"].length === 0
-            ? []
-            : new String(item["Bookshelves"]).split(", "),
-        bookshelvesWithPositions: item["Bookshelves with positions"],
-        exclusiveShelf: item["Exclusive Shelf"],
-        myReview: item["My Review"],
-        spoiler: item["Spoiler"],
-        privateNotes: item["Private Notes"],
-        readCount: Number(item["Read Count"]),
-        ownedCopies: Number(item["Owned Copies"]),
-      };
-    });
-  };
-
-  parseBooksFromLocalStorage = (data: IBookLocalStorage[]): IBook[] => {
-    return data.map((item) => ({
-      ...item,
-      myRating: Number(item.myRating),
-      averageRating: Number(item.averageRating),
-      numberOfPages: Number(item.numberOfPages),
-      yearPublished: Number(item.yearPublished),
-      originalPublicationYear: Number(item.originalPublicationYear),
-      dateRead: item.dateRead ? new Date(item.dateRead) : null,
-      dateAdded: new Date(item.dateAdded),
-      readCount: Number(item.readCount),
-      ownedCopies: Number(item.ownedCopies),
-    }));
-  };
-
-  getBookStats = (myBooks: IBook[]): IBookStats => {
-    let totalPagesRead = 0;
-
-    const booksRead = myBooks.filter((book) => book.dateRead);
-    myBooks.forEach((book) => {
-      totalPagesRead += book.numberOfPages;
-    });
-
-    const shelvedBooks: Record<string, number[]> = {};
-    const currentYear = new Date().getFullYear();
-
-    let ratings: IRatingFrequency = {
-      1: 0,
-      2: 0,
-      3: 0,
-      4: 0,
-      5: 0,
+export const parseBooksFromCSV = (data: any[]): IBook[] => {
+  return data.map((item) => {
+    return {
+      bookId: item["Book Id"],
+      title: item["Title"],
+      author: item["Author"],
+      authorLF: item["Author l-f"],
+      additionalAuthors: item["Additional Authors"],
+      isbn: item["ISBN"].replace(/^="|"$|"/g, ""),
+      isbn13: item["ISBN13"].replace(/^="|"$|"/g, ""),
+      myRating: Number(item["My Rating"]),
+      averageRating: Number(item["Average Rating"]),
+      publisher: item["Publisher"],
+      binding: item["Binding"],
+      numberOfPages: Number(item["Number of Pages"]),
+      yearPublished: Number(item["Year Published"]),
+      originalPublicationYear: Number(item["Original Publication Year"]),
+      dateRead: item["Date Read"] ? new Date(item["Date Read"]) : null,
+      dateAdded: new Date(item["Date Added"]),
+      bookshelves:
+        item["Bookshelves"].length === 0
+          ? []
+          : new String(item["Bookshelves"]).split(", "),
+      bookshelvesWithPositions: item["Bookshelves with positions"],
+      exclusiveShelf: item["Exclusive Shelf"],
+      myReview: item["My Review"],
+      spoiler: item["Spoiler"],
+      privateNotes: item["Private Notes"],
+      readCount: Number(item["Read Count"]),
+      ownedCopies: Number(item["Owned Copies"]),
     };
+  });
+};
 
-    for (const book of booksRead) {
-      // if read this year
-      if (book.dateRead?.getFullYear() == currentYear) {
-        let monthNum = book.dateRead.getMonth();
+export const parseBooksFromLocalStorage = (
+  data: IBookLocalStorage[]
+): IBook[] => {
+  return data.map((item) => ({
+    ...item,
+    myRating: Number(item.myRating),
+    averageRating: Number(item.averageRating),
+    numberOfPages: Number(item.numberOfPages),
+    yearPublished: Number(item.yearPublished),
+    originalPublicationYear: Number(item.originalPublicationYear),
+    dateRead: item.dateRead ? new Date(item.dateRead) : null,
+    dateAdded: new Date(item.dateAdded),
+    readCount: Number(item.readCount),
+    ownedCopies: Number(item.ownedCopies),
+  }));
+};
 
-        if (!shelvedBooks["read"]) {
-          shelvedBooks["read"] = new Array(12).fill(0);
-        }
+export const getBookStats = (myBooks: IBook[]): IBookStats => {
+  let totalPagesRead = 0;
 
-        shelvedBooks["read"][monthNum]++;
+  const booksRead = myBooks.filter((book) => book.dateRead);
+  myBooks.forEach((book) => {
+    totalPagesRead += book.numberOfPages;
+  });
+
+  const shelvedBooks: Record<string, number[]> = {};
+  const currentYear = new Date().getFullYear();
+
+  let ratings: IRatingFrequency = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+  };
+
+  for (const book of booksRead) {
+    // if read this year
+    if (book.dateRead?.getFullYear() == currentYear) {
+      let monthNum = book.dateRead.getMonth();
+
+      if (!shelvedBooks["read"]) {
+        shelvedBooks["read"] = new Array(12).fill(0);
       }
 
-      // shelved
-      let monthNum = book.dateAdded.getMonth();
-
-      book.bookshelves.forEach((bookshelf) => {
-        if (!shelvedBooks[bookshelf]) {
-          shelvedBooks[bookshelf] = new Array(12).fill(0);
-        }
-        shelvedBooks[bookshelf][monthNum]++;
-      });
-
-      // rating
-      if (book.myRating > 0 && book.myRating <= 5) {
-        ratings[book.myRating as keyof IRatingFrequency]++;
-      }
+      shelvedBooks["read"][monthNum]++;
     }
 
-    let stats: IBookStats = {
-      numOfPages: totalPagesRead,
-      numberOfBooks: booksRead.length,
-      numberOfWordsEstimate: booksRead.length * 275,
-      shelvedBooksPerMonth: shelvedBooks,
-      ratings,
-    };
+    // shelved
+    let monthNum = book.dateAdded.getMonth();
 
-    return stats;
-  };
-
-  calculatePersonasScore = (myBooks: IBook[]): IScoredPersona[] => {
-    let scoredPersonas: IScoredPersona[] = personas.map((persona) => {
-      return {
-        title: persona.title,
-        icon: persona.icon,
-        ...persona.getScore(myBooks),
-      };
+    book.bookshelves.forEach((bookshelf) => {
+      if (!shelvedBooks[bookshelf]) {
+        shelvedBooks[bookshelf] = new Array(12).fill(0);
+      }
+      shelvedBooks[bookshelf][monthNum]++;
     });
 
-    scoredPersonas.sort((a, b) => b.score - a.score);
+    // rating
+    if (book.myRating > 0 && book.myRating <= 5) {
+      ratings[book.myRating as keyof IRatingFrequency]++;
+    }
+  }
 
-    return scoredPersonas;
+  const personas = getTop3Personas(myBooks);
+
+  let stats: IBookStats = {
+    numOfPages: totalPagesRead,
+    numberOfBooks: booksRead.length,
+    numberOfWordsEstimate: totalPagesRead * 275,
+    shelvedBooksPerMonth: shelvedBooks,
+    ratings,
+    personas,
   };
 
-  getTop3Personas = (myBooks: IBook[]) => {
-    let scoredPersonas = this.calculatePersonasScore(myBooks);
-    let top3Personas: IScoredPersona[] = [];
+  return stats;
+};
 
-    let ratingBadgePresent = false;
-    for (const p of scoredPersonas) {
-      if (top3Personas.length == 3) break;
+const calculatePersonasScore = (myBooks: IBook[]): IScoredPersona[] => {
+  let scoredPersonas: IScoredPersona[] = personas.map((persona) => {
+    return {
+      title: persona.title,
+      icon: persona.icon,
+      ...persona.getScore(myBooks),
+    };
+  });
 
-      // can only be either "NonConformist" or "Harmonizer"
-      if (p.title == "Nonconformist" || p.title == "Harmonizer") {
-        if (ratingBadgePresent) continue;
-        ratingBadgePresent = true;
-      }
+  scoredPersonas.sort((a, b) => b.score - a.score);
 
-      top3Personas.push(p);
+  return scoredPersonas;
+};
+
+export const getTop3Personas = (myBooks: IBook[]) => {
+  let scoredPersonas = calculatePersonasScore(myBooks);
+  let top3Personas: IScoredPersona[] = [];
+
+  let ratingBadgePresent = false;
+  for (const p of scoredPersonas) {
+    if (top3Personas.length == 3) break;
+
+    // can only be either "NonConformist" or "Harmonizer"
+    if (p.title == "Nonconformist" || p.title == "Harmonizer") {
+      if (ratingBadgePresent) continue;
+      ratingBadgePresent = true;
     }
 
-    return top3Personas;
-  };
+    top3Personas.push(p);
+  }
 
-  saveBooksToLocalStorage = (books: IBook[]) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(books));
-  };
+  return top3Personas;
+};
 
-  readBooksFromLocalStorage = (): IBook[] | null => {
-    let item = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!item) return null;
+export const saveBooksToLocalStorage = (books: IBook[]) => {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(books));
+};
 
-    let data = JSON.parse(item);
+export const readBooksFromLocalStorage = (): IBook[] | null => {
+  let item = localStorage.getItem(LOCAL_STORAGE_KEY);
+  if (!item) return null;
 
-    return this.parseBooksFromLocalStorage(data);
-  };
-}
+  let data = JSON.parse(item);
+
+  return parseBooksFromLocalStorage(data);
+};

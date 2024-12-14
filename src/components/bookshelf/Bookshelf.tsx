@@ -1,5 +1,6 @@
 import { styled } from "@linaria/react";
 import { useMemo, useState } from "react";
+import { IBook } from "../../utils/types";
 
 const Box = styled.div`
   max-width: 800px;
@@ -43,61 +44,16 @@ const Book = styled.div<BookProps>`
   filter: brightness(${({ darkenColor }) => (darkenColor ? 0.8 : 1)});
 `;
 
-type BookData = {
-  id: number;
-  title: string;
-  author: string;
-  pageNum: number;
-};
-const booksData: BookData[] = [
-  {
-    id: 1,
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    pageNum: 281,
-  },
-  { id: 2, title: "1984", author: "George Orwell", pageNum: 328 },
-  {
-    id: 3,
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    pageNum: 100,
-  },
-  {
-    id: 4,
-    title: "Pride and Prejudice",
-    author: "Jane Austen",
-    pageNum: 279,
-  },
-  {
-    id: 5,
-    title: "The Catcher in the Rye",
-    author: "J.D. Salinger",
-    pageNum: 214,
-  },
-  { id: 6, title: "The Hobbit", author: "J.R.R. Tolkien", pageNum: 310 },
-  { id: 7, title: "Fahrenheit 451", author: "Ray Bradbury", pageNum: 194 },
-  { id: 8, title: "Moby-Dick", author: "Herman Melville", pageNum: 585 },
-  { id: 9, title: "War and Peace", author: "Leo Tolstoy", pageNum: 1225 },
-  { id: 10, title: "Jane Eyre", author: "Charlotte Brontë", pageNum: 507 },
-  {
-    id: 11,
-    title: "The Lord of the Rings",
-    author: "J.R.R. Tolkien",
-    pageNum: 1178,
-  },
-  { id: 12, title: "The Alchemist", author: "Paulo Coelho", pageNum: 208 },
-];
-
 const COLORS = ["yellow", "blue", "sand", "brown-shadow"];
 
 interface Props {
   setTitle: React.Dispatch<React.SetStateAction<string | null>>;
   setAuthor: React.Dispatch<React.SetStateAction<string | null>>;
+  books: IBook[];
 }
 
-export default function Bookshelf({ setTitle, setAuthor }: Props) {
-  const [selectedId, setSelectedId] = useState<null | number>(null);
+export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
+  const [selectedIsbn, setSelectedIsbn] = useState<null | string>(null);
 
   const generateDimensions = (pageNum: number) => {
     const MULTIPLE = 15;
@@ -125,24 +81,24 @@ export default function Bookshelf({ setTitle, setAuthor }: Props) {
 
   const generatedBooks = useMemo(
     () =>
-      booksData.map((book, index) => ({
+      books.map((book, index) => ({
         ...book,
         color: COLORS[index % COLORS.length],
-        ...generateDimensions(book.pageNum),
+        ...generateDimensions(book.numberOfPages),
       })),
     []
   );
 
-  const handleBookEnter = (book: BookData) => {
+  const handleBookEnter = (book: IBook) => {
     setTitle(book.title);
     setAuthor(book.author);
-    setSelectedId(book.id);
+    setSelectedIsbn(book.isbn);
   };
 
-  const handleBookLeave = (book: BookData) => {
+  const handleBookLeave = () => {
     setTitle(null);
     setAuthor(null);
-    setSelectedId(null);
+    setSelectedIsbn(null);
   };
 
   return (
@@ -152,10 +108,10 @@ export default function Bookshelf({ setTitle, setAuthor }: Props) {
           <BooksWrapper>
             {generatedBooks.map((book) => (
               <BookWrapper
-                key={book.id}
+                key={book.isbn}
                 onMouseEnter={() => handleBookEnter(book)}
-                onMouseLeave={() => handleBookLeave(book)}
-                selected={book.id == selectedId}
+                onMouseLeave={() => handleBookLeave()}
+                selected={book.isbn == selectedIsbn}
               >
                 <Book
                   color={book.color}
@@ -171,7 +127,7 @@ export default function Bookshelf({ setTitle, setAuthor }: Props) {
                   color={book.color}
                   width={book.width}
                   height={book.height}
-                  selected={selectedId === book.id}
+                  selected={selectedIsbn === book.isbn}
                 />
               </BookWrapper>
             ))}

@@ -4,8 +4,8 @@ import { css } from "@linaria/core";
 
 interface Props {
   items: string[];
-  selectedIndex: number;
-  setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+  selectedBookshelf: string;
+  setSelectedBookshelf: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const StyledSelect = styled.select`
@@ -39,13 +39,13 @@ const optionStyles = css`
 
 export default function DropDown({
   items,
-  selectedIndex,
-  setSelectedIndex,
+  selectedBookshelf,
+  setSelectedBookshelf,
 }: Props) {
   return (
     <StyledSelect
-      value={selectedIndex}
-      onChange={(e) => setSelectedIndex(Number(e.target.value))}
+      value={selectedBookshelf}
+      onChange={(e) => setSelectedBookshelf(e.target.value)}
     >
       {items.map((item, index) => (
         <option key={index} value={index} className={optionStyles}>

@@ -1,5 +1,7 @@
 import { styled } from "@linaria/react";
 import { CenterFullHeight } from "../global/CenterFullHeight";
+import { useContext } from "react";
+import { BookStatsContext } from "../../App";
 
 const TextWrapper = styled.div`
   text-align: left;
@@ -30,18 +32,20 @@ const Subtitle = styled.p`
 `;
 
 export default function PageBookCount() {
+  const bookStats = useContext(BookStatsContext);
+
   return (
     <CenterFullHeight>
       <TextWrapper>
         <MainText>
           This Year you've Read
           <br />
-          <PageCount>4200</PageCount> pages
+          <PageCount>{bookStats.numOfPages}</PageCount> pages
           <br />
-          across <BookCount>12</BookCount> books
+          across <BookCount>{bookStats.numberOfBooks}</BookCount> books
         </MainText>
         <Subtitle>
-          (that's <b>12,354,256</b> words!!!!)
+          (that's about <b>{bookStats.numberOfWordsEstimate}</b> words!!!!)
         </Subtitle>
       </TextWrapper>
     </CenterFullHeight>

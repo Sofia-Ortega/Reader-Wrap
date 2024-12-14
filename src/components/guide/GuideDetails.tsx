@@ -1,12 +1,11 @@
 import { styled } from "@linaria/react";
 import Button from "../global/Button";
 import { Center } from "../global/Center";
-import { useContext } from "react";
+import { Dispatch, SetStateAction, useContext, useRef, useState } from "react";
 import { PageContext } from "../../App";
-
-interface Props {
-  slide: number;
-}
+import { IBook } from "../../utils/types";
+import { parse } from "papaparse";
+import { parseBooksFromCSV } from "../../utils/bookStatsUtil";
 
 const Link = styled.a`
   color: var(--blue);
@@ -31,8 +30,65 @@ const Details = styled.div`
   font-size: 20px;
 `;
 
-export default function GuideDetails({ slide }: Props) {
+interface Props {
+  slide: number;
+  handleSetBooks: (myBooks: IBook[]) => void;
+}
+
+export default function GuideDetails({ slide, handleSetBooks }: Props) {
   const setShowPage = useContext(PageContext);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("filing");
+    const file = e.target.files?.[0];
+    if (!file) {
+      setError("No file selected");
+      return;
+    }
+
+    setError(null);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setLoading(true);
+      const csvData = reader.result as string;
+      parse(csvData, {
+        header: true,
+        delimiter: ",",
+        skipEmptyLines: true,
+        complete: (result) => {
+          const currentYear = new Date().getFullYear();
+          const myParsedBooks = parseBooksFromCSV(result.data);
+          let currentYearParsedBooks = myParsedBooks.filter(
+            (b) =>
+              b.dateRead?.getFullYear() == currentYear ||
+              b.dateAdded?.getFullYear() == currentYear
+          );
+
+          handleSetBooks(currentYearParsedBooks);
+          setLoading(false);
+          setShowPage("Wrap");
+        },
+        error: (err: Error) => {
+          setError(err.message);
+        },
+      });
+    };
+
+    reader.onerror = () => {
+      setError("Failed to read file");
+    };
+
+    reader.readAsText(file);
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
 
   if (slide == 1) {
     return (
@@ -68,9 +124,16 @@ export default function GuideDetails({ slide }: Props) {
           Upload downloaded <b>library_export.cvv</b>
         </Details>
         <Center>
-          <Button secondary onClick={() => setShowPage("Wrap")}>
+          <Button secondary onClick={handleUploadClick}>
             Upload
           </Button>
+          <input
+            type="file"
+            accept=".csv"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            style={{ display: "none" }}
+          />
         </Center>
       </Wrapper>
     );
