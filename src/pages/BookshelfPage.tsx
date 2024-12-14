@@ -4,6 +4,7 @@ import Button from "../components/global/Button";
 import Bookshelf from "../components/bookshelf/Bookshelf";
 import { useContext, useState } from "react";
 import { PageContext } from "../App";
+import { IBook } from "../utils/types";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -56,7 +57,11 @@ const BookInfoWrapper = styled.div`
   color: var(--dark-brown);
 `;
 
-export default function BookshelfPage() {
+interface Props {
+  books: IBook[];
+}
+
+export default function BookshelfPage({ books }: Props) {
   const [title, setTitle] = useState<null | string>(null);
   const [author, setAuthor] = useState<null | string>(null);
 
@@ -73,7 +78,7 @@ export default function BookshelfPage() {
             {title && <div>{title}</div>}
             {author && <div>By: {author}</div>}
           </BookInfoWrapper>
-          <Bookshelf setTitle={setTitle} setAuthor={setAuthor} />
+          <Bookshelf setTitle={setTitle} setAuthor={setAuthor} books={books} />
         </div>
         <ButtonWrapper>
           <Button secondary>Share</Button>

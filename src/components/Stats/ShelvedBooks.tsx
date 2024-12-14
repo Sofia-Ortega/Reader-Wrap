@@ -1,7 +1,8 @@
 import { styled } from "@linaria/react";
 import DropDown from "../global/DropDown";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import BarChart from "./BarChart";
+import { BookStatsContext } from "../../App";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -35,32 +36,24 @@ const BookshelfWrapper = styled.div`
 `;
 
 export default function ShelvedBooks() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [bookshelves, setBookshelves] = useState([
-    "read",
-    "want to read",
-    "classic",
-  ]);
+  const bookStats = useContext(BookStatsContext);
 
-  // Generate an array of random heights between 40 and 120 pixels
-  const generateHeights = (maxHeight: number): number[] => {
-    return Array.from({ length: 12 }, () =>
-      Math.floor(Math.random() * maxHeight)
-    );
-  };
+  const bookshelveNames: string[] = Object.keys(bookStats.shelvedBooksPerMonth);
 
-  const heights = generateHeights(Math.floor(Math.random() * 6) + 3);
+  const [selectedBookshelf, setSelectedBookshelf] = useState<string>(
+    bookshelveNames[0]
+  );
 
   return (
     <Wrapper>
       <Title>Shelved Books</Title>
-      <BarChart heights={heights} />
+      <BarChart heights={bookStats.shelvedBooksPerMonth[selectedBookshelf]} />
       <BookshelfWrapper>
         <div>Bookshelf</div>
         <DropDown
-          items={[...bookshelves]}
-          selectedIndex={selectedIndex}
-          setSelectedIndex={setSelectedIndex}
+          items={bookshelveNames}
+          selectedBookshelf={selectedBookshelf}
+          setSelectedBookshelf={setSelectedBookshelf}
         />
       </BookshelfWrapper>
     </Wrapper>

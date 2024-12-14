@@ -61,6 +61,7 @@ export interface IBookStats {
   numberOfWordsEstimate: number;
   shelvedBooksPerMonth: Record<string, number[]>; // bookshelfName: [books per month, ...]
   ratings: IRatingFrequency;
+  personas: IScoredPersona[];
 }
 
 export interface IScoreResult {

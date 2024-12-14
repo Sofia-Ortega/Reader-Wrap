@@ -1,9 +1,9 @@
 import { css } from "@linaria/core";
-import Button from "../components/global/Button";
 import SlideShow from "../components/guide/SlideShow";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Stepper from "../components/guide/Stepper";
 import GuideDetails from "../components/guide/GuideDetails";
+import { IBook } from "../utils/types";
 
 const wrapper = css`
   display: flex;
@@ -13,7 +13,11 @@ const wrapper = css`
   align-items: center;
 `;
 
-export default function Guide() {
+interface Props {
+  handleSetBooks: (myBooks: IBook[]) => void;
+}
+
+export default function Guide({ handleSetBooks }: Props) {
   const [slide, setSlide] = useState(1);
 
   return (
@@ -21,7 +25,7 @@ export default function Guide() {
       <div className={wrapper}>
         <Stepper step={slide} />
         <SlideShow slide={slide} setSlide={setSlide} />
-        <GuideDetails slide={slide} />
+        <GuideDetails slide={slide} handleSetBooks={handleSetBooks} />
       </div>
     </div>
   );

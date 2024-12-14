@@ -1,5 +1,7 @@
 import { styled } from "@linaria/react";
 import { motion, Variants } from "framer-motion";
+import { useContext } from "react";
+import { BookStatsContext } from "../../App";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -41,7 +43,8 @@ const Bar = styled(motion.div)`
 `;
 
 export default function AverageRating() {
-  const ratings = { 1: 3, 2: 5, 3: 10, 4: 7, 5: 2 };
+  const bookStats = useContext(BookStatsContext);
+  const ratings = bookStats.ratings;
   const frequencies = [1, 2, 3, 4, 5].map(
     (rating) => ratings[rating as keyof typeof ratings] || 0
   );

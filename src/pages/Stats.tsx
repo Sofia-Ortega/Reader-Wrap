@@ -4,6 +4,7 @@ import ShelvedBooks from "../components/Stats/ShelvedBooks";
 import AverageRating from "../components/Stats/AverageRating";
 import Personas from "../components/Stats/Personas";
 import BookshelfPage from "./BookshelfPage";
+import { IBook } from "../utils/types";
 
 const Section = styled.div`
   width: 100%;
@@ -51,13 +52,17 @@ const sections = [
   { id: 4, Component: Section4, content: <Personas /> },
 ];
 
-export default function Stats() {
+interface Props {
+  books: IBook[];
+}
+
+export default function Stats({ books }: Props) {
   return (
     <div>
       {sections.map(({ id, Component, content }, index) => (
         <Component key={id}>{content}</Component>
       ))}
-      <BookshelfPage />
+      <BookshelfPage books={books} />
     </div>
   );
 }

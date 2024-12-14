@@ -1,6 +1,6 @@
 import { styled } from "@linaria/react";
 import Button from "../components/global/Button";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { parse } from "papaparse";
 import {
   IBook,
