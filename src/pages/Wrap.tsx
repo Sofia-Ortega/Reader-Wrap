@@ -19,7 +19,6 @@ export default function Wrap() {
       <CenterFullHeight>
         <WrapButton
           onClick={() => {
-            console.log("here");
             setShowPage("Stats");
           }}
         />
