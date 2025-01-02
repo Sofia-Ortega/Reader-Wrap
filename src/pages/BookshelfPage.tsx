@@ -54,6 +54,7 @@ const ButtonWrapper = styled.div`
   gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 40px;
 `;
 
 const BookInfoWrapper = styled.div`

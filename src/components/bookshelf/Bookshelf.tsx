@@ -61,6 +61,24 @@ const Book = styled.div<BookProps>`
   filter: brightness(${({ darkenColor }) => (darkenColor ? 0.8 : 1)});
 `;
 
+const VerticalText = styled.div<{ width: string }>`
+  transform-origin: left top;
+  font-size: 12px; /* Set your desired font size */
+  color: var(--dark-brown);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: rotate(270deg) translate(-50%, -50%); /* Center text and rotate */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden;
+  width: ${({ width }) => {
+    const numericWidth = parseInt(width.replace("px", ""), 10); // Remove 'px' and parse to number
+    return `${numericWidth - 10}px`; // Subtract 10px and append 'px'
+  }};
+  text-align: center;
+  text-overflow: ellipsis;
+`;
+
 const COLORS = ["yellow", "blue", "sand", "brown-shadow"];
 
 interface Props {
@@ -196,7 +214,11 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
                     width={book.width}
                     height={book.height}
                     selected={selectedBookId === book.bookId}
-                  />
+                  >
+                    <VerticalText width={book.height}>
+                      {book.title}
+                    </VerticalText>
+                  </Book>
                 </BookWrapper>
               ))}
             </BooksWrapper>
