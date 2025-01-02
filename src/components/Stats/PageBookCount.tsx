@@ -40,12 +40,13 @@ export default function PageBookCount() {
         <MainText>
           This Year you've Read
           <br />
-          <PageCount>{bookStats.numOfPages}</PageCount> pages
+          <PageCount>{bookStats.numOfPages.toLocaleString()}</PageCount> pages
           <br />
           across <BookCount>{bookStats.numberOfBooks}</BookCount> books
         </MainText>
         <Subtitle>
-          (that's about <b>{bookStats.numberOfWordsEstimate}</b> words!!!!)
+          (that's about{" "}
+          <b>{bookStats.numberOfWordsEstimate.toLocaleString()}</b> words!!!!)
         </Subtitle>
       </TextWrapper>
     </CenterFullHeight>
