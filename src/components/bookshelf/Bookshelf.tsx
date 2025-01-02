@@ -112,12 +112,6 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
     setSelectedBookId(book.bookId);
   };
 
-  const handleBookLeave = () => {
-    setTitle(null);
-    setAuthor(null);
-    setSelectedBookId(null);
-  };
-
   const boxRef = useRef<HTMLDivElement | null>(null);
   const [boxWidth, setBoxWidth] = useState<number | null>(null);
 
@@ -185,7 +179,6 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
                 <BookWrapper
                   key={book.bookId}
                   onMouseEnter={() => handleBookEnter(book)}
-                  onMouseLeave={() => handleBookLeave()}
                   selected={book.bookId == selectedBookId}
                 >
                   <Book
