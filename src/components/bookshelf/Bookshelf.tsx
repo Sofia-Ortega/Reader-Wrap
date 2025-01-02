@@ -2,24 +2,6 @@ import { styled } from "@linaria/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { IBook, IBookshelfBook } from "../../utils/types";
 
-const Box = styled.div`
-  max-width: 800px;
-  height: 200px;
-  width: 80vw;
-  background-color: var(--dark-brown);
-  box-shadow: -16px 16px 0 var(--brown-shadow);
-`;
-
-const BooksWrapper = styled.div`
-  overflow: hidden;
-  margin: 0 1px 0 1px;
-  height: 100%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: end;
-`;
-
 interface IDisplayBook {
   width: string;
   height: string;
@@ -37,6 +19,24 @@ interface BookProps {
   selected?: boolean;
   darkenColor?: boolean;
 }
+
+const Box = styled.div`
+  max-width: 800px;
+  height: 200px;
+  width: 80vw;
+  background-color: var(--dark-brown);
+  box-shadow: -16px 16px 0 var(--brown-shadow);
+`;
+
+const BooksWrapper = styled.div`
+  overflow: hidden;
+  margin: 0 1px 0 1px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+`;
 
 const BookshelvesWrapper = styled.div`
   display: flex;
@@ -61,19 +61,19 @@ const Book = styled.div<BookProps>`
   filter: brightness(${({ darkenColor }) => (darkenColor ? 0.8 : 1)});
 `;
 
-const VerticalText = styled.div<{ width: string }>`
+const BookTitle = styled.div<{ width: string }>`
   transform-origin: left top;
-  font-size: 12px; /* Set your desired font size */
+  font-size: 12px;
   color: var(--dark-brown);
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: rotate(270deg) translate(-50%, -50%); /* Center text and rotate */
-  white-space: nowrap; /* Prevent text wrapping */
+  transform: rotate(270deg) translate(-50%, -50%);
+  white-space: nowrap;
   overflow: hidden;
   width: ${({ width }) => {
-    const numericWidth = parseInt(width.replace("px", ""), 10); // Remove 'px' and parse to number
-    return `${numericWidth - 10}px`; // Subtract 10px and append 'px'
+    const numericWidth = parseInt(width.replace("px", ""), 10);
+    return `${numericWidth - 10}px`;
   }};
   text-align: center;
   text-overflow: ellipsis;
@@ -153,7 +153,7 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
 
     let chunks: IDisplayBook[][] = [];
 
-    const MAX_WIDTH = boxWidth - 20; //
+    const MAX_WIDTH = boxWidth - 20;
     let currentWidth = 0;
     let oneBookshelf: IDisplayBook[] = [];
     for (const book of generatedBooks) {
@@ -215,9 +215,7 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
                     height={book.height}
                     selected={selectedBookId === book.bookId}
                   >
-                    <VerticalText width={book.height}>
-                      {book.title}
-                    </VerticalText>
+                    <BookTitle width={book.height}>{book.title}</BookTitle>
                   </Book>
                 </BookWrapper>
               ))}

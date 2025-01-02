@@ -14,6 +14,7 @@ import Stats from "./pages/Stats";
 import AnimationTest from "./pages/AnimationTest";
 import BookshelfPage from "./pages/BookshelfPage";
 import { getBookStats } from "./utils/bookStatsUtil";
+import Share from "./components/bookshelf/Share";
 
 const defaultIBookStats: IBookStats = {
   numOfPages: 0,
@@ -38,7 +39,7 @@ export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
 export const BookStatsContext = createContext<IBookStats>(defaultIBookStats);
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Home");
+  const [showPage, setShowPage] = useState<PageType>("Test");
   const [bookStats, setBookStats] = useState<IBookStats>(defaultIBookStats);
 
   const handleSetBooks = (myBooks: IBook[]) => {
@@ -46,7 +47,7 @@ function App() {
   };
 
   const pageComponents: Record<PageType, ReactNode> = {
-    Test: <AnimationTest />,
+    Test: <Share />,
     Home: <Home handleSetBooks={handleSetBooks} />,
     Guide: <Guide handleSetBooks={handleSetBooks} />,
     Wrap: <Wrap />,
