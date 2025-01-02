@@ -9,6 +9,8 @@ import MusicNotesIcon from "../assets/icons/MusicNotes.svg";
 import BookIcon from "../assets/icons/Book.svg";
 import ArrowReloadIcon from "../assets/icons/ArrowReload.svg";
 
+export const CURRENT_YEAR = 2024;
+
 export const LOCAL_STORAGE_KEY = "books";
 
 const CarpenterIcon = SawIcon;
