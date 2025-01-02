@@ -79,7 +79,6 @@ export default function AnimationTest() {
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("filing");
     const file = e.target.files?.[0];
     if (!file) {
       setError("No file selected");

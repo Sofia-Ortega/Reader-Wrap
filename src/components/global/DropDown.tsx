@@ -48,7 +48,7 @@ export default function DropDown({
       onChange={(e) => setSelectedBookshelf(e.target.value)}
     >
       {items.map((item, index) => (
-        <option key={index} value={index} className={optionStyles}>
+        <option key={index} value={item} className={optionStyles}>
           {item}
         </option>
       ))}

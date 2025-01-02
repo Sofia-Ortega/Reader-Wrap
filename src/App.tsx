@@ -48,7 +48,7 @@ function App() {
 
   const pageComponents: Record<PageType, ReactNode> = {
     Test: <AnimationTest />,
-    Home: <Home />,
+    Home: <Home handleSetBooks={handleSetBooks} />,
     Guide: <Guide handleSetBooks={handleSetBooks} />,
     Wrap: <Wrap />,
     Stats: (
@@ -67,7 +67,7 @@ function App() {
         showPage != "Bookshelf" && (
           <Header showSubtitle={showPage === "Home"} />
         )}
-      {pageComponents[showPage] || <Home />}
+      {pageComponents[showPage] || <Home handleSetBooks={handleSetBooks} />}
     </PageContext.Provider>
   );
 }

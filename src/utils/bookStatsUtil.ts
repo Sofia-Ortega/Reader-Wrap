@@ -116,6 +116,8 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
     personas,
   };
 
+  console.log(stats);
+
   return stats;
 };
 
