@@ -2,6 +2,7 @@ import { CURRENT_YEAR, LOCAL_STORAGE_KEY, personas } from "./constants";
 import {
   IBook,
   IBookLocalStorage,
+  IBookshelfBook,
   IBookStats,
   IRatingFrequency,
   IScoredPersona,
@@ -101,6 +102,13 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
     }
   }
 
+  const bookshelfBooks: IBookshelfBook[] = booksRead.map((book) => ({
+    title: book.title,
+    author: book.author,
+    bookId: book.bookId,
+    numberOfPages: book.numberOfPages,
+  }));
+
   const personas = getTop3Personas(myBooks);
 
   let stats: IBookStats = {
@@ -110,6 +118,7 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
     shelvedBooksPerMonth: shelvedBooks,
     ratings,
     personas,
+    bookshelfBooks,
   };
 
   console.log(stats);
