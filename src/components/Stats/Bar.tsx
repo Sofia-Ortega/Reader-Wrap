@@ -46,7 +46,6 @@ export default function Bar({ barHeight, maxHeight, col }: Props) {
     barStyle.height = "100%";
   }
 
-  console.log(barHeight / maxHeight);
   return (
     <MyBar
       style={barStyle}

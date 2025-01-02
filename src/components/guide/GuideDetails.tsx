@@ -43,7 +43,6 @@ export default function GuideDetails({ slide, handleSetBooks }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("filing");
     const file = e.target.files?.[0];
     if (!file) {
       setError("No file selected");

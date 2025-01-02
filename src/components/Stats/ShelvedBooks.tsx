@@ -1,6 +1,6 @@
 import { styled } from "@linaria/react";
 import DropDown from "../global/DropDown";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import BarChart from "./BarChart";
 import { BookStatsContext } from "../../App";
 
