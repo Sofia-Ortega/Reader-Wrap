@@ -5,6 +5,7 @@ import Bookshelf from "../components/bookshelf/Bookshelf";
 import { useContext, useState } from "react";
 import { PageContext } from "../App";
 import { IBook } from "../utils/types";
+import { CURRENT_YEAR } from "../utils/constants";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -70,7 +71,7 @@ export default function BookshelfPage({ books }: Props) {
   return (
     <Wrapper>
       <HeaderWrapper onClick={() => setShowPage("Home")}>
-        <Title>{new Date().getFullYear()} Bookshelf</Title>
+        <Title>{CURRENT_YEAR} Bookshelf</Title>
       </HeaderWrapper>
       <ContentWrapper>
         <div>
@@ -81,7 +82,9 @@ export default function BookshelfPage({ books }: Props) {
           <Bookshelf setTitle={setTitle} setAuthor={setAuthor} books={books} />
         </div>
         <ButtonWrapper>
-          <Button secondary>Share</Button>
+          <Button secondary onClick={() => console.log(books)}>
+            Share
+          </Button>
           <Button tertiary>Buy me a coffee</Button>
         </ButtonWrapper>
       </ContentWrapper>

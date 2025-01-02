@@ -42,7 +42,7 @@ function App() {
   const [bookStats, setBookStats] = useState<IBookStats>(defaultIBookStats);
 
   const handleSetBooks = (myBooks: IBook[]) => {
-    setBooks(books);
+    setBooks(myBooks);
     setBookStats({ ...getBookStats(myBooks) });
   };
 
