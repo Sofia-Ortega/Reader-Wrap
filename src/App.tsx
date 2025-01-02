@@ -19,7 +19,7 @@ const defaultIBookStats: IBookStats = {
   numOfPages: 0,
   numberOfBooks: 0,
   numberOfWordsEstimate: 0,
-  shelvedBooksPerMonth: {},
+  shelvedBooksPerMonth: { read: new Array(12).fill(0) },
   ratings: {
     1: 0,
     2: 0,
@@ -28,6 +28,7 @@ const defaultIBookStats: IBookStats = {
     5: 0,
   },
   personas: [],
+  bookshelfBooks: [],
 };
 
 export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
@@ -38,11 +39,9 @@ export const BookStatsContext = createContext<IBookStats>(defaultIBookStats);
 
 function App() {
   const [showPage, setShowPage] = useState<PageType>("Home");
-  const [books, setBooks] = useState<IBook[]>([]);
   const [bookStats, setBookStats] = useState<IBookStats>(defaultIBookStats);
 
   const handleSetBooks = (myBooks: IBook[]) => {
-    setBooks(myBooks);
     setBookStats({ ...getBookStats(myBooks) });
   };
 
@@ -53,10 +52,10 @@ function App() {
     Wrap: <Wrap />,
     Stats: (
       <BookStatsContext.Provider value={bookStats}>
-        <Stats books={books} />
+        <Stats />
       </BookStatsContext.Provider>
     ),
-    Bookshelf: <BookshelfPage books={books} />,
+    Bookshelf: <BookshelfPage />,
   };
 
   return (

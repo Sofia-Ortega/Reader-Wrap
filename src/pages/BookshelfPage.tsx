@@ -3,8 +3,7 @@ import { modularScale } from "polished";
 import Button from "../components/global/Button";
 import Bookshelf from "../components/bookshelf/Bookshelf";
 import { useContext, useState } from "react";
-import { PageContext } from "../App";
-import { IBook } from "../utils/types";
+import { BookStatsContext, PageContext } from "../App";
 import { CURRENT_YEAR } from "../utils/constants";
 
 const Wrapper = styled.div`
@@ -58,29 +57,26 @@ const BookInfoWrapper = styled.div`
   color: var(--dark-brown);
 `;
 
-interface Props {
-  books: IBook[];
-}
-
-export default function BookshelfPage({ books }: Props) {
+export default function BookshelfPage() {
   const [title, setTitle] = useState<null | string>(null);
   const [author, setAuthor] = useState<null | string>(null);
 
   const setShowPage = useContext(PageContext);
+
+  const bookStats = useContext(BookStatsContext);
+  const books = bookStats.bookshelfBooks;
 
   return (
     <Wrapper>
       <HeaderWrapper onClick={() => setShowPage("Home")}>
         <Title>{CURRENT_YEAR} Bookshelf</Title>
       </HeaderWrapper>
+      <BookInfoWrapper>
+        {title && <div>{title}</div>}
+        {author && <div>By: {author}</div>}
+      </BookInfoWrapper>
       <ContentWrapper>
-        <div>
-          <BookInfoWrapper>
-            {title && <div>{title}</div>}
-            {author && <div>By: {author}</div>}
-          </BookInfoWrapper>
-          <Bookshelf setTitle={setTitle} setAuthor={setAuthor} books={books} />
-        </div>
+        <Bookshelf setTitle={setTitle} setAuthor={setAuthor} books={books} />
         <ButtonWrapper>
           <Button secondary onClick={() => console.log(books)}>
             Share

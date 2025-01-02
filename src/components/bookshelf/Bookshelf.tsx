@@ -1,6 +1,6 @@
 import { styled } from "@linaria/react";
-import { useMemo, useState } from "react";
-import { IBook } from "../../utils/types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { IBook, IBookshelfBook } from "../../utils/types";
 
 const Box = styled.div`
   max-width: 800px;
@@ -11,7 +11,7 @@ const Box = styled.div`
 `;
 
 const BooksWrapper = styled.div`
-  overflow-x: auto;
+  overflow: hidden;
   margin: 0 1px 0 1px;
   height: 100%;
   position: relative;
@@ -20,6 +20,16 @@ const BooksWrapper = styled.div`
   align-items: end;
 `;
 
+interface IDisplayBook {
+  width: string;
+  height: string;
+  color: string;
+  title: string;
+  author: string;
+  bookId: string;
+  numberOfPages: number;
+}
+
 interface BookProps {
   width: string;
   height: string;
@@ -27,6 +37,13 @@ interface BookProps {
   selected?: boolean;
   darkenColor?: boolean;
 }
+
+const BookshelvesWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-bottom: 80px;
+`;
 
 const BookWrapper = styled.div<{ selected: boolean }>`
   position: relative;
@@ -49,11 +66,11 @@ const COLORS = ["yellow", "blue", "sand", "brown-shadow"];
 interface Props {
   setTitle: React.Dispatch<React.SetStateAction<string | null>>;
   setAuthor: React.Dispatch<React.SetStateAction<string | null>>;
-  books: IBook[];
+  books: IBookshelfBook[];
 }
 
 export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
-  const [selectedIsbn, setSelectedIsbn] = useState<null | string>(null);
+  const [selectedBookId, setSelectedBookId] = useState<null | string>(null);
 
   const generateDimensions = (pageNum: number) => {
     const MULTIPLE = 15;
@@ -86,54 +103,113 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
         color: COLORS[index % COLORS.length],
         ...generateDimensions(book.numberOfPages),
       })),
-    []
+    [books]
   );
 
-  const handleBookEnter = (book: IBook) => {
+  const handleBookEnter = (book: IBookshelfBook) => {
     setTitle(book.title);
     setAuthor(book.author);
-    setSelectedIsbn(book.isbn);
+    setSelectedBookId(book.bookId);
   };
 
   const handleBookLeave = () => {
     setTitle(null);
     setAuthor(null);
-    setSelectedIsbn(null);
+    setSelectedBookId(null);
   };
+
+  const boxRef = useRef<HTMLDivElement | null>(null);
+  const [boxWidth, setBoxWidth] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (boxRef.current) setBoxWidth(boxRef.current.offsetWidth);
+
+    const handleResize = () => {
+      if (boxRef.current) setBoxWidth(boxRef.current.offsetWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const getChunkedBooks = () => {
+    if (boxWidth == null) return null;
+
+    console.log(generatedBooks);
+
+    let chunks: IDisplayBook[][] = [];
+
+    const MAX_WIDTH = boxWidth - 20; //
+    let currentWidth = 0;
+    let oneBookshelf: IDisplayBook[] = [];
+    for (const book of generatedBooks) {
+      currentWidth += parseInt(book.width);
+      if (currentWidth > MAX_WIDTH && oneBookshelf.length > 1) {
+        chunks.push(oneBookshelf);
+        oneBookshelf = [];
+        currentWidth = parseInt(book.width);
+      }
+
+      oneBookshelf.push(book);
+    }
+
+    chunks.push(oneBookshelf);
+
+    return chunks;
+  };
+
+  const chunkedBooks = getChunkedBooks();
+
+  if (chunkedBooks == null) {
+    return (
+      <div>
+        <div style={{ position: "relative" }}>
+          <Box ref={boxRef}></Box>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <div style={{ position: "relative" }}>
-        <Box>
-          <BooksWrapper>
-            {generatedBooks.map((book) => (
-              <BookWrapper
-                key={book.isbn}
-                onMouseEnter={() => handleBookEnter(book)}
-                onMouseLeave={() => handleBookLeave()}
-                selected={book.isbn == selectedIsbn}
-              >
-                <Book
-                  color={book.color}
-                  width={book.width}
-                  height={book.height}
-                  darkenColor
-                  style={{
-                    position: "absolute",
-                    zIndex: -1,
-                  }}
-                />
-                <Book
-                  color={book.color}
-                  width={book.width}
-                  height={book.height}
-                  selected={selectedIsbn === book.isbn}
-                />
-              </BookWrapper>
-            ))}
-          </BooksWrapper>
-        </Box>
-      </div>
+      <BookshelvesWrapper>
+        {chunkedBooks.map((chunk, index) => (
+          <Box
+            key={index}
+            ref={index === chunkedBooks.length - 1 ? boxRef : null}
+          >
+            <BooksWrapper>
+              {chunk.map((book) => (
+                <BookWrapper
+                  key={book.bookId}
+                  onMouseEnter={() => handleBookEnter(book)}
+                  onMouseLeave={() => handleBookLeave()}
+                  selected={book.bookId == selectedBookId}
+                >
+                  <Book
+                    color={book.color}
+                    width={book.width}
+                    height={book.height}
+                    darkenColor
+                    style={{
+                      position: "absolute",
+                      zIndex: -1,
+                    }}
+                  />
+                  <Book
+                    color={book.color}
+                    width={book.width}
+                    height={book.height}
+                    selected={selectedBookId === book.bookId}
+                  />
+                </BookWrapper>
+              ))}
+            </BooksWrapper>
+          </Box>
+        ))}
+      </BookshelvesWrapper>
     </div>
   );
 }

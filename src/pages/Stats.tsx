@@ -52,17 +52,13 @@ const sections = [
   { id: 4, Component: Section4, content: <Personas /> },
 ];
 
-interface Props {
-  books: IBook[];
-}
-
-export default function Stats({ books }: Props) {
+export default function Stats() {
   return (
     <div>
-      {sections.map(({ id, Component, content }, index) => (
+      {sections.map(({ id, Component, content }) => (
         <Component key={id}>{content}</Component>
       ))}
-      <BookshelfPage books={books} />
+      <BookshelfPage />
     </div>
   );
 }

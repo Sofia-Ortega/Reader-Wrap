@@ -6,6 +6,12 @@ export type PageType =
   | "Test"
   | "Bookshelf";
 
+export interface IBookshelfBook {
+  title: string;
+  author: string;
+  bookId: string;
+  numberOfPages: number;
+}
 interface IBookBase {
   bookId: string;
   title: string;
@@ -62,6 +68,7 @@ export interface IBookStats {
   shelvedBooksPerMonth: Record<string, number[]>; // bookshelfName: [books per month, ...]
   ratings: IRatingFrequency;
   personas: IScoredPersona[];
+  bookshelfBooks: IBookshelfBook[];
 }
 
 export interface IScoreResult {
