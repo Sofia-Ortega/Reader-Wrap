@@ -15,10 +15,16 @@ const Wrapper = styled.div`
 const HeaderWrapper = styled.div`
   background-color: var(--dark-brown);
   display: flex;
+  flex-direction: column;
+  color: var(--yellow);
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: ${modularScale(1)} 0;
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+  margin-bottom: 10px;
 `;
 
 const Title = styled.h1`
@@ -38,9 +44,9 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 100%;
-  flex-grow: 1;
-  overflow: auto;
+  /* height: 100%; */
+  /* flex-grow: 1; */
+  /* overflow: auto; */
 `;
 
 const ButtonWrapper = styled.div`
@@ -51,10 +57,9 @@ const ButtonWrapper = styled.div`
 `;
 
 const BookInfoWrapper = styled.div`
-  height: 100px;
   text-align: center;
   font-weight: bold;
-  color: var(--dark-brown);
+  color: var(--yellow);
 `;
 
 export default function BookshelfPage() {
@@ -70,11 +75,11 @@ export default function BookshelfPage() {
     <Wrapper>
       <HeaderWrapper onClick={() => setShowPage("Home")}>
         <Title>{CURRENT_YEAR} Bookshelf</Title>
+        <BookInfoWrapper>
+          <div>{title ? title : ""}</div>
+          <div>{author ? `By: ${author}` : ""}</div>
+        </BookInfoWrapper>
       </HeaderWrapper>
-      <BookInfoWrapper>
-        {title && <div>{title}</div>}
-        {author && <div>By: {author}</div>}
-      </BookInfoWrapper>
       <ContentWrapper>
         <Bookshelf setTitle={setTitle} setAuthor={setAuthor} books={books} />
         <ButtonWrapper>
