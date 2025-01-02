@@ -5,7 +5,11 @@ import { Dispatch, SetStateAction, useContext, useRef, useState } from "react";
 import { PageContext } from "../../App";
 import { IBook } from "../../utils/types";
 import { parse } from "papaparse";
-import { parseBooksFromCSV } from "../../utils/bookStatsUtil";
+import {
+  parseBooksFromCSV,
+  saveBooksToLocalStorage,
+} from "../../utils/bookStatsUtil";
+import { CURRENT_YEAR } from "../../utils/constants";
 
 const Link = styled.a`
   color: var(--blue);
@@ -60,15 +64,16 @@ export default function GuideDetails({ slide, handleSetBooks }: Props) {
         delimiter: ",",
         skipEmptyLines: true,
         complete: (result) => {
-          const currentYear = new Date().getFullYear();
+          console.log("YELLOW");
           const myParsedBooks = parseBooksFromCSV(result.data);
           let currentYearParsedBooks = myParsedBooks.filter(
             (b) =>
-              b.dateRead?.getFullYear() == currentYear ||
-              b.dateAdded?.getFullYear() == currentYear
+              b.dateRead?.getFullYear() == CURRENT_YEAR ||
+              b.dateAdded?.getFullYear() == CURRENT_YEAR
           );
 
           handleSetBooks(currentYearParsedBooks);
+          saveBooksToLocalStorage(currentYearParsedBooks);
           setLoading(false);
           setShowPage("Wrap");
         },

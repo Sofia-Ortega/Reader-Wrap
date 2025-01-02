@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_KEY, personas } from "./constants";
+import { CURRENT_YEAR, LOCAL_STORAGE_KEY, personas } from "./constants";
 import {
   IBook,
   IBookLocalStorage,
@@ -66,8 +66,9 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
     totalPagesRead += book.numberOfPages;
   });
 
-  const shelvedBooks: Record<string, number[]> = {};
-  const currentYear = new Date().getFullYear();
+  const shelvedBooks: Record<string, number[]> = {
+    read: new Array(12).fill(0),
+  };
 
   let ratings: IRatingFrequency = {
     1: 0,
@@ -79,13 +80,8 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
 
   for (const book of booksRead) {
     // if read this year
-    if (book.dateRead?.getFullYear() == currentYear) {
+    if (book.dateRead?.getFullYear() == CURRENT_YEAR) {
       let monthNum = book.dateRead.getMonth();
-
-      if (!shelvedBooks["read"]) {
-        shelvedBooks["read"] = new Array(12).fill(0);
-      }
-
       shelvedBooks["read"][monthNum]++;
     }
 
