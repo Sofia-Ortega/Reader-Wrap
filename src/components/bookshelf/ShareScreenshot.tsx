@@ -1,5 +1,5 @@
 import { styled } from "@linaria/react";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { BookStatsContext } from "../../App";
 import { css } from "@linaria/core";
 import { getChunkedBooks } from "../../utils/bookshelfUtil";
@@ -132,9 +132,7 @@ interface BookProps {
 const BOOK_DIVISOR = 3;
 
 const dividePx = (px: string) => {
-  const a = `${parseInt(px.replace("px", "")) / BOOK_DIVISOR}px`;
-  console.log(a);
-  return a;
+  return `${parseInt(px.replace("px", "")) / BOOK_DIVISOR}px`;
 };
 
 const Book = styled.div<BookProps>`
@@ -151,7 +149,8 @@ const Book = styled.div<BookProps>`
 interface Props {
   books: IDisplayBook[];
 }
-export default function Share({ books }: Props) {
+
+const ShareScreenshot = forwardRef<HTMLDivElement, Props>(({ books }, ref) => {
   const bookStats = useContext(BookStatsContext);
 
   const arr = [0, 1, 2];
@@ -163,7 +162,7 @@ export default function Share({ books }: Props) {
   }
 
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       <Title>2024 Reader Wrap</Title>
       <div>
         <StatsSection>
@@ -216,4 +215,6 @@ export default function Share({ books }: Props) {
       <LinkWrapper>ReaderWrap.com</LinkWrapper>
     </Wrapper>
   );
-}
+});
+
+export default ShareScreenshot;

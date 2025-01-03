@@ -43,6 +43,9 @@ const ButtonBg = styled.button<ButtonBgProps>`
   font-size: 20px;
   font-family: BalooBhaijaan;
   cursor: ${({ shadow }) => (!shadow ? "pointer" : "default")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   transition: transform 0.2s ease;
 

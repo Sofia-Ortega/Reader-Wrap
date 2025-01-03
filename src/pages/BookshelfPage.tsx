@@ -2,9 +2,11 @@ import { styled } from "@linaria/react";
 import { modularScale } from "polished";
 import Button from "../components/global/Button";
 import Bookshelf from "../components/bookshelf/Bookshelf";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { BookStatsContext, PageContext } from "../App";
 import { CURRENT_YEAR } from "../utils/constants";
+import { IDisplayBook } from "../utils/types";
+import ShareModal from "../components/bookshelf/ShareModal";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -21,7 +23,7 @@ const HeaderWrapper = styled.div`
   align-items: center;
   text-align: center;
   padding: ${modularScale(1)} 0;
-  position: sticky;
+  position: block;
   top: 0px;
   z-index: 10;
   margin-bottom: 10px;
@@ -44,9 +46,6 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  /* height: 100%; */
-  /* flex-grow: 1; */
-  /* overflow: auto; */
 `;
 
 const ButtonWrapper = styled.div`
@@ -66,11 +65,48 @@ const BookInfoWrapper = styled.div`
 export default function BookshelfPage() {
   const [title, setTitle] = useState<null | string>(null);
   const [author, setAuthor] = useState<null | string>(null);
+  const [open, setOpen] = useState(false);
 
   const setShowPage = useContext(PageContext);
 
   const bookStats = useContext(BookStatsContext);
   const books = bookStats.bookshelfBooks;
+
+  const generateDimensions = (pageNum: number) => {
+    const MULTIPLE = 15;
+
+    const minPreferredWidth = 20;
+    const maxPreferredWidth = 80;
+
+    const minHeight = 120;
+    const maxHeight = 180;
+
+    let height =
+      Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
+    let width = (pageNum * MULTIPLE) / height;
+
+    if (width > maxPreferredWidth) {
+      height = maxHeight;
+      width = (pageNum * MULTIPLE) / height;
+    } else if (width < minPreferredWidth) {
+      height = minHeight;
+      width = (pageNum * MULTIPLE) / height;
+    }
+
+    return { width: `${width}px`, height: `${height}px` };
+  };
+
+  const COLORS = ["yellow", "blue", "sand", "brown-shadow"];
+
+  const generatedBooks: IDisplayBook[] = useMemo(
+    () =>
+      books.map((book, index) => ({
+        ...book,
+        color: COLORS[index % COLORS.length],
+        ...generateDimensions(book.numberOfPages),
+      })),
+    [books]
+  );
 
   return (
     <Wrapper>
@@ -82,14 +118,19 @@ export default function BookshelfPage() {
         </BookInfoWrapper>
       </HeaderWrapper>
       <ContentWrapper>
-        <Bookshelf setTitle={setTitle} setAuthor={setAuthor} books={books} />
+        <Bookshelf
+          setTitle={setTitle}
+          setAuthor={setAuthor}
+          books={generatedBooks}
+        />
         <ButtonWrapper>
-          <Button secondary onClick={() => console.log(books)}>
+          <Button secondary onClick={() => setOpen(true)}>
             Share
           </Button>
           <Button tertiary>Buy me a coffee</Button>
         </ButtonWrapper>
       </ContentWrapper>
+      <ShareModal books={generatedBooks} open={open} setOpen={setOpen} />
     </Wrapper>
   );
 }
