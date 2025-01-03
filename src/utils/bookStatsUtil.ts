@@ -79,6 +79,8 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
     5: 0,
   };
 
+  let averageRating = 0;
+
   for (const book of booksRead) {
     // if read this year
     if (book.dateRead?.getFullYear() == CURRENT_YEAR) {
@@ -100,7 +102,11 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
     if (book.myRating > 0 && book.myRating <= 5) {
       ratings[book.myRating as keyof IRatingFrequency]++;
     }
+
+    averageRating += book.myRating;
   }
+
+  averageRating /= booksRead.length;
 
   const bookshelfBooks: IBookshelfBook[] = booksRead.map((book) => ({
     title: book.title,
@@ -117,6 +123,7 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
     numberOfWordsEstimate: totalPagesRead * 275,
     shelvedBooksPerMonth: shelvedBooks,
     ratings,
+    averageRating,
     personas,
     bookshelfBooks,
   };
@@ -165,10 +172,12 @@ export const saveBooksToLocalStorage = (books: IBook[]) => {
 };
 
 export const readBooksFromLocalStorage = (): IBook[] | null => {
+  console.log("yellow");
   let item = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (!item) return null;
 
   let data = JSON.parse(item);
+  console.log("adata", data);
 
   return parseBooksFromLocalStorage(data);
 };

@@ -53,6 +53,16 @@ export interface IBookLocalStorage extends IBookBase {
   ownedCopies: string;
 }
 
+export interface IDisplayBook {
+  width: string;
+  height: string;
+  color: string;
+  title: string;
+  author: string;
+  bookId: string;
+  numberOfPages: number;
+}
+
 export interface IRatingFrequency {
   1: number;
   2: number;
@@ -67,6 +77,7 @@ export interface IBookStats {
   numberOfWordsEstimate: number;
   shelvedBooksPerMonth: Record<string, number[]>; // bookshelfName: [books per month, ...]
   ratings: IRatingFrequency;
+  averageRating: number;
   personas: IScoredPersona[];
   bookshelfBooks: IBookshelfBook[];
 }

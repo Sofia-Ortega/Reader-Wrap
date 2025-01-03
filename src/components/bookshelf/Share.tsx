@@ -1,4 +1,9 @@
 import { styled } from "@linaria/react";
+import { useContext } from "react";
+import { BookStatsContext } from "../../App";
+import { css } from "@linaria/core";
+import { getChunkedBooks } from "../../utils/bookshelfUtil";
+import { IDisplayBook } from "../../utils/types";
 
 const Wrapper = styled.div`
   width: 360px;
@@ -54,6 +59,15 @@ const PersonaBox = styled.div`
   box-shadow: -6px 6px 0 #8e5e46;
   width: 80px;
   height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const iconStyle = css`
+  width: 60px;
+  height: 60px;
+  position: relative;
 `;
 
 const PersonaName = styled.div`
@@ -63,6 +77,8 @@ const PersonaName = styled.div`
   font-size: 12px;
   text-align: center;
   margin-right: 8px; // should be the same as the shadow
+  width: 80px;
+  line-height: 12px;
 `;
 
 const BookshelfSection = styled.div`
@@ -86,6 +102,16 @@ const Bookshelf = styled.div`
   height: 70px;
 `;
 
+const BooksWrapper = styled.div`
+  overflow: hidden;
+  margin: 0 1px 0 1px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+`;
+
 const LinkWrapper = styled.div`
   background-color: var(--dark-rose);
   color: var(--yellow);
@@ -94,42 +120,96 @@ const LinkWrapper = styled.div`
   font-weight: bold;
   padding: 12px;
 `;
-export default function Share() {
+
+interface BookProps {
+  width: string;
+  height: string;
+  color: string;
+  selected?: boolean;
+  darkenColor?: boolean;
+}
+
+const BOOK_DIVISOR = 3;
+
+const dividePx = (px: string) => {
+  const a = `${parseInt(px.replace("px", "")) / BOOK_DIVISOR}px`;
+  console.log(a);
+  return a;
+};
+
+const Book = styled.div<BookProps>`
+  width: ${({ width }) => dividePx(width)};
+  height: ${({ height }) => dividePx(height)};
+  background-color: ${({ color }) => `var(--${color})`};
+  transform: ${({ selected }) =>
+    selected ? "translate(12px, -12px) scale(1.1)" : "none"};
+  transition: transform 0.3s ease;
+  z-index: ${({ selected }) => (selected ? 1 : 0)};
+  filter: brightness(${({ darkenColor }) => (darkenColor ? 0.8 : 1)});
+`;
+
+interface Props {
+  books: IDisplayBook[];
+}
+export default function Share({ books }: Props) {
+  const bookStats = useContext(BookStatsContext);
+
+  const arr = [0, 1, 2];
+
+  const chunkedBooks = getChunkedBooks(books, (300 - 20) * BOOK_DIVISOR);
+
+  if (bookStats.personas.length == 0) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Wrapper>
       <Title>2024 Reader Wrap</Title>
       <div>
         <StatsSection>
           <div>
-            Read <StatNumber>24</StatNumber> books
+            Read <StatNumber>{bookStats.numberOfBooks}</StatNumber> books
           </div>
           <div>
-            Average Rating <StatNumber>3.1</StatNumber> stars
+            Average Rating{" "}
+            <StatNumber>{bookStats.averageRating.toFixed(1)}</StatNumber> stars
           </div>
         </StatsSection>
         <PersonaSection>
           <Header>Personas</Header>
           <Personas>
-            <div>
-              <PersonaBox />
-              <PersonaName>Carpenter</PersonaName>
-            </div>
-            <div>
-              <PersonaBox />
-              <PersonaName>Sophisticated</PersonaName>
-            </div>
-            <div>
-              <PersonaBox />
-              <PersonaName>Old Timer</PersonaName>
-            </div>
+            {arr.map((i) => (
+              <div key={i}>
+                <PersonaBox>
+                  <div style={{ position: "relative" }}>
+                    <img
+                      src={bookStats.personas[i]?.icon}
+                      className={iconStyle}
+                    />
+                  </div>
+                </PersonaBox>
+                <PersonaName>{bookStats.personas[i]?.title}</PersonaName>
+              </div>
+            ))}
           </Personas>
         </PersonaSection>
         <BookshelfSection>
           <Header style={{ color: "var(--black)" }}>Bookshelf</Header>
           <Bookshelves>
-            <Bookshelf />
-            <Bookshelf />
-            <Bookshelf />
+            {arr.map((i) => (
+              <Bookshelf key={i}>
+                <BooksWrapper>
+                  {chunkedBooks[i]?.map((book) => (
+                    <Book
+                      key={book.bookId}
+                      color={book.color}
+                      width={book.width}
+                      height={book.height}
+                    />
+                  ))}
+                </BooksWrapper>
+              </Bookshelf>
+            ))}
           </Bookshelves>
         </BookshelfSection>
       </div>
