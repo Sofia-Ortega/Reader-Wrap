@@ -1,16 +1,8 @@
 import { styled } from "@linaria/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { IBook, IBookshelfBook } from "../../utils/types";
-
-interface IDisplayBook {
-  width: string;
-  height: string;
-  color: string;
-  title: string;
-  author: string;
-  bookId: string;
-  numberOfPages: number;
-}
+import { IBook, IBookshelfBook, IDisplayBook } from "../../utils/types";
+import { getChunkedBooks } from "../../utils/bookshelfUtil";
+import Share from "./Share";
 
 interface BookProps {
   width: string;
@@ -114,7 +106,7 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
     return { width: `${width}px`, height: `${height}px` };
   };
 
-  const generatedBooks = useMemo(
+  const generatedBooks: IDisplayBook[] = useMemo(
     () =>
       books.map((book, index) => ({
         ...book,
@@ -146,33 +138,10 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
     };
   }, []);
 
-  const getChunkedBooks = () => {
-    if (boxWidth == null) return null;
-
-    console.log(generatedBooks);
-
-    let chunks: IDisplayBook[][] = [];
-
-    const MAX_WIDTH = boxWidth - 20;
-    let currentWidth = 0;
-    let oneBookshelf: IDisplayBook[] = [];
-    for (const book of generatedBooks) {
-      currentWidth += parseInt(book.width);
-      if (currentWidth > MAX_WIDTH && oneBookshelf.length > 1) {
-        chunks.push(oneBookshelf);
-        oneBookshelf = [];
-        currentWidth = parseInt(book.width);
-      }
-
-      oneBookshelf.push(book);
-    }
-
-    chunks.push(oneBookshelf);
-
-    return chunks;
-  };
-
-  const chunkedBooks = getChunkedBooks();
+  const chunkedBooks = getChunkedBooks(
+    generatedBooks,
+    boxWidth ? boxWidth - 20 : 360
+  );
 
   if (chunkedBooks == null) {
     return (
@@ -223,6 +192,7 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
           </Box>
         ))}
       </BookshelvesWrapper>
+      <Share books={generatedBooks} />
     </div>
   );
 }
