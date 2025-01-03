@@ -172,12 +172,10 @@ export const saveBooksToLocalStorage = (books: IBook[]) => {
 };
 
 export const readBooksFromLocalStorage = (): IBook[] | null => {
-  console.log("yellow");
   let item = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (!item) return null;
 
   let data = JSON.parse(item);
-  console.log("adata", data);
 
   return parseBooksFromLocalStorage(data);
 };

@@ -1,8 +1,7 @@
 import { styled } from "@linaria/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IBook, IBookshelfBook, IDisplayBook } from "../../utils/types";
 import { getChunkedBooks } from "../../utils/bookshelfUtil";
-import Share from "./Share";
 
 interface BookProps {
   width: string;
@@ -71,50 +70,14 @@ const BookTitle = styled.div<{ width: string }>`
   text-overflow: ellipsis;
 `;
 
-const COLORS = ["yellow", "blue", "sand", "brown-shadow"];
-
 interface Props {
   setTitle: React.Dispatch<React.SetStateAction<string | null>>;
   setAuthor: React.Dispatch<React.SetStateAction<string | null>>;
-  books: IBookshelfBook[];
+  books: IDisplayBook[];
 }
 
 export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
   const [selectedBookId, setSelectedBookId] = useState<null | string>(null);
-
-  const generateDimensions = (pageNum: number) => {
-    const MULTIPLE = 15;
-
-    const minPreferredWidth = 20;
-    const maxPreferredWidth = 80;
-
-    const minHeight = 120;
-    const maxHeight = 180;
-
-    let height =
-      Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
-    let width = (pageNum * MULTIPLE) / height;
-
-    if (width > maxPreferredWidth) {
-      height = maxHeight;
-      width = (pageNum * MULTIPLE) / height;
-    } else if (width < minPreferredWidth) {
-      height = minHeight;
-      width = (pageNum * MULTIPLE) / height;
-    }
-
-    return { width: `${width}px`, height: `${height}px` };
-  };
-
-  const generatedBooks: IDisplayBook[] = useMemo(
-    () =>
-      books.map((book, index) => ({
-        ...book,
-        color: COLORS[index % COLORS.length],
-        ...generateDimensions(book.numberOfPages),
-      })),
-    [books]
-  );
 
   const handleBookEnter = (book: IBookshelfBook) => {
     setTitle(book.title);
@@ -138,10 +101,7 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
     };
   }, []);
 
-  const chunkedBooks = getChunkedBooks(
-    generatedBooks,
-    boxWidth ? boxWidth - 20 : 360
-  );
+  const chunkedBooks = getChunkedBooks(books, boxWidth ? boxWidth - 20 : 360);
 
   if (chunkedBooks == null) {
     return (
@@ -192,7 +152,6 @@ export default function Bookshelf({ setTitle, setAuthor, books }: Props) {
           </Box>
         ))}
       </BookshelvesWrapper>
-      <Share books={generatedBooks} />
     </div>
   );
 }

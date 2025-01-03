@@ -3,6 +3,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useEffect,
   useState,
 } from "react";
 import { IBook, IBookStats, PageType } from "./utils/types";
@@ -13,8 +14,8 @@ import Wrap from "./pages/Wrap";
 import Stats from "./pages/Stats";
 import AnimationTest from "./pages/AnimationTest";
 import BookshelfPage from "./pages/BookshelfPage";
-import { getBookStats } from "./utils/bookStatsUtil";
-import Share from "./components/bookshelf/Share";
+import { getBookStats, readBooksFromLocalStorage } from "./utils/bookStatsUtil";
+import ShareScreenshot from "./components/bookshelf/ShareScreenshot";
 
 const defaultIBookStats: IBookStats = {
   numOfPages: 0,
@@ -28,6 +29,7 @@ const defaultIBookStats: IBookStats = {
     4: 0,
     5: 0,
   },
+  averageRating: 0,
   personas: [],
   bookshelfBooks: [],
 };
@@ -39,35 +41,41 @@ export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
 export const BookStatsContext = createContext<IBookStats>(defaultIBookStats);
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Test");
+  const [showPage, setShowPage] = useState<PageType>("Bookshelf");
   const [bookStats, setBookStats] = useState<IBookStats>(defaultIBookStats);
 
-  const handleSetBooks = (myBooks: IBook[]) => {
+  const handleSetBooks = (myBooks: IBook[] | null) => {
+    if (myBooks == null) {
+      return;
+    }
+
     setBookStats({ ...getBookStats(myBooks) });
   };
 
   const pageComponents: Record<PageType, ReactNode> = {
-    Test: <Share />,
+    Test: <ShareScreenshot books={[]} />,
     Home: <Home handleSetBooks={handleSetBooks} />,
     Guide: <Guide handleSetBooks={handleSetBooks} />,
     Wrap: <Wrap />,
-    Stats: (
-      <BookStatsContext.Provider value={bookStats}>
-        <Stats />
-      </BookStatsContext.Provider>
-    ),
+    Stats: <Stats />,
     Bookshelf: <BookshelfPage />,
   };
 
+  useEffect(() => {
+    handleSetBooks(readBooksFromLocalStorage());
+  }, []);
+
   return (
     <PageContext.Provider value={setShowPage}>
-      {showPage != "Wrap" &&
-        showPage != "Stats" &&
-        showPage != "Test" &&
-        showPage != "Bookshelf" && (
-          <Header showSubtitle={showPage === "Home"} />
-        )}
-      {pageComponents[showPage] || <Home handleSetBooks={handleSetBooks} />}
+      <BookStatsContext.Provider value={bookStats}>
+        {showPage != "Wrap" &&
+          showPage != "Stats" &&
+          showPage != "Test" &&
+          showPage != "Bookshelf" && (
+            <Header showSubtitle={showPage === "Home"} />
+          )}
+        {pageComponents[showPage] || <Home handleSetBooks={handleSetBooks} />}
+      </BookStatsContext.Provider>
     </PageContext.Provider>
   );
 }

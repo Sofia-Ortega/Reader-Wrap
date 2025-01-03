@@ -64,7 +64,6 @@ export default function GuideDetails({ slide, handleSetBooks }: Props) {
         delimiter: ",",
         skipEmptyLines: true,
         complete: (result) => {
-          console.log("YELLOW");
           const myParsedBooks = parseBooksFromCSV(result.data);
           let currentYearParsedBooks = myParsedBooks.filter(
             (b) =>
