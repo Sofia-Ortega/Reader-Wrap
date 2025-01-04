@@ -41,7 +41,7 @@ export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
 export const BookStatsContext = createContext<IBookStats>(defaultIBookStats);
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Bookshelf");
+  const [showPage, setShowPage] = useState<PageType>("Stats");
   const [bookStats, setBookStats] = useState<IBookStats>(defaultIBookStats);
 
   const handleSetBooks = (myBooks: IBook[] | null) => {

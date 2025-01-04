@@ -41,6 +41,8 @@ const BadgeWrapper = styled.div`
 export default function Personas() {
   const bookStats = useContext(BookStatsContext);
 
+  if (bookStats.personas.length == 0) return <div>No books loaded</div>;
+
   return (
     <Wrapper>
       <Title>Personas</Title>
