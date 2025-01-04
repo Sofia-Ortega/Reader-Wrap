@@ -2,7 +2,7 @@ import { styled } from "@linaria/react";
 import { modularScale } from "polished";
 import Button from "../components/global/Button";
 import Bookshelf from "../components/bookshelf/Bookshelf";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { BookStatsContext, PageContext } from "../App";
 import { CURRENT_YEAR } from "../utils/constants";
 import { IDisplayBook } from "../utils/types";
@@ -72,6 +72,19 @@ export default function BookshelfPage() {
   const bookStats = useContext(BookStatsContext);
   const books = bookStats.bookshelfBooks;
 
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden"; // Disable scroll
+    } else {
+      document.body.style.overflow = ""; // Re-enable scroll
+    }
+
+    // Clean up when the modal is unmounted
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const generateDimensions = (pageNum: number) => {
     const MULTIPLE = 15;
 
@@ -127,7 +140,13 @@ export default function BookshelfPage() {
           <Button secondary onClick={() => setOpen(true)}>
             Share
           </Button>
-          <Button tertiary>Buy me a coffee</Button>
+          <a
+            href="https://buymeacoffee.com/alchemistix"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button tertiary>Buy me a coffee</Button>
+          </a>
         </ButtonWrapper>
       </ContentWrapper>
       <ShareModal books={generatedBooks} open={open} setOpen={setOpen} />

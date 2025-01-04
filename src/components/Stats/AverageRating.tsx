@@ -2,6 +2,7 @@ import { styled } from "@linaria/react";
 import { motion, Variants } from "framer-motion";
 import { useContext } from "react";
 import { BookStatsContext } from "../../App";
+import { CURRENT_YEAR } from "../../utils/constants";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -64,8 +65,6 @@ export default function AverageRating() {
   const maxBarHeight = 200;
   const maxFrequency = Math.max(...frequencies);
 
-  const currentYear = new Date().getFullYear();
-
   const barVariants: Variants = {
     offscreen: { scaleY: 0 },
     onscreen: (custom) => ({
@@ -80,7 +79,7 @@ export default function AverageRating() {
 
   return (
     <Wrapper>
-      <Title>Average {currentYear} Rating</Title>
+      <Title>Average {CURRENT_YEAR} Rating</Title>
       <RatingValue>{averageRating.toFixed(1)}</RatingValue>
       <BarChartWrapper>
         {frequencies.map((freq, index) => (

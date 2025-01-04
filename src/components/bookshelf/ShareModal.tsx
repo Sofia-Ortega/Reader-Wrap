@@ -46,13 +46,14 @@ const ButtonContent = styled.div`
 
 const ExitButton = styled.div`
   position: absolute;
-  height: 100x;
-  width: 100px;
+  margin: 10px;
+
   color: var(--sand);
   font-size: 48px;
-  top: 0px;
-  right: -40px;
+  line-height: 48px;
   cursor: pointer;
+  top: 0;
+  right: 0;
 `;
 
 const modalContentAnimation = {
@@ -98,12 +99,18 @@ export default function ShareModal({ books, open, setOpen }: Props) {
       >
         <ModalContent>
           <ShareScreenshot books={books} ref={screenshotRef} />
-          <Button secondary onClick={handleDownload}>
-            <ButtonContent>
-              <div>Download</div>
-              <img src={DownloadIcon} className={downloadIcon} />
-            </ButtonContent>
-          </Button>
+          <a
+            href="https://buymeacoffee.com/alchemistix"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button secondary onClick={handleDownload}>
+              <ButtonContent>
+                <div>Download</div>
+                <img src={DownloadIcon} className={downloadIcon} />
+              </ButtonContent>
+            </Button>
+          </a>
         </ModalContent>
       </motion.div>
     </Modal>
