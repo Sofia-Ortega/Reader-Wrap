@@ -47,13 +47,7 @@ export default function ShelvedBooks() {
   return (
     <Wrapper>
       <Title>Shelved Books</Title>
-      <BarChart
-        heights={
-          bookStats.shelvedBooksPerMonth[selectedBookshelf] || {
-            read: new Array(12).fill(0),
-          }
-        }
-      />
+      <BarChart heights={bookStats.shelvedBooksPerMonth[selectedBookshelf]} />
       <BookshelfWrapper>
         <div>Bookshelf</div>
         <DropDown
