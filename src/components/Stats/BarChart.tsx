@@ -12,6 +12,7 @@ interface GridProps {
 
 const Grid = styled.div<GridProps>`
   display: grid;
+  transition: grid-template-rows 300ms ease, height 300ms ease;
   height: 100%;
   width: auto;
   grid-template-columns: auto 2px repeat(12, 1fr);
@@ -59,13 +60,9 @@ const MonthRow = styled.div`
 
 export default function BarChart({ heights }: BarChartProps) {
   const maxHeight = Math.max(...heights, 1);
+
   return (
-    <motion.div
-      initial="offscreen"
-      whileInView="onscreen"
-      viewport={{ once: true, amount: 0.8 }}
-      style={{ height: "100%" }}
-    >
+    <motion.div style={{ height: "100%" }} layout>
       <Grid rowNum={maxHeight}>
         {[...Array(maxHeight)].map((_, index) => (
           <NumberY key={index}>{maxHeight - index} - </NumberY>

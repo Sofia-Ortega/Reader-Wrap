@@ -8,7 +8,6 @@ const MyBar = styled(motion.div)`
   width: 40px;
   border-radius: 4px;
   margin: 0px 4px;
-  transform-origin: bottom;
 
   @media (max-width: 600px) {
     width: 30px;
@@ -28,7 +27,7 @@ const barVariants: Variants = {
     transition: {
       type: "spring",
       bounce: 0.4,
-      duration: 0.2 + custom, // Base duration plus a factor based on relative height
+      duration: 0.5 + custom, // Base duration plus a factor based on relative height
     },
   }),
 };
@@ -51,6 +50,8 @@ export default function Bar({ barHeight, maxHeight, col }: Props) {
       style={barStyle}
       variants={barVariants}
       custom={barHeight / maxHeight}
+      animate="onscreen"
+      layout
     />
   );
 }

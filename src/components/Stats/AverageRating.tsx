@@ -5,14 +5,14 @@ import { BookStatsContext } from "../../App";
 import { CURRENT_YEAR } from "../../utils/constants";
 
 const Wrapper = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   max-height: 600px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 20px;
+  background-color: var(--dark-rose);
 `;
 
 const Title = styled.div`
@@ -26,6 +26,8 @@ const RatingValue = styled.div`
   color: var(--sand);
   font-weight: bold;
   font-size: 5em;
+  line-height: 1;
+  margin: 0;
   text-align: center;
 `;
 
