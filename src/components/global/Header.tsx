@@ -34,12 +34,6 @@ const SubTitle = styled.p`
   margin: 0;
 `;
 
-const Logo = styled.div`
-  margin: 10px;
-  color: var(--yellow);
-  cursor: pointer;
-`;
-
 interface Props {
   showSubtitle: boolean;
 }
@@ -49,7 +43,7 @@ export default function Header({ showSubtitle }: Props) {
 
   return (
     <Wrapper>
-      <Logo onClick={() => setShowPage("Home")}>logo</Logo>
+      <div></div>
       <div>
         <Title onClick={() => setShowPage("Home")}>Reader Wrap</Title>
         <ContentContainer isSubtitleVisible={showSubtitle}>

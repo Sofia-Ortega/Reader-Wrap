@@ -74,12 +74,11 @@ export default function BookshelfPage() {
 
   useEffect(() => {
     if (open) {
-      document.body.style.overflow = "hidden"; // Disable scroll
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = ""; // Re-enable scroll
+      document.body.style.overflow = "";
     }
 
-    // Clean up when the modal is unmounted
     return () => {
       document.body.style.overflow = "";
     };
@@ -123,8 +122,10 @@ export default function BookshelfPage() {
 
   return (
     <Wrapper>
-      <HeaderWrapper onClick={() => setShowPage("Home")}>
-        <Title>{CURRENT_YEAR} Bookshelf</Title>
+      <HeaderWrapper>
+        <Title onClick={() => setShowPage("Home")}>
+          {CURRENT_YEAR} Bookshelf
+        </Title>
         <BookInfoWrapper>
           <div>{title ? title : ""}</div>
           <div>{author ? `By: ${author}` : ""}</div>

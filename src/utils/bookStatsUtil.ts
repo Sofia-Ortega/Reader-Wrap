@@ -103,16 +103,6 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
         shelvedBooks[bookshelf] = new Array(12).fill(0);
       }
 
-      console.log(
-        "adding book ",
-        book.title,
-        " to month ",
-        monthNum,
-        "(for date",
-        book.dateAdded,
-        ") on bookshelf ",
-        bookshelf
-      );
       shelvedBooks[bookshelf][monthNum]++;
     });
 

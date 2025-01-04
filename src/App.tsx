@@ -19,7 +19,7 @@ import ShareScreenshot from "./components/bookshelf/ShareScreenshot";
 
 const defaultIBookStats: IBookStats = {
   numOfPages: 0,
-  numberOfBooks: 0,
+  numberOfBooks: -1,
   numberOfWordsEstimate: 0,
   shelvedBooksPerMonth: { read: new Array(12).fill(0) },
   ratings: {
@@ -61,9 +61,9 @@ function App() {
     Bookshelf: <BookshelfPage />,
   };
 
-  // useEffect(() => {
-  //   handleSetBooks(readBooksFromLocalStorage());
-  // }, []);
+  useEffect(() => {
+    handleSetBooks(readBooksFromLocalStorage());
+  }, []);
 
   return (
     <PageContext.Provider value={setShowPage}>

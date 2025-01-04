@@ -1,7 +1,7 @@
 import { styled } from "@linaria/react";
 import BookmarkButton from "../components/global/BookmarkButton";
 import { useContext } from "react";
-import { PageContext } from "../App";
+import { BookStatsContext, PageContext } from "../App";
 import { IBook } from "../utils/types";
 import { dummyBooks } from "../assets/data/dummydata";
 
@@ -18,11 +18,40 @@ interface Props {
 
 export default function Home({ handleSetBooks }: Props) {
   const setShowPage = useContext(PageContext);
+  const bookStats = useContext(BookStatsContext);
 
   const handlePreview = () => {
     handleSetBooks(dummyBooks);
     setShowPage("Wrap");
   };
+
+  console.log(bookStats.numberOfBooks);
+
+  if (bookStats.numberOfBooks != -1) {
+    return (
+      <div>
+        <ButtonWrapper>
+          <BookmarkButton
+            primaryText="Your Wrap"
+            secondaryText="Review your book stats"
+            onClick={() => setShowPage("Wrap")}
+          />
+          <BookmarkButton
+            primaryText="Bookshelf"
+            secondaryText="See your bookshelf"
+            variation="secondary"
+            onClick={() => setShowPage("Bookshelf")}
+          />
+          <BookmarkButton
+            primaryText="Restart"
+            secondaryText="Reupload your updated data"
+            variation="secondary"
+            onClick={() => setShowPage("Guide")}
+          />
+        </ButtonWrapper>
+      </div>
+    );
+  }
 
   return (
     <div>

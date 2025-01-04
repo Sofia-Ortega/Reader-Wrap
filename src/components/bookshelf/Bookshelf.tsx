@@ -68,6 +68,8 @@ const BookTitle = styled.div<{ width: string }>`
   }};
   text-align: center;
   text-overflow: ellipsis;
+  user-select: none;
+  cursor: default;
 `;
 
 interface Props {
