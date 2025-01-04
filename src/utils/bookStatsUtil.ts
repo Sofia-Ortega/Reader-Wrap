@@ -89,12 +89,30 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
     }
 
     // shelved
-    let monthNum = book.dateAdded.getMonth();
+    let monthNum = -1;
+    if (book.dateAdded.getFullYear() == CURRENT_YEAR) {
+      monthNum = book.dateAdded.getMonth();
+    } else if (book.dateRead?.getFullYear() == CURRENT_YEAR) {
+      monthNum = book.dateRead.getMonth();
+    } else {
+      continue; // nothing in year (neither the dateadded or the date read)
+    }
 
     book.bookshelves.forEach((bookshelf) => {
       if (!shelvedBooks[bookshelf]) {
         shelvedBooks[bookshelf] = new Array(12).fill(0);
       }
+
+      console.log(
+        "adding book ",
+        book.title,
+        " to month ",
+        monthNum,
+        "(for date",
+        book.dateAdded,
+        ") on bookshelf ",
+        bookshelf
+      );
       shelvedBooks[bookshelf][monthNum]++;
     });
 

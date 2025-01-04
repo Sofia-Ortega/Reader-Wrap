@@ -41,14 +41,14 @@ export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
 export const BookStatsContext = createContext<IBookStats>(defaultIBookStats);
 
 function App() {
-  const [showPage, setShowPage] = useState<PageType>("Stats");
+  const [showPage, setShowPage] = useState<PageType>("Home");
   const [bookStats, setBookStats] = useState<IBookStats>(defaultIBookStats);
 
   const handleSetBooks = (myBooks: IBook[] | null) => {
     if (myBooks == null) {
       return;
     }
-
+    console.log(myBooks);
     setBookStats({ ...getBookStats(myBooks) });
   };
 
@@ -61,9 +61,9 @@ function App() {
     Bookshelf: <BookshelfPage />,
   };
 
-  useEffect(() => {
-    handleSetBooks(readBooksFromLocalStorage());
-  }, []);
+  // useEffect(() => {
+  //   handleSetBooks(readBooksFromLocalStorage());
+  // }, []);
 
   return (
     <PageContext.Provider value={setShowPage}>
