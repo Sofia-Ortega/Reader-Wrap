@@ -4,5 +4,6 @@ import wyw from "@wyw-in-js/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "/reader-wrap/",
   plugins: [react(), wyw()],
 });
