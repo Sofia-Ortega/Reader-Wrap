@@ -7,7 +7,7 @@ import BookshelfPage from "./BookshelfPage";
 import { IBook } from "../utils/types";
 
 const Section = styled.div`
-  width: 100vw;
+  width: 100%;
   min-height: 120vh;
   display: flex;
   align-items: center;
@@ -49,7 +49,7 @@ const sections = [
   { id: 1, Component: Section1, content: <PageBookCount /> },
   { id: 2, Component: Section2, content: <ShelvedBooks /> },
   { id: 3, Component: Section3, content: <AverageRating /> },
-  // { id: 4, Component: Section4, content: <Personas /> },
+  { id: 4, Component: Section4, content: <Personas /> },
 ];
 
 export default function Stats() {
