@@ -68,6 +68,7 @@ const NumberY = styled.div`
   font-size: 12px;
   position: relative;
   top: -6px;
+  margin-top: 2px;
 `;
 
 const MonthRow = styled.div`
