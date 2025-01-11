@@ -17,17 +17,18 @@ const Content = styled.div`
   display: flex;
   align-items: center;
   padding-left: 24px;
-  line-height: 32px;
+  font-size: clamp(20px, 150%, 32px);
+  line-height: clamp(20px, 150%, 32px);
 `;
 
 const PrimaryText = styled.div`
   font-weight: 700;
-  font-size: 32px;
+  font-size: 1em;
   text-transform: uppercase;
 `;
 
 const SecondaryText = styled.div`
-  font-size: 24px;
+  font-size: 0.75em;
 `;
 
 const colorMap = {

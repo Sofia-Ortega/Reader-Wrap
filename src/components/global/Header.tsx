@@ -9,12 +9,12 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  padding: ${modularScale(1)} 0;
+  padding: 10px 0;
   margin-bottom: 24px;
 `;
 
 const Title = styled.h1`
-  font-size: ${modularScale(5)};
+  font-size: clamp(48px, 8vw, 64px);
   color: var(--yellow);
   padding: 0;
   margin: 0;
