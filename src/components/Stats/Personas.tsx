@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 const Title = styled.div`
   color: var(--sand);
   flex: 1;
-  margin: 100px;
+  margin: 100px 0;
   font-weight: bold;
   font-size: 2em;
   text-align: center;

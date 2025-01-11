@@ -5,6 +5,7 @@ import { BookStatsContext } from "../../App";
 
 const TextWrapper = styled.div`
   text-align: left;
+  padding: 0 20px;
 `;
 
 const MainText = styled.div`

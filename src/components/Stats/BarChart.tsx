@@ -18,6 +18,7 @@ const Grid = styled.div<GridProps>`
   grid-template-rows: repeat(${({ rowNum }) => rowNum}, 1fr) 2px 20px; /* Added extra row */
   justify-items: end;
   min-height: 300px;
+  max-width: 90vw;
   overflow-x: auto;
 
   /* Customize scrollbar */
