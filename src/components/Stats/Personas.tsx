@@ -14,11 +14,11 @@ const Wrapper = styled.div`
 
 const Title = styled.div`
   color: var(--sand);
-  font-weight: bold;
-  font-size: 2.5em;
-  text-align: center;
   flex: 1;
   margin: 100px;
+  font-weight: bold;
+  font-size: 2em;
+  text-align: center;
 `;
 
 const BadgeWrapper = styled.div`
@@ -46,13 +46,10 @@ export default function Personas() {
       setIsSmallScreen(window.innerWidth < 1100);
     };
 
-    // Check initial width
     handleResize();
 
-    // Add event listener for resize
     window.addEventListener("resize", handleResize);
 
-    // Cleanup on unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
