@@ -56,10 +56,14 @@ const ButtonWrapper = styled.div`
   margin-bottom: 40px;
 `;
 
-const BookInfoWrapper = styled.div`
+const BookInfoWrapper = styled.div<{ isSubtitleVisible: boolean }>`
   text-align: center;
   font-weight: bold;
   color: var(--yellow);
+  transition: max-height 0.6s ease, opacity 0.2s ease;
+  max-height: ${({ isSubtitleVisible }) => (isSubtitleVisible ? "100px" : "0")};
+  opacity: ${({ isSubtitleVisible }) => (isSubtitleVisible ? "1" : "0")};
+  overflow: hidden;
 `;
 
 export default function BookshelfPage() {
@@ -126,7 +130,7 @@ export default function BookshelfPage() {
         <Title onClick={() => setShowPage("Home")}>
           {CURRENT_YEAR} Bookshelf
         </Title>
-        <BookInfoWrapper>
+        <BookInfoWrapper isSubtitleVisible={title != null || author != null}>
           <div>{title ? title : ""}</div>
           <div>{author ? `By: ${author}` : ""}</div>
         </BookInfoWrapper>
