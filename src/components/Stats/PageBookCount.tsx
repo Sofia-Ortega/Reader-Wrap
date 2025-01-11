@@ -8,7 +8,7 @@ const TextWrapper = styled.div`
 `;
 
 const MainText = styled.div`
-  font-size: 1.75em;
+  font-size: clamp(1.75rem, 8vw, 4rem);
   line-height: 1.2;
   font-weight: normal;
   color: var(--dark-brown);
