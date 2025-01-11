@@ -18,8 +18,8 @@ const slidesWrapper = css`
 `;
 
 const Slide = styled.div`
-  border: 4px solid var(--dark-brown);
-  border-radius: 15px;
+  border: clamp(1px, 1vw, 4px) solid var(--dark-brown);
+  border-radius: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,13 +34,13 @@ const ArrowContainer = styled.div`
 `;
 
 const slideImage = css`
-  width: 400px;
+  width: clamp(100px, 50vw, 400px);
   height: auto;
 `;
 
 const arrowImg = css`
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: auto;
 `;
 
 interface Props {

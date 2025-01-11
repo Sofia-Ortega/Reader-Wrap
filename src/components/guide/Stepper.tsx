@@ -1,8 +1,6 @@
 import { styled } from "@linaria/react";
 import Step from "./Step";
 
-const inactiveOpacity = 0.35;
-
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
