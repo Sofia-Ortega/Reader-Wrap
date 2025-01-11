@@ -5,7 +5,7 @@ import { BookStatsContext } from "../../App";
 import { CURRENT_YEAR } from "../../utils/constants";
 
 const Wrapper = styled.div`
-  gap: clamp(20px, 10vh, 70px);
+  gap: clamp(20px, 10vh, 0px);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -20,6 +20,7 @@ const Title = styled.div`
   font-weight: normal;
   font-size: 2em;
   text-align: center;
+  padding: 0 10px;
 `;
 
 const RatingValue = styled.div`
