@@ -1,11 +1,9 @@
 import { styled } from "@linaria/react";
 import Badge from "./Badge";
 import { BookStatsContext } from "../../App";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const Wrapper = styled.div`
-  min-height: 100vh;
-  /* max-height: 700px; */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -20,6 +18,7 @@ const Title = styled.div`
   font-size: 2.5em;
   text-align: center;
   flex: 1;
+  margin: 100px;
 `;
 
 const BadgeWrapper = styled.div`
@@ -40,6 +39,24 @@ const BadgeWrapper = styled.div`
 
 export default function Personas() {
   const bookStats = useContext(BookStatsContext);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 1100);
+    };
+
+    // Check initial width
+    handleResize();
+
+    // Add event listener for resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   if (bookStats.personas.length == 0) return <div>No books loaded</div>;
 
@@ -47,9 +64,18 @@ export default function Personas() {
     <Wrapper>
       <Title>Personas</Title>
       <BadgeWrapper>
-        <Badge {...bookStats.personas[0]} delayMultiple={1} />
-        <Badge {...bookStats.personas[1]} delayMultiple={2} />
-        <Badge {...bookStats.personas[2]} delayMultiple={3} />
+        <Badge
+          {...bookStats.personas[0]}
+          delayMultiple={isSmallScreen ? 0 : 1}
+        />
+        <Badge
+          {...bookStats.personas[1]}
+          delayMultiple={isSmallScreen ? 0 : 2}
+        />
+        <Badge
+          {...bookStats.personas[2]}
+          delayMultiple={isSmallScreen ? 0 : 3}
+        />
       </BadgeWrapper>
     </Wrapper>
   );

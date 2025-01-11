@@ -5,14 +5,14 @@ import { BookStatsContext } from "../../App";
 import { CURRENT_YEAR } from "../../utils/constants";
 
 const Wrapper = styled.div`
-  min-height: 100vh;
-  max-height: 600px;
+  gap: clamp(20px, 10vh, 70px);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   background-color: var(--dark-rose);
+  padding: 40px 0;
 `;
 
 const Title = styled.div`
@@ -39,7 +39,7 @@ const BarChartWrapper = styled.div`
 `;
 
 const Bar = styled(motion.div)`
-  width: 80px;
+  width: clamp(50px, 8vw, 80px);
   background-color: var(--sand);
   border-radius: 3px;
   transform-origin: bottom;
