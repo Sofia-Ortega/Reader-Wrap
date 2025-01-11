@@ -4,8 +4,7 @@ const StepContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
-  height: 100px;
+  margin: clamp(10px, 2vw, 30px);
 `;
 
 interface StepContentProps {
@@ -14,8 +13,8 @@ interface StepContentProps {
 
 const StepContent = styled.div<StepContentProps>`
   background-color: var(--dark-brown);
-  width: 60px;
-  height: 60px;
+  width: clamp(50px, 10vw, 60px);
+  aspect-ratio: 1 / 1;
   border-radius: 50%; /* Makes Step a smaller circle within StepContainer */
   display: flex;
   justify-content: center;

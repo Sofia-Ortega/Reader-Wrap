@@ -24,8 +24,9 @@ const ButtonBg = styled.button<ButtonBgProps>`
   color: var(--dark-brown);
   text-decoration: none;
   border: none;
-  width: 40px;
-  height: 40px;
+  width: clamp(20px, 8vw, 40px);
+  height: auto;
+  aspect-ratio: 1 / 1;
   font-weight: bold;
   font-size: 16px;
   font-family: BalooBhaijaan;
@@ -46,7 +47,7 @@ export default function SquareButton({ children, onClick }: Props) {
   return (
     <div className={wrapper}>
       <div className={buttonShadow}>
-        <ButtonBg shadow>yo</ButtonBg>
+        <ButtonBg shadow />
       </div>
       <div>
         <ButtonBg onClick={onClick}>
