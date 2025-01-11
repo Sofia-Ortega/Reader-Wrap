@@ -5,8 +5,6 @@ import BarChart from "./BarChart";
 import { BookStatsContext } from "../../App";
 
 const Wrapper = styled.div`
-  height: 100vh;
-  max-height: 600px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

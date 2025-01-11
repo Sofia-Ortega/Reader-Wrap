@@ -1,6 +1,7 @@
 import { styled } from "@linaria/react";
 import { motion, Variants } from "framer-motion";
 import Bar from "./Bar";
+import { css } from "@linaria/core";
 
 interface BarChartProps {
   heights: number[];
@@ -13,15 +14,36 @@ interface GridProps {
 const Grid = styled.div<GridProps>`
   display: grid;
   transition: grid-template-rows 300ms ease, height 300ms ease;
-  height: 100%;
-  width: auto;
-  grid-template-columns: auto 2px repeat(12, 1fr);
+  grid-template-columns: 24px 2px repeat(12, 1fr);
   grid-template-rows: repeat(${({ rowNum }) => rowNum}, 1fr) 2px 20px; /* Added extra row */
   justify-items: end;
+  min-height: 300px;
+  overflow-x: auto;
 
-  @media (max-width: 600px) {
-    max-height: 200px;
+  /* Customize scrollbar */
+  ::-webkit-scrollbar {
+    height: 8px; /* Height for horizontal scrollbar */
   }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(
+      --scroll-thumb-color,
+      #b97a5a
+    ); /* Default scroll thumb color */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover-color, #555); /* Hover effect */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--scroll-track-color, #241d1c); /* Scroll track color */
+  }
+
+  /* Firefox scrollbar customization */
+  scrollbar-width: thin; /* Use "auto" or "thin" */
+  scrollbar-color: var(--scroll-thumb-color, #b97a5a)
+    var(--scroll-track-color, #241d1c);
 `;
 
 const YAxis = styled.div<GridProps>`
