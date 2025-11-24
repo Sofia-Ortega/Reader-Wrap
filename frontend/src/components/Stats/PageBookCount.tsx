@@ -1,7 +1,7 @@
 import { styled } from "@linaria/react";
 import { CenterFullHeight } from "../global/CenterFullHeight";
 import { useContext } from "react";
-import { BookStatsContext } from "../../pages/Stats";
+import { BookStatsContext } from "../../assets/hooks/BookStatsContext";
 
 const TextWrapper = styled.div`
   text-align: left;

@@ -1,14 +1,13 @@
 import { styled } from "@linaria/react";
 import { modularScale } from "polished";
-import Button from "../components/global/Button";
-import Bookshelf from "../components/bookshelf/Bookshelf";
+import Button from "../global/Button";
+import Bookshelf from "../bookshelf/Bookshelf";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { PageContext } from "../_old_app";
-import { CURRENT_YEAR } from "../utils/constants";
-import { IDisplayBook } from "../utils/types";
-import ShareModal from "../components/bookshelf/ShareModal";
+import { CURRENT_YEAR } from "../../utils/constants";
+import { IBook, IDisplayBook } from "../../utils/types";
+import ShareModal from "../bookshelf/ShareModal";
 import { Link } from "react-router";
-import { BookStatsContext } from "./Stats";
+import { BookStatsContext } from "../../assets/hooks/BookStatsContext";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -68,15 +67,17 @@ const BookInfoWrapper = styled.div<{ isSubtitleVisible: boolean }>`
   overflow: hidden;
 `;
 
-export default function BookshelfPage() {
+interface Props {
+  masterBooks?: IBook[];
+}
+export default function BookshelfPage({ masterBooks }: Props) {
   const [title, setTitle] = useState<null | string>(null);
   const [author, setAuthor] = useState<null | string>(null);
   const [open, setOpen] = useState(false);
 
-  const setShowPage = useContext(PageContext);
-
   const bookStats = useContext(BookStatsContext);
-  const books = bookStats.bookshelfBooks;
+
+  const books = masterBooks ? masterBooks : bookStats.bookshelfBooks;
 
   useEffect(() => {
     if (open) {
@@ -130,9 +131,7 @@ export default function BookshelfPage() {
     <Wrapper>
       <HeaderWrapper>
         <Link to="/">
-          <Title onClick={() => setShowPage("Home")}>
-            {CURRENT_YEAR} Bookshelf
-          </Title>
+          <Title>{CURRENT_YEAR} Bookshelf</Title>
         </Link>
         <BookInfoWrapper isSubtitleVisible={title != null || author != null}>
           <div>{title ? title : ""}</div>

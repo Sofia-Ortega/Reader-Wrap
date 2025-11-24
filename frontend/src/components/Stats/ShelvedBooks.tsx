@@ -2,7 +2,7 @@ import { styled } from "@linaria/react";
 import DropDown from "../global/DropDown";
 import { useContext, useState } from "react";
 import BarChart from "./BarChart";
-import { BookStatsContext } from "../../pages/Stats";
+import { BookStatsContext } from "../../assets/hooks/BookStatsContext";
 
 const Wrapper = styled.div`
   box-sizing: border-box;

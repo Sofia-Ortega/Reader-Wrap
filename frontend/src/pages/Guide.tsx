@@ -13,11 +13,7 @@ const wrapper = css`
   align-items: center;
 `;
 
-interface Props {
-  handleSetBooks: (myBooks: IBook[]) => void;
-}
-
-export default function Guide({ handleSetBooks }: Props) {
+export default function Guide() {
   const [slide, setSlide] = useState(1);
 
   return (
@@ -25,7 +21,7 @@ export default function Guide({ handleSetBooks }: Props) {
       <div className={wrapper}>
         <Stepper step={slide} />
         <SlideShow slide={slide} setSlide={setSlide} />
-        <GuideDetails slide={slide} handleSetBooks={handleSetBooks} />
+        <GuideDetails slide={slide} />
       </div>
     </div>
   );

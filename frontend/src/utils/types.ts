@@ -1,10 +1,4 @@
-export type PageType =
-  | "Home"
-  | "Guide"
-  | "Wrap"
-  | "Stats"
-  | "Test"
-  | "Bookshelf";
+export type PageType = "Home" | "Guide" | "Wrap" | "Test" | "Bookshelf";
 
 export interface IBookshelfBook {
   title: string;

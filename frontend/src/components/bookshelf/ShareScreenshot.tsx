@@ -4,6 +4,7 @@ import { css } from "@linaria/core";
 import { getChunkedBooks } from "../../utils/bookshelfUtil";
 import { IDisplayBook } from "../../utils/types";
 import { Link } from "react-router";
+import { BookStatsContext } from "../../assets/hooks/BookStatsContext";
 
 const Wrapper = styled.div`
   width: 360px;

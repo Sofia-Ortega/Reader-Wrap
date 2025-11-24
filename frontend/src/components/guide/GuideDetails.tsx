@@ -2,7 +2,6 @@ import { styled } from "@linaria/react";
 import { parse } from "papaparse";
 import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import { PageContext } from "../../_old_app";
 import {
   getBookStats,
   parseBooksFromCSV,
@@ -38,11 +37,9 @@ const Details = styled.div`
 
 interface Props {
   slide: number;
-  handleSetBooks: (myBooks: IBook[]) => void;
 }
 
-export default function GuideDetails({ slide, handleSetBooks }: Props) {
-  const setShowPage = useContext(PageContext);
+export default function GuideDetails({ slide }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
