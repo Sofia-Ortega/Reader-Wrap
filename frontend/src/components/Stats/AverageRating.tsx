@@ -1,8 +1,8 @@
 import { styled } from "@linaria/react";
 import { motion, Variants } from "framer-motion";
 import { useContext } from "react";
-import { BookStatsContext } from "../../App";
 import { CURRENT_YEAR } from "../../utils/constants";
+import { BookStatsContext } from "../../pages/Stats";
 
 const Wrapper = styled.div`
   gap: clamp(20px, 10vh, 0px);

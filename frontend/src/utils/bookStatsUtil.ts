@@ -175,15 +175,17 @@ export const getTop3Personas = (myBooks: IBook[]) => {
   return top3Personas;
 };
 
-export const saveBooksToLocalStorage = (books: IBook[]) => {
-  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(books));
+export const saveBookStatsToLocalStorage = (bookStats: IBookStats) => {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(bookStats));
 };
 
-export const readBooksFromLocalStorage = (): IBook[] | null => {
+export const readBookStatsFromLocalStorage = (): IBookStats | null => {
   let item = localStorage.getItem(LOCAL_STORAGE_KEY);
   if (!item) return null;
 
   let data = JSON.parse(item);
 
-  return parseBooksFromLocalStorage(data);
+  console.log(data);
+
+  return data;
 };

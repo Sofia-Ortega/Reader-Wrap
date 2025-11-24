@@ -2,13 +2,14 @@ import { styled } from "@linaria/react";
 import { parse } from "papaparse";
 import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import { PageContext } from "../../App";
+import { PageContext } from "../../_old_app";
 import {
+  getBookStats,
   parseBooksFromCSV,
-  saveBooksToLocalStorage,
+  saveBookStatsToLocalStorage,
 } from "../../utils/bookStatsUtil";
 import { CURRENT_YEAR } from "../../utils/constants";
-import { IBook } from "../../utils/types";
+import { IBook, IBookStats } from "../../utils/types";
 import Button from "../global/Button";
 import { Center } from "../global/Center";
 
@@ -67,15 +68,16 @@ export default function GuideDetails({ slide, handleSetBooks }: Props) {
         delimiter: ",",
         skipEmptyLines: true,
         complete: (result) => {
-          const myParsedBooks = parseBooksFromCSV(result.data);
+          const myParsedBooks: IBook[] = parseBooksFromCSV(result.data);
           let currentYearParsedBooks = myParsedBooks.filter(
             (b) =>
               b.dateRead?.getFullYear() == CURRENT_YEAR ||
               b.dateAdded?.getFullYear() == CURRENT_YEAR
           );
 
-          handleSetBooks(currentYearParsedBooks);
-          saveBooksToLocalStorage(currentYearParsedBooks);
+          const bookStats: IBookStats = getBookStats(currentYearParsedBooks);
+          saveBookStatsToLocalStorage(bookStats);
+
           setLoading(false);
 
           navigate("/wrap");
@@ -128,7 +130,7 @@ export default function GuideDetails({ slide, handleSetBooks }: Props) {
     return (
       <Wrapper>
         <Details>
-          Upload downloaded <b>library_export.cvv</b>
+          Upload downloaded <b>library_export.cvs</b>
         </Details>
         <Center>
           <Button secondary onClick={handleUploadClick}>

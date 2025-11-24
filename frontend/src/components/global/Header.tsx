@@ -1,7 +1,7 @@
 import { styled } from "@linaria/react";
 import { modularScale } from "polished";
 import { useContext, useState } from "react";
-import { PageContext } from "../../App";
+import { PageContext } from "../../_old_app";
 import { Link } from "react-router";
 
 const Wrapper = styled.div`

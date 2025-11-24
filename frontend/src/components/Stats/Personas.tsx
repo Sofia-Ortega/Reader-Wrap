@@ -1,7 +1,7 @@
 import { styled } from "@linaria/react";
 import Badge from "./Badge";
-import { BookStatsContext } from "../../App";
 import { useContext, useEffect, useState } from "react";
+import { BookStatsContext } from "../../pages/Stats";
 
 const Wrapper = styled.div`
   box-sizing: border-box;

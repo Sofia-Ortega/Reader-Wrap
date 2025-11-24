@@ -3,11 +3,12 @@ import { modularScale } from "polished";
 import Button from "../components/global/Button";
 import Bookshelf from "../components/bookshelf/Bookshelf";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { BookStatsContext, PageContext } from "../App";
+import { PageContext } from "../_old_app";
 import { CURRENT_YEAR } from "../utils/constants";
 import { IDisplayBook } from "../utils/types";
 import ShareModal from "../components/bookshelf/ShareModal";
 import { Link } from "react-router";
+import { BookStatsContext } from "./Stats";
 
 const Wrapper = styled.div`
   height: 100vh;

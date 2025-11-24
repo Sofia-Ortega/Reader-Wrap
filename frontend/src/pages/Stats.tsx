@@ -4,7 +4,11 @@ import ShelvedBooks from "../components/Stats/ShelvedBooks";
 import AverageRating from "../components/Stats/AverageRating";
 import Personas from "../components/Stats/Personas";
 import BookshelfPage from "./BookshelfPage";
-import { IBook } from "../utils/types";
+import { IBook, IBookStats } from "../utils/types";
+import { createContext, useEffect, useState } from "react";
+import { readBookStatsFromLocalStorage } from "../utils/bookStatsUtil";
+import { defaultIBookStats } from "../assets/data/defaultIBookStats";
+import { useBookStats } from "../assets/hooks/useBookStats";
 
 const Section = styled.div`
   width: 100%;
@@ -45,20 +49,25 @@ const Scroll = styled.div`
   gap: 15px;
 `;
 
-const sections = [
-  { id: 1, Component: Section1, content: <PageBookCount /> },
-  { id: 2, Component: Section2, content: <ShelvedBooks /> },
-  { id: 3, Component: Section3, content: <AverageRating /> },
-  { id: 4, Component: Section4, content: <Personas /> },
-];
+export const BookStatsContext = createContext(defaultIBookStats);
 
 export default function Stats() {
+  const { bookStats } = useBookStats();
+
+  const sections = [
+    { id: 1, Component: Section1, content: <PageBookCount /> },
+    { id: 2, Component: Section2, content: <ShelvedBooks /> },
+    { id: 3, Component: Section3, content: <AverageRating /> },
+    { id: 4, Component: Section4, content: <Personas /> },
+  ];
   return (
     <div>
-      {sections.map(({ id, Component, content }) => (
-        <Component key={id}>{content}</Component>
-      ))}
-      <BookshelfPage />
+      <BookStatsContext.Provider value={bookStats}>
+        {sections.map(({ id, Component, content }) => (
+          <Component key={id}>{content}</Component>
+        ))}
+        <BookshelfPage />
+      </BookStatsContext.Provider>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { styled } from "@linaria/react";
 import { forwardRef, useContext } from "react";
-import { BookStatsContext } from "../../App";
 import { css } from "@linaria/core";
 import { getChunkedBooks } from "../../utils/bookshelfUtil";
 import { IDisplayBook } from "../../utils/types";

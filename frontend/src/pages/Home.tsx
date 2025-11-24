@@ -1,10 +1,11 @@
 import { styled } from "@linaria/react";
 import BookmarkButton from "../components/global/BookmarkButton";
-import { useContext } from "react";
-import { BookStatsContext, PageContext } from "../App";
-import { IBook } from "../utils/types";
+import { useContext, useEffect, useState } from "react";
+import { PageContext } from "../_old_app";
+import { IBook, IBookStats } from "../utils/types";
 import { dummyBooks } from "../assets/data/dummydata";
 import { Link } from "react-router";
+import { useBookStats } from "../assets/hooks/useBookStats";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -19,14 +20,13 @@ interface Props {
 
 export default function Home({ handleSetBooks }: Props) {
   const setShowPage = useContext(PageContext);
-  const bookStats = useContext(BookStatsContext);
+
+  const { bookStats } = useBookStats();
 
   const handlePreview = () => {
     handleSetBooks(dummyBooks);
     setShowPage("Wrap");
   };
-
-  console.log(bookStats.numberOfBooks);
 
   if (bookStats.numberOfBooks != -1) {
     return (

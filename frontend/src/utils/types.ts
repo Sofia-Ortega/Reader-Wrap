@@ -82,6 +82,8 @@ export interface IBookStats {
   bookshelfBooks: IBookshelfBook[];
 }
 
+export interface IBookStatsLocalStorage {}
+
 export interface IScoreResult {
   score: number;
   subtitle: string;

@@ -14,7 +14,7 @@ import Wrap from "./pages/Wrap";
 import Stats from "./pages/Stats";
 import AnimationTest from "./pages/AnimationTest";
 import BookshelfPage from "./pages/BookshelfPage";
-import { getBookStats, readBooksFromLocalStorage } from "./utils/bookStatsUtil";
+import { getBookStats } from "./utils/bookStatsUtil";
 import ShareScreenshot from "./components/bookshelf/ShareScreenshot";
 
 const defaultIBookStats: IBookStats = {
@@ -38,9 +38,7 @@ export const PageContext = createContext<Dispatch<SetStateAction<PageType>>>(
   () => {}
 );
 
-export const BookStatsContext = createContext<IBookStats>(defaultIBookStats);
-
-function App() {
+function old_app() {
   const [showPage, setShowPage] = useState<PageType>("Home");
   const [bookStats, setBookStats] = useState<IBookStats>(defaultIBookStats);
 
@@ -61,23 +59,17 @@ function App() {
     Bookshelf: <BookshelfPage />,
   };
 
-  useEffect(() => {
-    handleSetBooks(readBooksFromLocalStorage());
-  }, []);
-
   return (
     <PageContext.Provider value={setShowPage}>
-      <BookStatsContext.Provider value={bookStats}>
-        {showPage != "Wrap" &&
-          showPage != "Stats" &&
-          showPage != "Test" &&
-          showPage != "Bookshelf" && (
-            <Header showSubtitle={showPage === "Home"} />
-          )}
-        {pageComponents[showPage] || <Home handleSetBooks={handleSetBooks} />}
-      </BookStatsContext.Provider>
+      {showPage != "Wrap" &&
+        showPage != "Stats" &&
+        showPage != "Test" &&
+        showPage != "Bookshelf" && (
+          <Header showSubtitle={showPage === "Home"} />
+        )}
+      {pageComponents[showPage] || <Home handleSetBooks={handleSetBooks} />}
     </PageContext.Provider>
   );
 }
 
-export default App;
+// export default App;
