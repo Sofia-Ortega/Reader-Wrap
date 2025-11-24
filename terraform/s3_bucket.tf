@@ -42,3 +42,17 @@ resource "aws_s3_bucket_website_configuration" "example" {
     suffix = "index.html"
   }
 }
+
+resource "aws_s3_bucket" "root_bucket" {
+  bucket = "readerwrap.com"
+}
+
+
+resource "aws_s3_bucket_website_configuration" "root_redirect" {
+  bucket = aws_s3_bucket.root_bucket.bucket
+
+  redirect_all_requests_to {
+    host_name = "www.readerwrap.com"
+
+  }
+}
