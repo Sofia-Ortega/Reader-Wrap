@@ -7,6 +7,7 @@ import { BookStatsContext, PageContext } from "../App";
 import { CURRENT_YEAR } from "../utils/constants";
 import { IDisplayBook } from "../utils/types";
 import ShareModal from "../components/bookshelf/ShareModal";
+import { Link } from "react-router";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -127,9 +128,11 @@ export default function BookshelfPage() {
   return (
     <Wrapper>
       <HeaderWrapper>
-        <Title onClick={() => setShowPage("Home")}>
-          {CURRENT_YEAR} Bookshelf
-        </Title>
+        <Link to="/">
+          <Title onClick={() => setShowPage("Home")}>
+            {CURRENT_YEAR} Bookshelf
+          </Title>
+        </Link>
         <BookInfoWrapper isSubtitleVisible={title != null || author != null}>
           <div>{title ? title : ""}</div>
           <div>{author ? `By: ${author}` : ""}</div>

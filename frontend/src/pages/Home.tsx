@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { BookStatsContext, PageContext } from "../App";
 import { IBook } from "../utils/types";
 import { dummyBooks } from "../assets/data/dummydata";
+import { Link } from "react-router";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -56,11 +57,13 @@ export default function Home({ handleSetBooks }: Props) {
   return (
     <div>
       <ButtonWrapper>
-        <BookmarkButton
-          primaryText="Start"
-          secondaryText="See your personalized results"
-          onClick={() => setShowPage("Guide")}
-        />
+        <Link to="/guide">
+          <BookmarkButton
+            primaryText="Start"
+            secondaryText="See your personalized results"
+            onClick={() => setShowPage("Guide")}
+          />
+        </Link>
         <BookmarkButton
           primaryText="Preview"
           secondaryText="Preview sample results"

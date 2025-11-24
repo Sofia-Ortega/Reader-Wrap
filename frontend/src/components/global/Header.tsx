@@ -2,6 +2,7 @@ import { styled } from "@linaria/react";
 import { modularScale } from "polished";
 import { useContext, useState } from "react";
 import { PageContext } from "../../App";
+import { Link } from "react-router";
 
 const Wrapper = styled.div`
   background-color: var(--dark-brown);
@@ -45,10 +46,12 @@ export default function Header({ showSubtitle }: Props) {
     <Wrapper>
       <div></div>
       <div>
-        <Title onClick={() => setShowPage("Home")}>Reader Wrap</Title>
-        <ContentContainer isSubtitleVisible={showSubtitle}>
-          <SubTitle>see your year in books</SubTitle>
-        </ContentContainer>
+        <Link to="/">
+          <Title onClick={() => setShowPage("Home")}>Reader Wrap</Title>
+          <ContentContainer isSubtitleVisible={showSubtitle}>
+            <SubTitle>see your year in books</SubTitle>
+          </ContentContainer>
+        </Link>
       </div>
       <div></div>
     </Wrapper>

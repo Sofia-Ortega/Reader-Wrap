@@ -32,6 +32,8 @@ const ButtonBg = styled.button<ButtonBgProps>`
   font-family: BalooBhaijaan;
   cursor: ${({ shadow }) => (!shadow ? "pointer" : "default")};
 
+  user-select: none;
+
   transition: transform 0.2s ease;
 
   &:hover {

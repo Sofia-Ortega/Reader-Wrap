@@ -5,6 +5,7 @@ const StepContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: clamp(10px, 2vw, 30px);
+  user-select: none;
 `;
 
 interface StepContentProps {

@@ -60,6 +60,8 @@ const Text = styled.h3`
   text-align: center;
   z-index: 1;
 
+  user-select: none;
+
   transition: transform 0.5s ease;
 
   &:hover {

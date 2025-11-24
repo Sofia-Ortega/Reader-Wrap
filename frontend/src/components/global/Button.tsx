@@ -7,6 +7,7 @@ const wrapper = css`
   width: 220px;
   height: 44px;
   cursor: pointer;
+  user-select: none;
 `;
 
 const buttonShadow = css`

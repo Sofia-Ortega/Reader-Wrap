@@ -1,15 +1,16 @@
 import { styled } from "@linaria/react";
-import Button from "../global/Button";
-import { Center } from "../global/Center";
-import { Dispatch, SetStateAction, useContext, useRef, useState } from "react";
-import { PageContext } from "../../App";
-import { IBook } from "../../utils/types";
 import { parse } from "papaparse";
+import { useContext, useRef, useState } from "react";
+import { useNavigate } from "react-router";
+import { PageContext } from "../../App";
 import {
   parseBooksFromCSV,
   saveBooksToLocalStorage,
 } from "../../utils/bookStatsUtil";
 import { CURRENT_YEAR } from "../../utils/constants";
+import { IBook } from "../../utils/types";
+import Button from "../global/Button";
+import { Center } from "../global/Center";
 
 const Link = styled.a`
   color: var(--blue);
@@ -44,6 +45,8 @@ export default function GuideDetails({ slide, handleSetBooks }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  let navigate = useNavigate();
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +77,8 @@ export default function GuideDetails({ slide, handleSetBooks }: Props) {
           handleSetBooks(currentYearParsedBooks);
           saveBooksToLocalStorage(currentYearParsedBooks);
           setLoading(false);
-          setShowPage("Wrap");
+
+          navigate("/wrap");
         },
         error: (err: Error) => {
           setError(err.message);

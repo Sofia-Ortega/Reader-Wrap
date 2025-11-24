@@ -4,6 +4,7 @@ import WrapButton from "../components/wrap/WrapButton";
 import { useContext } from "react";
 import { PageContext } from "../App";
 import { CenterFullHeight } from "../components/global/CenterFullHeight";
+import { Link } from "react-router";
 
 const Wrapper = styled.div`
   background-color: var(--black);
@@ -17,11 +18,13 @@ export default function Wrap() {
   return (
     <Wrapper>
       <CenterFullHeight>
-        <WrapButton
-          onClick={() => {
-            setShowPage("Stats");
-          }}
-        />
+        <Link to="/stats">
+          <WrapButton
+            onClick={() => {
+              setShowPage("Stats");
+            }}
+          />
+        </Link>
       </CenterFullHeight>
     </Wrapper>
   );

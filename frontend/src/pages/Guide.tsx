@@ -1,6 +1,6 @@
 import { css } from "@linaria/core";
 import SlideShow from "../components/guide/SlideShow";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import Stepper from "../components/guide/Stepper";
 import GuideDetails from "../components/guide/GuideDetails";
 import { IBook } from "../utils/types";

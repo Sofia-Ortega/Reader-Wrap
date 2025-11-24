@@ -1,6 +1,6 @@
 import { css } from "@linaria/core";
 import { styled } from "@linaria/react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import SquareButton from "../global/SquareButton";
 import RightArrow from "../../assets/icons/RightArrow.svg";
 import LeftArrow from "../../assets/icons/LeftArrow.svg";
@@ -23,6 +23,7 @@ const Slide = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
 `;
 
 const ArrowContainer = styled.div`
