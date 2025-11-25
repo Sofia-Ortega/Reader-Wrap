@@ -1,7 +1,7 @@
 import { IBookStats } from "../../utils/types";
 
 export const defaultIBookStats: IBookStats = {
-  numOfPages: 0,
+  numberOfPages: 0,
   numberOfBooks: -1,
   numberOfWordsEstimate: 0,
   shelvedBooksPerMonth: { read: new Array(12).fill(0) },

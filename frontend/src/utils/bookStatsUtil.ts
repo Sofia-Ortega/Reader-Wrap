@@ -126,7 +126,7 @@ export const getBookStats = (myBooks: IBook[]): IBookStats => {
   const personas = getTop3Personas(myBooks);
 
   let stats: IBookStats = {
-    numOfPages: totalPagesRead,
+    numberOfPages: totalPagesRead,
     numberOfBooks: booksRead.length,
     numberOfWordsEstimate: totalPagesRead * 275,
     shelvedBooksPerMonth: shelvedBooks,

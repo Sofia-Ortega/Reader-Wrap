@@ -166,7 +166,7 @@ export default function AnimationTest() {
     }
 
     let stats: IBookStats = {
-      numOfPages: totalPagesRead,
+      numberOfPages: totalPagesRead,
       numberOfBooks: booksRead.length,
       numberOfWordsEstimate: booksRead.length * 275,
       shelvedBooksPerMonth: shelvedBooks,

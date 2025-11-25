@@ -41,7 +41,8 @@ export default function PageBookCount() {
         <MainText>
           This Year you've Read
           <br />
-          <PageCount>{bookStats.numOfPages.toLocaleString()}</PageCount> pages
+          <PageCount>{bookStats.numberOfPages.toLocaleString()}</PageCount>{" "}
+          pages
           <br />
           across <BookCount>{bookStats.numberOfBooks}</BookCount> books
         </MainText>

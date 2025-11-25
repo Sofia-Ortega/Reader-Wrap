@@ -28,12 +28,31 @@ class BookshelfBook(BaseModel):
     numberOfPages: int
 
 
-class BookStats(BaseModel):
-    numOfPages: int
+class FullBookStats(BaseModel):
+    numberOfPages: int
     numberOfBooks: int
-    numberOfWordsEstimate: int
-    shelvedBooksPerMonth: Dict[str, List[int]]
+    numberOfWordsEstimate: int # simple calculation = numberOfPages * 275
+    shelvedBooksPerMonth: Dict[str, List[int]]  #
     ratings: RatingFrequency
     averageRating: float
     personas: List[ScoredPersona]
     bookshelfBooks: List[BookshelfBook]
+
+
+
+
+class ScoredPersonasToStore(BaseModel):
+    title: str
+    score: float
+
+class BookshelfBookToStore(BaseModel):
+    bookId: str
+
+class BookStatsToStore(BaseModel):
+  numberOfPages: int 
+  numberOfBooks: int
+  shelvedBooksPerMonth: Dict[str, List[int]] # Just the "read" shelf
+  ratings: RatingFrequency
+  averageRating: float
+  personas: List[ScoredPersonasToStore]
+  bookshelfBooks: List[BookshelfBookToStore] # List of bookIds

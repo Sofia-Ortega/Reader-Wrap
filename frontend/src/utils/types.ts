@@ -66,7 +66,7 @@ export interface IRatingFrequency {
 }
 
 export interface IBookStats {
-  numOfPages: number;
+  numberOfPages: number;
   numberOfBooks: number;
   numberOfWordsEstimate: number;
   shelvedBooksPerMonth: Record<string, number[]>; // bookshelfName: [books per month, ...]
