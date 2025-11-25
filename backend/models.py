@@ -56,3 +56,14 @@ class BookStatsToStore(BaseModel):
   averageRating: float
   personas: List[ScoredPersonasToStore]
   bookshelfBooks: List[BookshelfBookToStore] # List of bookIds
+
+PERSONA_KEYS = {
+    "Carpenter": 1,
+    "Binge Reader": 2,
+    "Old Timey": 3,
+    "Rereader": 4,
+    "Marathon Reader": 5,
+    "Novella Enthusiast": 6,
+    "Nonconformist": 7,
+    "Harmonizer": 8
+}
