@@ -47,6 +47,8 @@ class ScoredPersonasToStore(BaseModel):
 
 class BookshelfBookToStore(BaseModel):
     bookId: str
+    title: str
+    author: str
 
 class BookStatsToStore(BaseModel):
   numberOfPages: int 
