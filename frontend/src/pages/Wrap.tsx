@@ -12,6 +12,7 @@ import BookshelfPage from "../components/Stats/BookshelfPage";
 import { dummyBooks } from "../assets/data/dummydata";
 import { getBookStats } from "../utils/bookStatsUtil";
 import { BookStatsContext } from "../assets/hooks/BookStatsContext";
+import bookIcon from "../assets/icons/Book.svg";
 
 const Wrapper = styled.div`
   background-color: var(--black);
@@ -28,6 +29,24 @@ const Section = styled.div`
   font-size: 2rem;
   color: #fff;
   font-weight: bold;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(${bookIcon});
+    background-repeat: repeat;
+    background-size: 200px;
+    opacity: 0.03;
+    pointer-events: none;
+    transform: rotate(5deg) scale(1.1);
+    mix-blend-mode: soft-light;
+  }
 `;
 
 const Section1 = styled(Section)`

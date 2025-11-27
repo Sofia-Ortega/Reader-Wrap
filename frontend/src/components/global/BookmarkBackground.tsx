@@ -12,10 +12,15 @@ export const BookmarkBackground = styled.div<Props>`
   height: auto;
   aspect-ratio: 10 / 3;
   cursor: ${({ isBtn }) => (isBtn ? "pointer" : "default")};
+  position: relative;
 
-  transition: transform 0.2s ease;
+  /* Subtle gradient for depth */
+  background-image: linear-gradient(110deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.05) 100%);
+
+  transition: transform 0.2s ease, filter 0.2s ease;
 
   &:hover {
     transform: ${({ isBtn }) => (isBtn ? `translateY(-4px)` : "none")};
+    filter: ${({ isBtn }) => (isBtn ? `brightness(1.05)` : "none")};
   }
 `;

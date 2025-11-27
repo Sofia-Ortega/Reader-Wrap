@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import Header from "./Header";
+import BackgroundPattern from "./BackgroundPattern";
 
 interface Props {
   showSubtitle: boolean;
@@ -8,6 +9,7 @@ interface Props {
 function Layout({ showSubtitle }: Props) {
   return (
     <>
+      <BackgroundPattern />
       <Header showSubtitle={showSubtitle} />
       <main>
         <Outlet />
