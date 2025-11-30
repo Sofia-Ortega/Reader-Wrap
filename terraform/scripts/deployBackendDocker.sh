@@ -24,9 +24,11 @@ docker save flask-app:latest -o $BACKEND_DIR/flask-app.tar
 
 scp -i ~/.ssh/readerwrap $BACKEND_DIR/flask-app.tar ubuntu@3.143.127.195:~/
 
+scp -i ~/.ssh/readerwrap $BACKEND_DIR/.env.prod ubuntu@3.143.127.195:~/
+
 ssh -i ~/.ssh/readerwrap ubuntu@3.143.127.195 << 'EOF'
 docker load -i flask-app.tar
 docker stop $(docker ps -q)
 docker rm $(docker ps -q)
-docker run -d -p 5000:5000 flask-app:latest
+docker run --env-file .env.prod -d -p 5000:5000 flask-app:latest
 EOF
