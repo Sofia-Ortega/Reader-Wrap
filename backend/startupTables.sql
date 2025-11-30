@@ -1,5 +1,6 @@
 -- Drop tables if they exist (order matters due to FK)
-DROP TABLE IF EXISTS books;
+DROP TABLE IF EXISTS reader_stats_book;
+DROP TABLE IF EXISTS book;
 DROP TABLE IF EXISTS reader_stats;
 DROP TABLE IF EXISTS persona;
 
@@ -40,9 +41,19 @@ CREATE TABLE reader_stats (
     ratings INTEGER[5] NOT NULL
 );
 
+
 -- Create Books table
-CREATE TABLE books (
+CREATE TABLE book (
     id SERIAL PRIMARY KEY,
-    book_stats_id INT REFERENCES reader_stats(id) ON DELETE CASCADE,
-    bookId TEXT NOT NULL
+    bookId TEXT NOT NULL UNIQUE,
+    title TEXT NOT NULL,
+    author TEXT NOT NULL
 );
+
+
+CREATE TABLE reader_stats_book (
+    id SERIAL PRIMARY KEY,
+    reader_stats_id INT REFERENCES reader_stats(id) ON DELETE CASCADE,
+    book_id INT REFERENCES book(id) ON DELETE CASCADE
+);
+            
