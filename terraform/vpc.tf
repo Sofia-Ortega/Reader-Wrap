@@ -21,9 +21,30 @@ resource "aws_internet_gateway" "my_app" {
 }
 
 resource "aws_subnet" "my_app" {
-  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 3, 1)
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 4, 0)
   vpc_id            = aws_vpc.main.id
   availability_zone = var.availability_zone
+}
+
+resource "aws_subnet" "db_private_a" {
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 4, 1)
+  vpc_id            = aws_vpc.main.id
+  availability_zone = var.availability_zone
+}
+
+resource "aws_subnet" "db_private_b" {
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 4, 2)
+  vpc_id            = aws_vpc.main.id
+  availability_zone = "us-east-2b"
+}
+
+resource "aws_db_subnet_group" "db" {
+  name       = "reader wrap database"
+  subnet_ids = [aws_subnet.db_private_a.id, aws_subnet.db_private_b.id]
+
+  tags = {
+    Name = "Reader wrap db"
+  }
 }
 
 resource "aws_route_table" "my_app" {
