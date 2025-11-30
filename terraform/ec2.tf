@@ -49,10 +49,10 @@ resource "aws_security_group" "my_app" {
 
 
 resource "aws_instance" "my_app" {
-  ami               = var.instance_ami
-  instance_type     = "t3.micro"
-  availability_zone = var.availability_zone
-  security_groups = [aws_security_group.my_app.id]
+  ami                         = var.instance_ami
+  instance_type               = "t3.micro"
+  availability_zone           = var.availability_zone
+  security_groups             = [aws_security_group.my_app.id]
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.my_app.id
 

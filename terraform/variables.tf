@@ -14,3 +14,9 @@ variable "instance_ami" {
   type        = string
 
 }
+
+variable "db_password" {
+  description = "password of database"
+  type        = string
+  sensitive   = true
+}
