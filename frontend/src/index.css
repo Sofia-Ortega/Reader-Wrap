@@ -38,6 +38,11 @@
   background-color: var(--sand);
 }
 
+::selection {
+  background: var(--dark-rose);
+  color: var(--sand);
+}
+
 a {
   /* color:var(--blue);
 
