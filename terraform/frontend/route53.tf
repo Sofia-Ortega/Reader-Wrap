@@ -8,8 +8,8 @@ resource "aws_route53_record" "www" {
   type    = "A"
 
   alias {
-    name                   = aws_s3_bucket_website_configuration.example.website_domain
-    zone_id                = aws_s3_bucket.frontend-bucket.hosted_zone_id
+    name                   = aws_cloudfront_distribution.frontend_cdn.domain_name
+    zone_id                = aws_cloudfront_distribution.frontend_cdn.hosted_zone_id
     evaluate_target_health = false
   }
 }
@@ -20,9 +20,8 @@ resource "aws_route53_record" "root" {
   type    = "A"
 
   alias {
-    name                   = aws_s3_bucket_website_configuration.root_redirect.website_domain
+    name                   = aws_s3_bucket.root_bucket.website_domain
     zone_id                = aws_s3_bucket.root_bucket.hosted_zone_id
     evaluate_target_health = false
   }
-
 }

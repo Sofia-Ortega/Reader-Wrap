@@ -72,10 +72,19 @@ resource "aws_cloudfront_distribution" "frontend_cdn" {
       }
     }
 
+    
+
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
     default_ttl            = 0
     max_ttl                = 0
+  }
+
+  custom_error_response {
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 0
   }
 
   viewer_certificate {
@@ -91,14 +100,3 @@ resource "aws_cloudfront_distribution" "frontend_cdn" {
   }
 }
 
-resource "aws_route53_record" "www_alias" {
-  zone_id = aws_route53_zone.main.zone_id
-  name    = "www.readerwrap.com"
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.frontend_cdn.domain_name
-    zone_id                = aws_cloudfront_distribution.frontend_cdn.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
