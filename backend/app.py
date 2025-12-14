@@ -5,6 +5,11 @@ from models import BookStatsToStore, PERSONA_KEYS
 
 app = Flask(__name__)
 
+@app.route("/beep", methods=["GET"])
+def health():
+  return "boop"
+
+
 @app.route("/storeBookStats", methods=["POST"])
 def store_book_stats():
 
@@ -12,6 +17,9 @@ def store_book_stats():
     stats = BookStatsToStore.model_validate(request.get_json())
   except Exception as e:
     return jsonify({"error": "Invalid payload", "details": str(e)}), 400
+  
+  conn = None
+  cur = None
   
   try:
 
@@ -130,7 +138,8 @@ def store_book_stats():
         conn.commit()
 
     except Exception as e:
-      conn.rollback()
+      if conn:
+        conn.rollback()
       return jsonify({"error": "Database insert failed", "details": str(e)}), 500
 
 
@@ -138,8 +147,10 @@ def store_book_stats():
   except Exception as e:
     return jsonify({"error": "Error communicating with database", "details": str(e)}), 500
   finally:
-    cur.close()
-    conn.close()
+    if cur:
+      cur.close()
+    if conn:
+      conn.close()
 
   return jsonify({"hurrah": 1}), 200
   
