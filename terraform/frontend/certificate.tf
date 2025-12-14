@@ -7,6 +7,7 @@ resource "aws_acm_certificate" "frontend_cert" {
   domain_name               = "www.readerwrap.com"
   validation_method         = "DNS"
   subject_alternative_names = ["readerwrap.com"]
+  provider = aws.us_east_1
 
   lifecycle {
     create_before_destroy = true
@@ -28,19 +29,24 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 resource "aws_acm_certificate_validation" "frontend_cert_validation" {
+  provider = aws.us_east_1
+
   certificate_arn         = aws_acm_certificate.frontend_cert.arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
 
 
 resource "aws_cloudfront_origin_access_identity" "frontend_oai" {
+  provider = aws.us_east_1
+
   comment = "OAI for www.readerwrap.com"
 }
 
 resource "aws_cloudfront_distribution" "frontend_cdn" {
+  provider = aws.us_east_1
 
   enabled = true
-  aliases = ["www.readerwrap.com"]
+  aliases = ["www.readerwrap.com", "readerwrap.com"]
 
   origin {
     origin_id   = "www-readerwrap-com-origin"
@@ -82,5 +88,17 @@ resource "aws_cloudfront_distribution" "frontend_cdn" {
     geo_restriction {
       restriction_type = "none"
     }
+  }
+}
+
+resource "aws_route53_record" "www_alias" {
+  zone_id = aws_route53_zone.main.zone_id
+  name    = "www.readerwrap.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.frontend_cdn.domain_name
+    zone_id                = aws_cloudfront_distribution.frontend_cdn.hosted_zone_id
+    evaluate_target_health = false
   }
 }
