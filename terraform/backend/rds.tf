@@ -3,29 +3,25 @@ resource "aws_security_group" "db_sg" {
   description = "Allow DB access only from backend subnet"
   vpc_id      = aws_vpc.main.id
 
-  ingress {
-    protocol  = "tcp"
-    from_port = 5432
-    to_port   = 5432
-
-    cidr_blocks = [aws_subnet.my_app.cidr_block]
-  }
-
-  ingress {
-    protocol  = "tcp"
-    from_port = 5432
-    to_port   = 5432
-
-    cidr_blocks = ["108.212.255.112/32"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
+
+resource "aws_vpc_security_group_ingress_rule" "db_from_backend_subnet" {
+  security_group_id = aws_security_group.db_sg.id
+
+  cidr_ipv4   = aws_subnet.my_app.cidr_block
+  from_port   = 5432
+  to_port     = 5432
+  ip_protocol = "tcp"
+}
+
+resource "aws_vpc_security_group_egress_rule" "db_allow_outbound" {
+  security_group_id = aws_security_group.db_sg.id
+
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "-1"
+}
+
+
 
 resource "aws_db_parameter_group" "db" {
   name   = "reader-wrap"

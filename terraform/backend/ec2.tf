@@ -1,51 +1,42 @@
 resource "aws_key_pair" "ssh-key" {
-  key_name   = "ssh-key"
-  public_key = var.ssh_public_key
+  key_name   = "readerwrap-ec2-desktop-linux"
+  public_key = file("~/.ssh/readerwrap.pub")
 }
 
 
 resource "aws_security_group" "my_app" {
   name   = "SSH + Port 3005 for API"
   vpc_id = aws_vpc.main.id
-
-  # incoming traffic arriving at port 22 -> maps to internal port 22
-  ingress {
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-  }
-
-  # incoming traffic arriving at port 80 -> maps to internal port 80
-  ingress {
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
-  }
-
-  ingress {
-    cidr_blocks = [
-      "0.0.0.0/0"
-    ]
-    from_port = 5000
-    to_port   = 5000
-    protocol  = "tcp"
-  }
-
-  # allows all outgoing traffic
-  egress {
-    from_port   = 0    # all ports
-    to_port     = 0    # all ports
-    protocol    = "-1" # any protocol
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 }
 
+# incoming traffic arriving at port 22 -> maps to internal port 22
+resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
+  security_group_id = aws_security_group.my_app.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 22
+  to_port           = 22
+  ip_protocol       = "tcp"
+}
+
+
+# incoming traffic arriving at port 80 -> maps to internal port 80
+resource "aws_vpc_security_group_ingress_rule" "http_nginx" {
+  security_group_id = aws_security_group.my_app.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  to_port           = 80
+  ip_protocol       = "tcp"
+
+}
+
+
+# allows all outgoing traffic
+resource "aws_vpc_security_group_egress_rule" "allow_outgoing_traffic" {
+  security_group_id = aws_security_group.my_app.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1" # any protocol
+
+}
 
 
 resource "aws_instance" "my_app" {
