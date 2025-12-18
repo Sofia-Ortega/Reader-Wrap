@@ -42,7 +42,7 @@ resource "aws_instance" "my_app" {
   ami                         = var.instance_ami
   instance_type               = "t3.micro"
   availability_zone           = var.availability_zone
-  security_groups             = [aws_security_group.my_app.id]
+  vpc_security_group_ids      = [aws_security_group.my_app.id]
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.my_app_a.id
 
@@ -70,9 +70,6 @@ resource "aws_eip" "my_app" {
   domain   = "vpc"
 }
 
-output "ec2_ip_address" {
-  value = aws_instance.my_app.public_ip
-}
 
 output "ec2_elastic_ip" {
   value = aws_eip.my_app.public_ip
