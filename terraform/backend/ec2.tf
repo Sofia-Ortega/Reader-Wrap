@@ -5,30 +5,29 @@ resource "aws_key_pair" "ssh-key" {
 
 
 resource "aws_security_group" "my_app" {
-  name   = "SSH + Port 3005 for API"
-  vpc_id = aws_vpc.main.id
+  name        = "Reader Wrap API"
+  description = "Allow traffic only from api load balancer and my personal ssh"
+  vpc_id      = aws_vpc.main.id
 }
-
-# incoming traffic arriving at port 22 -> maps to internal port 22
-resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
-  security_group_id = aws_security_group.my_app.id
-  cidr_ipv4         = "0.0.0.0/0"
-  from_port         = 22
-  to_port           = 22
-  ip_protocol       = "tcp"
-}
-
 
 # incoming traffic arriving at port 80 -> maps to internal port 80
 resource "aws_vpc_security_group_ingress_rule" "http_nginx" {
-  security_group_id = aws_security_group.my_app.id
-  cidr_ipv4         = "0.0.0.0/0"
-  from_port         = 80
-  to_port           = 80
-  ip_protocol       = "tcp"
-
+  security_group_id            = aws_security_group.my_app.id
+  referenced_security_group_id = aws_security_group.api_lb.id
+  from_port                    = 8000
+  to_port                      = 8000
+  ip_protocol                  = "tcp"
 }
 
+# allows my computer to ssh into the ec2 instance directly
+resource "aws_vpc_security_group_ingress_rule" "ssh" {
+  security_group_id = aws_security_group.my_app.id
+
+  cidr_ipv4   = var.my_public_ip_block
+  from_port   = 22
+  to_port     = 22
+  ip_protocol = "tcp"
+}
 
 # allows all outgoing traffic
 resource "aws_vpc_security_group_egress_rule" "allow_outgoing_traffic" {
@@ -45,7 +44,7 @@ resource "aws_instance" "my_app" {
   availability_zone           = var.availability_zone
   security_groups             = [aws_security_group.my_app.id]
   associate_public_ip_address = true
-  subnet_id                   = aws_subnet.my_app.id
+  subnet_id                   = aws_subnet.my_app_a.id
 
   key_name = aws_key_pair.ssh-key.key_name
 
@@ -66,11 +65,16 @@ resource "aws_instance" "my_app" {
 
 }
 
+resource "aws_eip" "my_app" {
+  instance = aws_instance.my_app.id
+  domain   = "vpc"
+}
+
 output "ec2_ip_address" {
   value = aws_instance.my_app.public_ip
 }
 
-
 output "ec2_elastic_ip" {
   value = aws_eip.my_app.public_ip
 }
+

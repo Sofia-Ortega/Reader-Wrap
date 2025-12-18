@@ -20,3 +20,8 @@ variable "db_password" {
   type        = string
   sensitive   = true
 }
+
+variable "my_public_ip_block" {
+  description = "my public ip block to ssh directly into my ec2 instance"
+  type        = string
+}

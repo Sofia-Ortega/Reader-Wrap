@@ -11,6 +11,6 @@ COPY . .
 
 ENV FLASK_RUN_HOST=0.0.0.0
 
-EXPOSE 5000
+EXPOSE 8000
 
-CMD ["flask", "run"]
+CMD ["gunicorn", "-w", "3", "-b", "0.0.0.0:8000", "app:app"]

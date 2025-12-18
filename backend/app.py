@@ -30,8 +30,6 @@ def store_book_stats():
     num_books = stats.numberOfBooks
     avg_rating = stats.averageRating
 
-    print('wha')
-
     p = stats.personas
 
     if (len(p) != 3):
@@ -154,3 +152,5 @@ def store_book_stats():
 
   return jsonify({"hurrah": 1}), 200
   
+if __name__ == '__main__':
+  app.run()

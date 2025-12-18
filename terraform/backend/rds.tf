@@ -5,14 +5,26 @@ resource "aws_security_group" "db_sg" {
 
 }
 
-resource "aws_vpc_security_group_ingress_rule" "db_from_backend_subnet" {
-  security_group_id = aws_security_group.db_sg.id
+resource "aws_vpc_security_group_ingress_rule" "allow_my_app_sg" {
+  security_group_id            = aws_security_group.db_sg.id
+  referenced_security_group_id = aws_security_group.my_app.id
 
-  cidr_ipv4   = aws_subnet.my_app.cidr_block
   from_port   = 5432
   to_port     = 5432
   ip_protocol = "tcp"
 }
+
+# allows my computer to ssh into the rds instance directly
+resource "aws_vpc_security_group_ingress_rule" "ssh_rds" {
+  security_group_id = aws_security_group.db_sg.id
+
+  cidr_ipv4   = var.my_public_ip_block
+  from_port   = 22
+  to_port     = 22
+  ip_protocol = "tcp"
+}
+
+
 
 resource "aws_vpc_security_group_egress_rule" "db_allow_outbound" {
   security_group_id = aws_security_group.db_sg.id

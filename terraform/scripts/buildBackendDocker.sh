@@ -7,13 +7,13 @@ echo "Building docker image to test locally"
 
 docker build -t flask-app "$BACKEND_DIR"
 
-docker run -d -p 5000:5000 flask-app:latest
+docker run -d -p 8000:8000 flask-app:latest
 
-echo "Docker image running on port 5000"
+echo "Docker image running on port 8000"
 
 
 ### Test API ###
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/test)
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8000/test)
 
 if [ "$STATUS" -eq 200 ]; then
   echo "API is healthy (200 OK)"
