@@ -68,8 +68,11 @@ resource "aws_instance" "my_app" {
 resource "aws_eip" "my_app" {
   instance = aws_instance.my_app.id
   domain   = "vpc"
-}
 
+  tags = {
+    Name = "reader_wrap_API"
+  }
+}
 
 output "ec2_elastic_ip" {
   value = aws_eip.my_app.public_ip

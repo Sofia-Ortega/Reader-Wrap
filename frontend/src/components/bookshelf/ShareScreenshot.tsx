@@ -5,6 +5,7 @@ import { getChunkedBooks } from "../../utils/bookshelfUtil";
 import { IDisplayBook } from "../../utils/types";
 import { Link } from "react-router";
 import { BookStatsContext } from "../../assets/hooks/BookStatsContext";
+import { CURRENT_YEAR } from "../../utils/constants";
 
 const Wrapper = styled.div`
   width: 360px;
@@ -164,7 +165,7 @@ const ShareScreenshot = forwardRef<HTMLDivElement, Props>(({ books }, ref) => {
 
   return (
     <Wrapper ref={ref}>
-      <Title>2024 Reader Wrap</Title>
+      <Title>{CURRENT_YEAR} Reader Wrap</Title>
       <div>
         <StatsSection>
           <div>

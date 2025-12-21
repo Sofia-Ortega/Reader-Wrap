@@ -1,6 +1,6 @@
 
 resource "aws_acm_certificate" "api_cert" {
-  domain_name = "api.readerwrap.com"
+  domain_name       = "api.readerwrap.com"
   validation_method = "DNS"
 
   lifecycle {
@@ -18,7 +18,7 @@ resource "aws_route53_record" "api_cert_validation" {
     }
   }
 
-  zone_id = aws_route53_zone.main.zone_id
+  zone_id = data.aws_route53_zone.main.zone_id
   name    = each.value.name
   type    = each.value.type
   records = [each.value.value]

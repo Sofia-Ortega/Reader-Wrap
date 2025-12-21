@@ -1,6 +1,6 @@
 
 locals {
-  dist_files = fileset("${path.module}/../frontend/dist", "**")
+  dist_files = fileset("${path.module}/../../frontend/dist", "**")
 }
 
 
@@ -8,8 +8,8 @@ resource "aws_s3_object" "object-upload-html" {
   for_each = { for f in local.dist_files : f => f }
   bucket   = aws_s3_bucket.frontend-bucket.bucket
   key      = each.value
-  source   = "${path.module}/../frontend/dist/${each.value}"
-  etag     = filemd5("${path.module}/../frontend/dist/${each.value}")
+  source   = "${path.module}/../../frontend/dist/${each.value}"
+  etag     = filemd5("${path.module}/../../frontend/dist/${each.value}")
 
   content_type = lookup(
     {

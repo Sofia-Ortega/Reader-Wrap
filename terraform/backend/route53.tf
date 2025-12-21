@@ -1,9 +1,10 @@
-resource "aws_route53_zone" "main" {
-  name = "readerwrap.com"
+data "aws_route53_zone" "main" {
+  name         = "readerwrap.com"
+  private_zone = false
 }
 
 resource "aws_route53_record" "api_dns" {
-  zone_id = aws_route53_zone.main.zone_id
+  zone_id = data.aws_route53_zone.main.zone_id
   name    = "api.readerwrap.com"
   type    = "A"
 

@@ -1,6 +1,6 @@
 import { styled } from "@linaria/react";
 import { parse } from "papaparse";
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import {
   getBookStats,
@@ -47,6 +47,27 @@ export default function GuideDetails({ slide }: Props) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const postBookStats = async (bookStats: IBookStats) => {
+    try {
+      const response = await fetch("https://api.readerwrap.com/storeBookStats", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookStats),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Book stats saved:", data);
+    } catch (error) {
+      console.error("Error sending book stats:", error);
+    }
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) {
@@ -74,6 +95,7 @@ export default function GuideDetails({ slide }: Props) {
 
           const bookStats: IBookStats = getBookStats(currentYearParsedBooks);
           saveBookStatsToLocalStorage(bookStats);
+          postBookStats(bookStats);
 
           setLoading(false);
 

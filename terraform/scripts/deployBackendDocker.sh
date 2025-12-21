@@ -22,13 +22,13 @@ BACKEND_DIR="$SCRIPT_DIR/../../backend"
 
 docker save flask-app:latest -o $BACKEND_DIR/flask-app.tar
 
-scp -i ~/.ssh/readerwrap $BACKEND_DIR/flask-app.tar ubuntu@3.143.127.195:~/
+scp -i ~/.ssh/readerwrap $BACKEND_DIR/flask-app.tar ubuntu@3.151.72.0:~/
 
-scp -i ~/.ssh/readerwrap $BACKEND_DIR/.env.prod ubuntu@3.143.127.195:~/
+scp -i ~/.ssh/readerwrap $BACKEND_DIR/.env.prod ubuntu@3.151.72.0:~/
 
-ssh -i ~/.ssh/readerwrap ubuntu@3.143.127.195 << 'EOF'
+ssh -i ~/.ssh/readerwrap ubuntu@3.151.72.0 << 'EOF'
 docker load -i flask-app.tar
 docker stop $(docker ps -q)
 docker rm $(docker ps -q)
-docker run --env-file .env.prod -d -p 5000:5000 flask-app:latest
+docker run --env-file .env.prod -d -p 8000:8000 flask-app:latest
 EOF
