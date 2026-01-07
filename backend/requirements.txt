@@ -3,3 +3,4 @@ python-dotenv
 psycopg2-binary
 pydantic
 gunicorn
+flask_cors

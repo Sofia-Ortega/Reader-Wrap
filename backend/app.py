@@ -1,9 +1,23 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from db import get_connection
 from models import BookStatsToStore, PERSONA_KEYS
 
 
 app = Flask(__name__)
+
+ALLOWED_ORIGINS = [
+    "https://readerwrap.com",
+    "https://www.readerwrap.com",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
+
+CORS(
+    app,
+    resources={r"/*": {"origins": ALLOWED_ORIGINS}},
+    supports_credentials=False
+)
 
 @app.route("/beep", methods=["GET"])
 def health():
