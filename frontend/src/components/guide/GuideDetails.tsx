@@ -134,7 +134,7 @@ export default function GuideDetails({ slide }: Props) {
               <div>GO TO EXPORT LINK</div>
             </a>
           </Button>
-        </Center>
+       </Center>
       </Wrapper>
     );
   } else if (slide == 2) {

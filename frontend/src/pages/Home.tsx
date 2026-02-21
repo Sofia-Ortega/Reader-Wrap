@@ -54,12 +54,15 @@ export default function Home() {
             secondaryText="See your personalized results"
           />
         </Link>
-        <BookmarkButton
-          primaryText="Preview"
-          secondaryText="Preview sample results"
-          variation="secondary"
-        />
-      </ButtonWrapper>
+        <Link to="/preview">
+          <BookmarkButton
+            primaryText="Preview"
+            secondaryText="Preview sample results"
+            variation="secondary"
+          />
+      </Link>
+        </ButtonWrapper>
+
     </div>
   );
 }

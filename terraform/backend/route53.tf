@@ -7,11 +7,7 @@ resource "aws_route53_record" "api_dns" {
   zone_id = data.aws_route53_zone.main.zone_id
   name    = "api.readerwrap.com"
   type    = "A"
+  ttl     = 300
 
-  alias {
-    name                   = aws_lb.api_lb.dns_name
-    zone_id                = aws_lb.api_lb.zone_id
-    evaluate_target_health = true
-  }
-
+  records = [aws_eip.my_app.public_ip]
 }

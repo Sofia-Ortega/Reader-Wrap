@@ -9,8 +9,8 @@ app = Flask(__name__)
 ALLOWED_ORIGINS = [
     "https://readerwrap.com",
     "https://www.readerwrap.com",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
+    "http://localhost:5173",
+    "http://127.0.0.1:5173"
 ]
 
 CORS(

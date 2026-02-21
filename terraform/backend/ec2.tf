@@ -10,25 +10,32 @@ resource "aws_security_group" "my_app" {
   vpc_id      = aws_vpc.main.id
 }
 
-# incoming traffic arriving at port 80 -> maps to internal port 80
-resource "aws_vpc_security_group_ingress_rule" "http_nginx" {
-  security_group_id            = aws_security_group.my_app.id
-  referenced_security_group_id = aws_security_group.api_lb.id
-  from_port                    = 8000
-  to_port                      = 8000
-  ip_protocol                  = "tcp"
+
+resource "aws_vpc_security_group_ingress_rule" "http" {
+  security_group_id = aws_security_group.my_app.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  to_port           = 80
+  ip_protocol       = "tcp"
 }
 
-# allows my computer to ssh into the ec2 instance directly
+# Allow HTTPS
+resource "aws_vpc_security_group_ingress_rule" "https" {
+  security_group_id = aws_security_group.my_app.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 443
+  to_port           = 443
+  ip_protocol       = "tcp"
+}
+
+# Allow SSH only from your IP
 resource "aws_vpc_security_group_ingress_rule" "ssh" {
   security_group_id = aws_security_group.my_app.id
-
-  cidr_ipv4   = var.my_public_ip_block
-  from_port   = 22
-  to_port     = 22
-  ip_protocol = "tcp"
+  cidr_ipv4         = var.my_public_ip_block
+  from_port         = 22
+  to_port           = 22
+  ip_protocol       = "tcp"
 }
-
 # allows all outgoing traffic
 resource "aws_vpc_security_group_egress_rule" "allow_outgoing_traffic" {
   security_group_id = aws_security_group.my_app.id
@@ -57,6 +64,26 @@ resource "aws_instance" "my_app" {
   sudo usermod -aG docker ubuntu
   newgrp dockerO
   sudo timedatectl set-timezone America/Chicago
+
+  sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+  chmod o+r /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  chmod o+r /etc/apt/sources.list.d/caddy-stable.list
+  sudo apt update
+  sudo apt install caddy
+
+  sudo tee /etc/caddy/Caddyfile > /dev/null <<CADDYEOF
+  api.readerwrap.com {
+      reverse_proxy http://127.0.0.1:8000
+  }
+  CADDYEOF
+
+  sudo systemctl start caddy
+
+
+
+
   EOF
 
   tags = {

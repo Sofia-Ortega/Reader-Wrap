@@ -5,6 +5,7 @@ import Wrap from "./pages/Wrap";
 import { IBook } from "./utils/types";
 import Layout from "./components/global/Layout";
 import BookshelfPageWrapper from "./pages/BookshelfPageWrapper";
+import Boop from "./pages/Boop";
 
 function NewApp() {
   return (
@@ -17,6 +18,7 @@ function NewApp() {
         <Route path="/preview" element={<Wrap isPreview />} />
         <Route path="/wrap" element={<Wrap />} />
         <Route path="/bookshelf" element={<BookshelfPageWrapper />} />
+        <Route path="/beep" element={<Boop />} />
       </Routes>
     </BrowserRouter>
   );
