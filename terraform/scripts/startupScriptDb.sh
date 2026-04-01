@@ -24,5 +24,6 @@ BACKEND_DIR="$SCRIPT_DIR/../../backend"
 scp -i ~/.ssh/readerwrap $BACKEND_DIR/startupTables.sql ubuntu@3.151.72.0:~/
 
 ssh -i ~/.ssh/readerwrap ubuntu@3.151.72.0 << 'EOF'
-psql -h reader-wrap.cto6go8kcmwm.us-east-2.rds.amazonaws.com -U postgres -d postgres -f startupTables.sql
+export PGPASSWORD='...'
+psql -h 10.0.0.9 -U postgres -d postgres -f startupTables.sql
 EOF
